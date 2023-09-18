@@ -1,0 +1,122 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'UncutSans';
+  src: url('/fonts/uncut-sans-regular-webfont.woff2') format('woff2'),
+        url('/fonts/uncut-sans-regular-webfont.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+    font-family: 'UncutSans';
+    src: url('/fonts/uncut-sans-medium-webfont.woff2') format('woff2'),
+         url('/fonts/uncut-sans-medium-webfont.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'UncutSans';
+    src: url('/fonts/uncut-sans-medium-webfont.woff2') format('woff2'),
+         url('/fonts/uncut-sans-medium-webfont.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+  font-family: 'UncutSans';
+  src: url('/fonts/uncut-sans-bold-webfont.woff2') format('woff2'),
+        url('/fonts/uncut-sans-bold-webfont.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+}
+
+h1, h2, h3 {
+  @apply font-bold;
+}
+
+h4, h5, h6 {
+  @apply font-medium;
+}
+
+body, input {
+  @apply font-sans;
+}
+
+/* Button default styles */
+.btn {
+  @apply font-medium;
+  @apply border-2;
+  @apply min-h-0;
+}
+
+.btn-circle {
+  @apply text-base-100;
+  @apply bg-base-content;
+}
+
+.btn-circle:hover {
+  @apply bg-base-content;
+}
+
+.btn-outline {
+  @apply text-sm;
+  @apply text-base-content;
+  @apply border-base-content;
+  @apply bg-base-100;
+  @apply shadow-orange;
+  @apply h-10;
+  @apply px-4;
+}
+
+.btn-primary {
+  @apply text-sm;
+  @apply text-neutral-900;
+  @apply border-neutral-900;
+  @apply shadow-orange;
+  @apply bg-gradient-to-r;
+  @apply from-orange-300;
+  @apply to-orange-600;
+  @apply h-10;
+  @apply px-4;
+}
+
+.btn-primary:disabled {
+  @apply opacity-50;
+  @apply text-neutral-900;
+  @apply border-neutral-900;
+}
+
+.btn-primary:hover, .btn-warning:hover {
+  @apply border-neutral-900;
+}
+
+.btn-link {
+  @apply text-blue-500;
+}
+
+/* Input default styles */
+.input-bordered {
+  @apply text-base-content;
+  @apply border-2;
+  @apply border-base-content;
+}
+
+/* Modal default styles */
+.modal-box {
+  @apply p-8;
+  @apply border-2;
+  @apply border-base-content;
+}
+
+/* Label default styles */
+.label {
+  @apply px-0;
+}
+
+.label-text-alt {
+  @apply text-sm;
+}

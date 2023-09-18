@@ -1,0 +1,3 @@
+ignore: []
+url: odd-template.fission.app
+build: ./build
