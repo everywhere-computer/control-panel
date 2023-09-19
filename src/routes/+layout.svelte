@@ -5,7 +5,6 @@
   import { sessionStore, themeStore } from '../stores'
   import { errorToMessage } from '$lib/session'
   import { initialize } from '$lib/init'
-  import Footer from '$components/Footer.svelte'
   import FullScreenLoadingSpinner from '$components/common/FullScreenLoadingSpinner.svelte'
   import Header from '$components/Header.svelte'
   import Notifications from '$components/notifications/Notifications.svelte'
@@ -52,5 +51,4 @@
       </div>
     </SidebarNav>
   {/if}
-  <Footer />
 </div>

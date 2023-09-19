@@ -14,6 +14,10 @@ const config = {
       $src: resolve('./src'),
       $static: resolve('./static')
     }
+  },
+  server: {
+    port: 5178,
+    strictPort: false
   }
 }
 

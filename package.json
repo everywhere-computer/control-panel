@@ -56,10 +56,11 @@
     ]
   },
   "dependencies": {
+    "@oddjs/odd": "0.37.0",
+    "chart.js": "^4.4.0",
     "clipboard-copy": "^4.0.1",
     "qrcode-svg": "^1.1.0",
-    "uint8arrays": "^4.0.2",
-    "@oddjs/odd": "0.37.0"
+    "uint8arrays": "^4.0.2"
   },
   "engines": {
     "node": ">=16.14"

@@ -17,6 +17,21 @@
       icon: Home
     },
     {
+      label: 'Workflows',
+      href: '/workflows/',
+      icon: PhotoGallery
+    },
+    {
+      label: 'Tasks',
+      href: '/tasks/',
+      icon: PhotoGallery
+    },
+    {
+      label: 'Nodes',
+      href: '/nodes/',
+      icon: PhotoGallery
+    },
+    {
       label: 'Photo Gallery Demo',
       href: '/gallery/',
       icon: PhotoGallery
@@ -81,6 +96,10 @@
         <div
           class="flex items-center gap-3 cursor-pointer mb-8"
           on:click={() => {
+            handleCloseDrawer()
+            goto('/')
+          }}
+          on:keydown={() => {
             handleCloseDrawer()
             goto('/')
           }}
