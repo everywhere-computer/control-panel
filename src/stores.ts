@@ -7,6 +7,8 @@ import type { AccountSettings } from '$lib/account-settings'
 import type { Notification } from '$lib/notifications'
 import type { Session } from '$lib/session'
 import type { Theme } from '$lib/theme'
+import type { TasksStore } from '$lib/tasks'
+import tasks from '$routes/tasks/lib/task-mocks'
 import type { WorkflowsStore } from '$lib/workflows'
 import workflows from '$routes/workflows/lib/workflow-mocks'
 
@@ -28,6 +30,11 @@ export const notificationStore: Writable<Notification[]> = writable([])
 export const accountSettingsStore: Writable<AccountSettings> = writable({
   avatar: null,
   loading: true,
+})
+
+export const tasksStore: Writable<TasksStore> = writable({
+  loading: false,
+  tasks
 })
 
 export const workflowsStore: Writable<WorkflowsStore> = writable({

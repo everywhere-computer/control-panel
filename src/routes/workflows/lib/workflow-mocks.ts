@@ -1,5 +1,6 @@
 export default [
   {
+    id: '7706e116-21fc-4574-a53c-a6d2efad0b04',
     name: 'hello-world-shiny-star-f6bf',
     requests: 124,
     errors: 1,
@@ -9,9 +10,10 @@ export default [
     routes: 1,
     cronTriggers: 0,
     emailTriggers: 0,
-    connectedWorkflows: 0,
+    connectedWorkflows: 0
   },
   {
+    id: '8c991099-2517-49b8-8b7b-6219c06cf34a',
     name: 'image-compression-daisy-deer-a4vd',
     requests: 482,
     errors: 0,
@@ -21,9 +23,10 @@ export default [
     routes: 1,
     cronTriggers: 0,
     emailTriggers: 0,
-    connectedWorkflows: 0,
+    connectedWorkflows: 0
   },
   {
+    id: '87407f43-965c-4d89-99ee-53b32c076e7a',
     name: 'weather-tracking-funny-ferret-h8sd',
     requests: 17,
     errors: 0,
@@ -33,6 +36,6 @@ export default [
     routes: 1,
     cronTriggers: 0,
     emailTriggers: 0,
-    connectedWorkflows: 0,
-  },
+    connectedWorkflows: 0
+  }
 ]

@@ -11,14 +11,14 @@
     <div
       class="flex flex-col border border-neutral-700 rounded-lg bg-white text-neutral-900 transition-colors hover:bg-orange-50"
     >
-      <a href={`/workflows/${workflow.name}`}>
+      <a href={`/workflows/${workflow?.id}`}>
         <div class="flex flex-col gap-4 w-full px-4 py-2">
           <h3 class="text-lg flex flex-row gap-2 items-center">
             <span class="text-blue-500">
               <Shield />
             </span>
-            <a href={`/workflows/${workflow.name}`} class="underline">
-              {workflow.name}
+            <a href={`/workflows/${workflow?.id}`} class="underline">
+              {workflow?.name}
             </a>
           </h3>
 

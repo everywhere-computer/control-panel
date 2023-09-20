@@ -5,6 +5,7 @@ export type WorkflowsStore = {
 }
 
 export type Workflow = {
+  id: string
   name: string
   requests: number
   errors: number

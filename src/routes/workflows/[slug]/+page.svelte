@@ -7,10 +7,10 @@
   import chartData from '$routes/workflows/lib/chart-mocks'
 
   $: workflow = $workflowsStore?.workflows?.find(
-    workflow => workflow?.name === $page.params.slug
+    workflow => workflow?.id === $page.params.slug
   )
 
-  const chartValues = [20, 10, 5, 2, 20, 30, 45]
+  const chartValues = [0, 10, 5, 50, 20, 30, 0]
   const chartLabels = [
     'January',
     'February',
@@ -30,12 +30,12 @@
       let timeout = setTimeout(() => {
         instantiateChart()
         clearTimeout(timeout)
-      }, 10)
+      }, 0)
     }
   }
 
   const instantiateChart = () => {
-    const ctx = document.getElementById('chart')
+    const ctx = document.getElementById('chart') as HTMLCanvasElement
     const chart = new Chart(ctx, {
       //Type of the chart
       type: 'line',
