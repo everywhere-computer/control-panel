@@ -1,13 +1,42 @@
 <script lang="ts">
   import { tasksStore } from '$src/stores'
+
+  let searchTerm = ''
+  $: tasks = searchTerm
+    ? $tasksStore?.tasks?.filter(task =>
+        task?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+      )
+    : $tasksStore?.tasks
+
+  const handleClearSearch = () => (searchTerm = '')
 </script>
 
 <h1 class="text-2xl mb-4">Tasks</h1>
 
+<div class="flex flex-row justify-end w-full mb-4 relative">
+  <input
+    type="text"
+    placeholder="Search tasks"
+    class="input border border-neutral-700 rounded-full w-full sm:max-w-xs pr-8 relative z-0"
+    bind:value={searchTerm}
+    on:keydown={event => {
+      if (event.key === 'Escape') {
+        handleClearSearch()
+      }
+    }}
+  />
+  <button
+    on:click={handleClearSearch}
+    class="absolute z-10 top-1/2 right-4 -translate-y-1/2 font-fold"
+  >
+    x
+  </button>
+</div>
+
 <div
   class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4"
 >
-  {#each $tasksStore?.tasks as task}
+  {#each tasks as task}
     <div
       class="flex flex-col border border-neutral-700 rounded-lg bg-white text-neutral-900 transition-colors hover:bg-orange-50"
     >
@@ -23,7 +52,9 @@
               </div>
               <div class="flex flex-col">
                 <p class="text-xs">Used by</p>
-                <p class="font-bold">{task?.numberOfProjectsUsing} workflows</p>
+                <p class="font-bold">
+                  {task?.numberOfProjectsUsing} workflows
+                </p>
               </div>
             </div>
           </div>

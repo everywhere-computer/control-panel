@@ -1,13 +1,42 @@
 <script lang="ts">
   import { workflowsStore } from '$src/stores'
   import Shield from '$components/icons/Shield.svelte'
+
+  let searchTerm = ''
+  $: workflows = searchTerm
+    ? $workflowsStore?.workflows?.filter(workflow =>
+        workflow?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+      )
+    : $workflowsStore?.workflows
+
+  const handleClearSearch = () => (searchTerm = '')
 </script>
 
 <h1 class="text-2xl mb-4">Workflows</h1>
 
+<div class="flex flex-row justify-end w-full mb-4 relative">
+  <input
+    type="text"
+    placeholder="Search workflows"
+    class="input border border-neutral-700 rounded-full w-full sm:max-w-xs pr-8 relative z-0"
+    bind:value={searchTerm}
+    on:keydown={event => {
+      if (event.key === 'Escape') {
+        handleClearSearch()
+      }
+    }}
+  />
+  <button
+    on:click={handleClearSearch}
+    class="absolute z-10 top-1/2 right-4 -translate-y-1/2 font-fold"
+  >
+    x
+  </button>
+</div>
+
 <!-- Workflow list -->
 <div class="flex flex-col gap-4">
-  {#each $workflowsStore.workflows as workflow}
+  {#each workflows as workflow}
     <div
       class="flex flex-col border border-neutral-700 rounded-lg bg-white text-neutral-900 transition-colors hover:bg-orange-50"
     >

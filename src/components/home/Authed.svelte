@@ -1,11 +1,40 @@
 <script lang="ts">
   import { projectsStore } from '$src/stores'
+
+  let searchTerm = ''
+  $: projects = searchTerm
+    ? $projectsStore?.projects?.filter(project =>
+        project?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+      )
+    : $projectsStore?.projects
+
+  const handleClearSearch = () => (searchTerm = '')
 </script>
 
 <h1 class="text-2xl mb-4">Projects</h1>
 
+<div class="flex flex-row justify-end w-full mb-4 relative">
+  <input
+    type="text"
+    placeholder="Search projects"
+    class="input border border-neutral-700 rounded-full w-full sm:max-w-xs pr-8 relative z-0"
+    bind:value={searchTerm}
+    on:keydown={event => {
+      if (event.key === 'Escape') {
+        handleClearSearch()
+      }
+    }}
+  />
+  <button
+    on:click={handleClearSearch}
+    class="absolute z-10 top-1/2 right-4 -translate-y-1/2 font-fold"
+  >
+    x
+  </button>
+</div>
+
 <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-  {#each $projectsStore?.projects as project}
+  {#each projects as project}
     <div
       class="flex flex-col border border-neutral-700 rounded-lg bg-white text-neutral-900 transition-colors hover:bg-orange-50"
     >
