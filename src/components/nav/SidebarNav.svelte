@@ -12,7 +12,7 @@
 
   const navItemsUpper = [
     {
-      label: 'Home',
+      label: 'Projects',
       href: '/',
       icon: Home
     },

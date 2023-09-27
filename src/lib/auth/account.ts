@@ -131,7 +131,7 @@ export async function waitForDataRoot(username: string): Promise<void> {
   if (!reference) throw new Error('Program must be initialized to check for data root')
 
   let dataRoot = await reference.dataRoot.lookup(username)
-
+  console.log('dataRoot', dataRoot.toString())
   if (dataRoot.toString() !== EMPTY_CID) return
 
   return new Promise((resolve) => {
@@ -140,7 +140,7 @@ export async function waitForDataRoot(username: string): Promise<void> {
 
     const dataRootInterval = setInterval(async () => {
       dataRoot = await reference.dataRoot.lookup(username)
-
+      console.log('dataRoot', dataRoot.toString())
       if (dataRoot.toString() === EMPTY_CID && attempt < maxRetries) {
         attempt++
         return

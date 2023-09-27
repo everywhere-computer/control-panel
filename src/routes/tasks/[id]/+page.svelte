@@ -6,7 +6,7 @@
   import '$routes/tasks/styles/markdown-styles-light.css'
   import { tasksStore } from '$src/stores'
 
-  $: task = $tasksStore?.tasks?.find(task => task?.id === $page.params.slug)
+  $: task = $tasksStore?.tasks?.find(task => task?.id === $page.params.id)
 </script>
 
 <div class="py-8">

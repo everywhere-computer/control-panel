@@ -5,9 +5,10 @@
 
   import { workflowsStore } from '$src/stores'
   import chartData from '$routes/workflows/lib/chart-mocks'
+  import Logs from '$routes/workflows/components/Logs.svelte'
 
   $: workflow = $workflowsStore?.workflows?.find(
-    workflow => workflow?.id === $page.params.slug
+    workflow => workflow?.id === $page.params.id
   )
 
   const chartValues = [0, 10, 5, 50, 20, 30, 0]
@@ -159,12 +160,12 @@
       </div>
     </div>
 
-    <div class="tabs mb-8">
+    <div class="tabs mb-8 border-b border-neutral-700 box-border">
       {#each tabs as tab}
         <button
           on:click={() => handleTabClick(tab)}
-          class="tab tab-bordered {activeTab === tab
-            ? 'tab-active'
+          class="tab {activeTab === tab
+            ? 'tab-active border-b border-neutral-700'
             : ''} capitalize"
         >
           {tab}
@@ -186,7 +187,9 @@
       {/if}
 
       {#if activeTab === tabs[2]}
-        <div class="">logs</div>
+        <div class="">
+          <Logs />
+        </div>
       {/if}
 
       {#if activeTab === tabs[3]}

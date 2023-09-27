@@ -1,33 +1,34 @@
 <script lang="ts">
-  import { goto } from '$app/navigation'
-
-  import { sessionStore } from '../../stores'
+  import { projectsStore } from '$src/stores'
 </script>
 
-<div
-  class="min-h-[calc(100vh-128px)] md:min-h-[calc(100vh-160px)] pt-8 md:pt-16 flex flex-col items-start max-w-[690px] m-auto gap-10 pb-5 text-sm"
->
-  <h1 class="text-xl">Welcome, {$sessionStore.username.trimmed}!</h1>
+<h1 class="text-2xl mb-4">Projects</h1>
 
-  <div class="flex flex-col items-start justify-center gap-5">
-    <h2 class="text-lg">Photo Gallery Demo</h2>
-    <p>
-      The ODD SDK makes it easy to implement private, encrypted, user-owned
-      storage in your app. See it in action with our photo gallery demo.
-    </p>
-    <a class="btn btn-primary" href="/gallery">Try the Photo Gallery Demo</a>
-  </div>
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+  {#each $projectsStore?.projects as project}
+    <div
+      class="flex flex-col border border-neutral-700 rounded-lg bg-white text-neutral-900 transition-colors hover:bg-orange-50"
+    >
+      <a href={`/projects/${project?.id}`}>
+        <div class="px-4 py-2">
+          <h3>{project?.name}</h3>
+          <p>{project?.uri}</p>
 
-  <div class="flex flex-col items-start justify-center gap-5">
-    <h2 class="text-lg">Device Connection Demo</h2>
-    <p>
-      With the ODD SDK, a user’s account lives only on their connected devices —
-      entirely under their control. It’s easy for them to connect as many
-      devices as they’d like. For recoverability, we recommend they always
-      connect at least two.
-    </p>
-    <button class="btn btn-primary" on:click={() => goto('/delegate-account')}>
-      Connect an additional device
-    </button>
-  </div>
+          <!-- <div class="flex flex-col gap-1 ml-auto sm:self-end w-fit mt-auto">
+            <div class="flex flex-row gap-4 items-center justify-center">
+              <div class="flex flex-col">
+                <p class="text-xs">Version</p>
+                <p class="">{project?.description}</p>
+              </div>
+            </div>
+          </div> -->
+        </div>
+        <div
+          class="w-full px-4 py-2 border-t border-neutral-700 self-end text-right"
+        >
+          <p class="text-xs">Last updated {project?.lastModifiedTime} ago</p>
+        </div>
+      </a>
+    </div>
+  {/each}
 </div>
