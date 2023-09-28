@@ -57,11 +57,15 @@
   },
   "dependencies": {
     "@oddjs/odd": "0.37.0",
+    "@types/three": "^0.156.0",
     "chart.js": "^4.4.0",
     "clipboard-copy": "^4.0.1",
     "marked": "^9.0.3",
     "qrcode-svg": "^1.1.0",
     "sanitize-html": "^2.11.0",
+    "three": "^0.156.1",
+    "three-globe": "^2.29.3",
+    "three-trackballcontrols": "^0.9.0",
     "uint8arrays": "^4.0.2"
   },
   "engines": {
