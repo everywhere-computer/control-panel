@@ -11,7 +11,11 @@
 
 <div class="py-8">
   {#if task}
-    <h1 class="text-xl mb-4">{task?.name}</h1>
+    <div class="flex flex-col gap-4 mb-4">
+      <h1 class="text-xl">{task?.name}</h1>
+      <!-- <button class="btn sm:hidden">Add to workflow</button> -->
+    </div>
+
     <div class="flex flex-col md:flex-row gap-8">
       <div class="">
         <div class="markdown-body">
@@ -20,6 +24,7 @@
       </div>
 
       <div class="flex flex-col gap-4">
+        <button class="btn">Add to workflow</button>
         <div class="">
           <p>Repository</p>
           <p class="font-bold underline text-blue-600">
