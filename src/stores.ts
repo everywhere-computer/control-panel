@@ -9,8 +9,8 @@ import type { Session } from '$lib/session'
 import type { Theme } from '$lib/theme'
 import type { ProjectsStore } from '$lib/projects'
 import projects from '$routes/projects/lib/project-mocks'
-import type { TasksStore } from '$lib/tasks'
-import tasks from '$routes/tasks/lib/task-mocks'
+import type { FunctionsStore } from '$lib/functions'
+import functions from '$routes/functions/lib/function-mocks'
 import type { WorkflowsStore } from '$lib/workflows'
 import workflows from '$routes/workflows/lib/workflow-mocks'
 
@@ -39,9 +39,9 @@ export const projectsStore: Writable<ProjectsStore> = writable({
   projects
 })
 
-export const tasksStore: Writable<TasksStore> = writable({
+export const functionsStore: Writable<FunctionsStore> = writable({
   loading: false,
-  tasks
+  functions
 })
 
 export const workflowsStore: Writable<WorkflowsStore> = writable({

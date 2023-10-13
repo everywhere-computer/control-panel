@@ -12,13 +12,13 @@
   const handleClearSearch = () => (searchTerm = '')
 </script>
 
-<h1 class="text-2xl mb-4">Workflows</h1>
+<!-- <h1 class="text-2xl mb-4">Workflows</h1> -->
 
 <div class="flex flex-row justify-end w-full mb-4 relative">
   <input
     type="text"
     placeholder="Search workflows"
-    class="input border border-neutral-700 rounded-full w-full sm:max-w-xs pr-8 relative z-0"
+    class="input border border-gray-500 rounded-full w-full sm:max-w-xs pr-8 relative z-0"
     bind:value={searchTerm}
     on:keydown={event => {
       if (event.key === 'Escape') {

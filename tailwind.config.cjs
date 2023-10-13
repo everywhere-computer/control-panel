@@ -17,8 +17,8 @@ module.exports = {
           success: '#BBF7D0',
           warning: '#fdba74',
           error: '#DC2626',
-          'base-content': '#FAFAFA', // Base text content color
-          'base-100': '#171717', // Base background color
+          'base-content': '#E1E2EA', // Base text content color
+          'base-100': '#313245', // Base background color
           '--rounded-box': '16px',
           '--rounded-btn': '4px',
           '--rounded-badge': '2px',
@@ -35,8 +35,8 @@ module.exports = {
           success: '#BBF7D0',
           warning: '#fed7aa',
           error: '#DC2626',
-          'base-content': '#171717', // Base text content color
-          'base-100': '#FAFAFA', // Base background color
+          'base-content': '#313245', // Base text content color
+          'base-100': '#E1E2EA', // Base background color
           '--rounded-box': '16px',
           '--rounded-btn': '4px',
           '--rounded-badge': '2px',
@@ -60,54 +60,83 @@ module.exports = {
       aspectRatio: {
         '22/23': '22 / 23'
       },
-      boxShadow: {
-        orange: '0px 4px 0px rgba(243, 110, 101, 0.35)'
-      },
       colors: {
-        blue: {
-          100: '#DBEAFE',
-          600: '#2563EB',
-          900: '#1E3A8A'
+        'odd-gray': {
+          100: '#E1E2EA',
+          150: '#C8CADA',
+          200: '#AAADC4',
+          300: '#74789D',
+          400: '#484A65',
+          500: '#313245'
         },
-        green: {
-          300: '#86EFAC',
-          500: '#22C55E',
-          700: '#15803D'
+        'odd-blue': {
+          100: '#F1EDFD',
+          200: '#D5C3FD',
+          300: '#B79AFC',
+          400: '#9372FB',
+          500: '#6649F8'
         },
-        neutral: {
-          50: '#FAFAFA',
-          200: '#E5E5E5',
-          500: '#737373',
-          700: '#404040',
-          800: '#262626',
-          900: '#171717'
+        'odd-pink': {
+          100: '#FEF6F8',
+          200: '#FFCFD5',
+          300: '#FFA8B2',
+          400: '#FA7F91',
+          500: '#F15072'
         },
-        orange: {
-          50: '#FFF7ED',
-          200: '#FDBA74',
-          300: '#F26D64',
-          500: '#F36E65',
-          600: '#EED082',
-          700: '#C2410C'
+        'odd-green': {
+          100: '#E1F0EB',
+          200: '#B1D9CA',
+          300: '#82C1A8',
+          400: '#52A985',
+          500: '#0F9162'
         },
-        red: {
-          400: '#F87171',
-          600: '#DC2626'
+        'odd-red': {
+          100: '#F0E1E5',
+          200: '#E2B2BD',
+          300: '#D28392',
+          400: '#BE5366',
+          500: '#BE5366'
+        },
+        'odd-yellow': {
+          100: '#F0EDE1',
+          200: '#EDE1BE',
+          300: '#E8D49A',
+          400: '#E3CA78',
+          500: '#DFC334'
         }
       },
       fontFamily: {
-        sans: ['UncutSans']
+        sans: ['Overpass'],
+        serif: ['Literata']
       },
       fontSize: {
-        mobileNav: ['24px', { lineHeight: '24px' }],
-        deviceCode: ['30px', { lineHeight: '36px' }],
-        xxs: ['12px', { lineHeight: '16px' }],
-        xs: ['13px', { lineHeight: '24px', letterSpacing: '0.1em' }],
-        sm: ['16px', { lineHeight: '24px' }],
-        base: ['20px', { lineHeight: '28px' }],
-        lg: ['24px', { lineHeight: '32px' }],
-        xl: ['38px', { lineHeight: '48px' }],
-        '2xl': ['50px', { lineHeight: '62px' }]
+        'btn-sm': ['16px', { lineHeight: '17px' }],
+        btn: ['20px', { lineHeight: '22px' }],
+        'body-xs': ['12px', { lineHeight: '18px' }],
+        'body-sm': ['16px', { lineHeight: '24px' }],
+        'body-m': ['20px', { lineHeight: '30px' }],
+        'body-lg': ['24px', { lineHeight: '36px' }],
+        'heading-sm': [
+          '16px',
+          {
+            lineHeight: '17px',
+            textTransform: 'uppercase',
+            letterSpacing: '0.04em'
+          }
+        ],
+        'heading-m': ['28px', { lineHeight: '30px', letterSpacing: '-0.02em' }],
+        'heading-lg': [
+          '38px',
+          { lineHeight: '41px', letterSpacing: '-0.02em' }
+        ],
+        'heading-xl': [
+          '50px',
+          { lineHeight: '54px', letterSpacing: '-0.02em' }
+        ],
+        'heading-2xl': [
+          '56px',
+          { lineHeight: '60px', letterSpacing: '-0.02em' }
+        ]
       },
       keyframes: {
         marquee: {

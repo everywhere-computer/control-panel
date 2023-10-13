@@ -3,95 +3,87 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'UncutSans';
-  src: url('/fonts/uncut-sans-regular-webfont.woff2') format('woff2'),
-        url('/fonts/uncut-sans-regular-webfont.woff') format('woff');
-  font-weight: 400;
+  font-family: 'Overpass';
+  src: url('/fonts/overpass-variablefont_wght-webfont.woff2') format('woff2'),
+        url('/fonts/overpass-variablefont_wght-webfont.woff') format('woff');
+  font-weight: 400 700;
   font-style: normal;
 }
 
 @font-face {
-    font-family: 'UncutSans';
-    src: url('/fonts/uncut-sans-medium-webfont.woff2') format('woff2'),
-         url('/fonts/uncut-sans-medium-webfont.woff') format('woff');
-    font-weight: 500;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'UncutSans';
-    src: url('/fonts/uncut-sans-medium-webfont.woff2') format('woff2'),
-         url('/fonts/uncut-sans-medium-webfont.woff') format('woff');
-    font-weight: 600;
-    font-style: normal;
-}
-
-@font-face {
-  font-family: 'UncutSans';
-  src: url('/fonts/uncut-sans-bold-webfont.woff2') format('woff2'),
-        url('/fonts/uncut-sans-bold-webfont.woff') format('woff');
-  font-weight: 700;
+  font-family: 'Literata';
+  src: url('/fonts/Literata-VariableFont_opsz,wght.ttf') format('truetype');
+  font-weight: 100 600;
   font-style: normal;
 }
 
-h1, h2, h3 {
-  @apply font-bold;
-}
-
-h4, h5, h6 {
-  @apply font-medium;
+h1, h2, h3, h4, h5, h6 {
+  @apply font-sans;
 }
 
 body, input {
   @apply font-sans;
+  @apply text-body-m;
+  font-weight: 350;
 }
 
 /* Button default styles */
 .btn {
-  @apply font-medium;
-  @apply border-2;
-  @apply min-h-0;
+  @apply font-sans;
+  @apply border-0;
+  @apply transition-colors;
+  @apply ease-in;
 }
 
 .btn-circle {
-  @apply text-base-100;
-  @apply bg-base-content;
+  @apply text-odd-gray-500;
+  @apply bg-odd-gray-200;
+  @apply h-8;
+  @apply min-h-8;
+  @apply w-8;
 }
 
 .btn-circle:hover {
-  @apply bg-base-content;
+  @apply bg-odd-gray-150;
 }
 
 .btn-outline {
-  @apply text-sm;
-  @apply text-base-content;
-  @apply border-base-content;
-  @apply bg-base-100;
-  @apply shadow-orange;
-  @apply h-10;
+  @apply text-btn;
+  @apply text-odd-gray-500;
+  @apply bg-odd-gray-200;
   @apply px-4;
+}
+
+.btn-clear {
+  @apply text-btn;
+  @apply text-odd-blue-500;
+  @apply bg-transparent;
 }
 
 .btn-primary {
-  @apply text-sm;
-  @apply text-neutral-900;
-  @apply border-neutral-900;
-  @apply shadow-orange;
-  @apply bg-gradient-to-r;
-  @apply from-orange-300;
-  @apply to-orange-600;
-  @apply h-10;
+  @apply text-btn;
+  @apply text-odd-blue-100;
+  @apply bg-odd-blue-500;
   @apply px-4;
 }
 
-.btn-primary:disabled {
-  @apply opacity-50;
-  @apply text-neutral-900;
-  @apply border-neutral-900;
+.btn-primary:hover {
+  @apply bg-odd-blue-400;
 }
 
-.btn-primary:hover, .btn-warning:hover {
-  @apply border-neutral-900;
+.btn-primary:disabled {
+  @apply bg-odd-blue-500;
+  @apply text-odd-blue-100;
+  @apply opacity-50;
+}
+
+.btn-warning {
+  @apply bg-odd-pink-500;
+  @apply text-odd-pink-100;
+}
+
+.btn-warning:hover {
+  @apply bg-odd-pink-400;
 }
 
 .btn-link {
@@ -105,11 +97,18 @@ body, input {
   @apply border-base-content;
 }
 
+.modal {
+  @apply bg-base-100;
+  @apply bg-opacity-75;
+}
+
 /* Modal default styles */
 .modal-box {
-  @apply p-8;
+  @apply p-12;
   @apply border-2;
   @apply border-base-content;
+  @apply min-w-[33vw];
+  @apply max-w-2xl;
 }
 
 /* Label default styles */
@@ -118,9 +117,8 @@ body, input {
 }
 
 .label-text-alt {
-  @apply text-sm;
+  @apply text-body-sm;
 }
-
 
 /* Markdown styles */
 .markdown-body {

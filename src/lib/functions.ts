@@ -1,11 +1,11 @@
 
 
-export type TasksStore = {
+export type FunctionsStore = {
   loading: boolean
-  tasks: Task[]
+  functions: Func[]
 }
 
-export type Task = {
+export type Func = {
   id: string
   name: string
   slug: string

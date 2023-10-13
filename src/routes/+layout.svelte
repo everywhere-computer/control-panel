@@ -6,9 +6,10 @@
   import { errorToMessage } from '$lib/session'
   import { initialize } from '$lib/init'
   import FullScreenLoadingSpinner from '$components/common/FullScreenLoadingSpinner.svelte'
-  import Header from '$components/Header.svelte'
+  // import Header from '$components/Header.svelte'
+  import Footer from '$components/Footer.svelte'
+  import Nav from '$components/nav/Nav.svelte'
   import Notifications from '$components/notifications/Notifications.svelte'
-  import SidebarNav from '$components/nav/SidebarNav.svelte'
 
   sessionStore.subscribe(session => {
     if (session.error) {
@@ -44,11 +45,14 @@
   {#if $sessionStore.loading}
     <FullScreenLoadingSpinner />
   {:else}
-    <SidebarNav>
-      <Header />
-      <div class="px-4">
+    <div class="flex flex-col min-h-screen">
+      <Nav />
+      <!-- <Header /> -->
+      <div class="p-4">
         <slot />
       </div>
-    </SidebarNav>
+
+      <Footer />
+    </div>
   {/if}
 </div>

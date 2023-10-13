@@ -1,7 +1,7 @@
 export default [
   {
     id: '7706e116-21fc-4574-a53c-a6d2efad0b04',
-    name: 'hello-world-shiny-star-f6bf',
+    name: 'hello-world-driving-crooner-f6bf',
     requests: 124,
     errors: 1,
     lastModifiedTime: '2 hours',

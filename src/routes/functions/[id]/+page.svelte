@@ -3,23 +3,23 @@
   import { marked } from 'marked'
   import sanitizeHtml from 'sanitize-html'
 
-  import '$routes/tasks/styles/markdown-styles-light.css'
-  import { tasksStore } from '$src/stores'
+  import '$routes/functions/styles/markdown-styles-light.css'
+  import { functionsStore } from '$src/stores'
 
-  $: task = $tasksStore?.tasks?.find(task => task?.id === $page.params.id)
+  $: func = $functionsStore?.functions?.find(f => f?.id === $page.params.id)
 </script>
 
 <div class="py-8">
-  {#if task}
+  {#if func}
     <div class="flex flex-col gap-4 mb-4">
-      <h1 class="text-xl">{task?.name}</h1>
+      <h1 class="text-heading-lg">{func?.name}</h1>
       <!-- <button class="btn sm:hidden">Add to workflow</button> -->
     </div>
 
     <div class="flex flex-col md:flex-row gap-8">
       <div class="">
         <div class="markdown-body">
-          {@html sanitizeHtml(marked(task?.description))}
+          {@html sanitizeHtml(marked(func?.description))}
         </div>
       </div>
 
@@ -27,34 +27,34 @@
         <button class="btn">Add to workflow</button>
         <div class="">
           <p>Repository</p>
-          <p class="font-bold underline text-blue-600">
-            <a href={task?.repository} target="_blank" rel="noreferrer">
-              {task?.repository}
+          <p class="font-bold text-body-sm underline text-blue-600">
+            <a href={func?.repository} target="_blank" rel="noreferrer">
+              {func?.repository}
             </a>
           </p>
         </div>
         <div class="">
           <p>Version</p>
-          <p class="font-bold">
-            {task?.version}
+          <p class="font-bold text-body-sm">
+            {func?.version}
           </p>
         </div>
         <div class="">
           <p>Used in</p>
-          <p class="font-bold">
-            {task?.numberOfProjectsUsing} workflows
+          <p class="font-bold text-body-sm">
+            {func?.numberOfProjectsUsing} workflows
           </p>
         </div>
         <div class="">
           <p>Last published</p>
-          <p class="font-bold">
-            {task?.lastModifiedTime} ago
+          <p class="font-bold text-body-sm">
+            {func?.lastModifiedTime} ago
           </p>
         </div>
         <div class="">
           <p>License</p>
-          <p class="font-bold">
-            {task?.license}
+          <p class="font-bold text-body-sm">
+            {func?.license}
           </p>
         </div>
       </div>

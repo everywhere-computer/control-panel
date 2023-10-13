@@ -1,23 +1,23 @@
 <script lang="ts">
-  import { tasksStore } from '$src/stores'
+  import { functionsStore } from '$src/stores'
 
   let searchTerm = ''
-  $: tasks = searchTerm
-    ? $tasksStore?.tasks?.filter(task =>
-        task?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+  $: functions = searchTerm
+    ? $functionsStore?.functions?.filter(func =>
+        func?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
       )
-    : $tasksStore?.tasks
+    : $functionsStore?.functions
 
   const handleClearSearch = () => (searchTerm = '')
 </script>
 
-<h1 class="text-2xl mb-4">Tasks</h1>
+<!-- <h1 class="text-2xl mb-4">Tasks</h1> -->
 
 <div class="flex flex-row justify-end w-full mb-4 relative">
   <input
     type="text"
-    placeholder="Search tasks"
-    class="input border border-neutral-700 rounded-full w-full sm:max-w-xs pr-8 relative z-0"
+    placeholder="Search functions"
+    class="input border border-gray-500 rounded-full w-full sm:max-w-xs pr-8 relative z-0"
     bind:value={searchTerm}
     on:keydown={event => {
       if (event.key === 'Escape') {
@@ -36,24 +36,24 @@
 <div
   class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4"
 >
-  {#each tasks as task}
+  {#each functions as func}
     <div
       class="flex flex-col border border-neutral-700 rounded-lg bg-white text-neutral-900 transition-colors hover:bg-orange-50"
     >
-      <a href={`/tasks/${task?.id}`}>
+      <a href={`/functions/${func?.id}`}>
         <div class="px-4 py-2">
-          <h3>{task?.name}</h3>
+          <h3>{func?.name}</h3>
 
           <div class="flex flex-col gap-1 ml-auto sm:self-end w-fit mt-auto">
             <div class="flex flex-row gap-4 items-center justify-center">
               <div class="flex flex-col">
                 <p class="text-xs">Version</p>
-                <p class="font-bold">{task?.version}</p>
+                <p class="font-bold">{func?.version}</p>
               </div>
               <div class="flex flex-col">
                 <p class="text-xs">Used by</p>
                 <p class="font-bold">
-                  {task?.numberOfProjectsUsing} workflows
+                  {func?.numberOfProjectsUsing} workflows
                 </p>
               </div>
             </div>
@@ -62,7 +62,7 @@
         <div
           class="w-full px-4 py-2 border-t border-neutral-700 self-end text-right"
         >
-          <p class="text-xs">Last published {task?.lastModifiedTime} ago</p>
+          <p class="text-xs">Last published {func?.lastModifiedTime} ago</p>
         </div>
       </a>
     </div>

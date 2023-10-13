@@ -74,10 +74,10 @@
 
 <div class="">
   {#if workflow}
-    <h1 class="text-xl mb-4">{workflow.name}</h1>
+    <h1 class="text-heading-lg mb-4">{workflow.name}</h1>
 
     <div
-      class="flex flex-col mb-8 px-4 py-4 border border-neutral-700 rounded-lg"
+      class="flex flex-col mb-8 px-4 py-4 border border-odd-gray-500 rounded-lg"
     >
       <p class="font-bold">Preview</p>
       <a
@@ -92,7 +92,7 @@
         />
       </a>
 
-      <div class="flex flex-row divide-x divide-neutral-700 items-center">
+      <div class="flex flex-row divide-x divide-odd-gray-500 items-center">
         <div class="pr-4 min-w-[99px]">
           <p class="text-xs">Custom Domains</p>
           <div class="flex flex-row items-center justify-between">
@@ -160,12 +160,12 @@
       </div>
     </div>
 
-    <div class="tabs mb-8 border-b border-neutral-700 box-border">
+    <div class="tabs mb-8 border-b border-odd-gray-500 box-border">
       {#each tabs as tab}
         <button
           on:click={() => handleTabClick(tab)}
           class="tab {activeTab === tab
-            ? 'tab-active border-b border-neutral-700'
+            ? 'tab-active border-b border-odd-gray-500'
             : ''} capitalize"
         >
           {tab}
@@ -174,7 +174,7 @@
     </div>
 
     <div
-      class="flex flex-col mb-4 px-4 py-4 border border-neutral-700 rounded-lg"
+      class="flex flex-col mb-4 px-4 py-4 border border-odd-gray-500 rounded-lg"
     >
       {#if activeTab === tabs[0]}
         <div class="">
