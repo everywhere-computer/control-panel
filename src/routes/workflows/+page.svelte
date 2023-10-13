@@ -42,7 +42,9 @@
     >
       <a href={`/workflows/${workflow?.id}`}>
         <div class="flex flex-col gap-4 w-full px-4 py-2">
-          <h3 class="text-lg flex flex-row gap-2 items-center">
+          <h3
+            class="text-heading-sm sm:text-heading-m flex flex-row gap-2 items-center"
+          >
             <span class="text-blue-500">
               <Shield />
             </span>
@@ -56,15 +58,15 @@
 
             <div class="flex flex-row gap-4 items-center justify-center">
               <div class="flex flex-col">
-                <p class="text-xs">Requests</p>
+                <p class="text-body-xs sm:text-body-sm">Requests</p>
                 <p class="font-bold">{workflow?.requests}</p>
               </div>
               <div class="flex flex-col">
-                <p class="text-xs">Errors</p>
+                <p class="text-body-xs sm:text-body-sm">Errors</p>
                 <p class="font-bold">{workflow?.errors}</p>
               </div>
               <div class="flex flex-col">
-                <p class="text-xs">Median CPU Time</p>
+                <p class="text-body-xs sm:text-body-sm">Median CPU Time</p>
                 <p class="font-bold">{workflow?.medianCPUTime}</p>
               </div>
             </div>
@@ -74,7 +76,9 @@
         <div
           class="w-full px-4 py-2 border-t border-neutral-700 self-end text-right"
         >
-          <p>Last modified {workflow?.lastModifiedTime} ago</p>
+          <p class="text-body-sm">
+            Last modified {workflow?.lastModifiedTime} ago
+          </p>
         </div>
       </a>
     </div>

@@ -14,7 +14,7 @@ export default [
   },
   {
     id: '8c991099-2517-49b8-8b7b-6219c06cf34a',
-    name: 'image-compression-daisy-deer-a4vd',
+    name: 'image-compression-adventure-365-a4vd',
     requests: 482,
     errors: 0,
     lastModifiedTime: '1 hour',
@@ -27,7 +27,7 @@ export default [
   },
   {
     id: '87407f43-965c-4d89-99ee-53b32c076e7a',
-    name: 'weather-tracking-funny-ferret-h8sd',
+    name: 'weather-tracking-sloppy-steaks-h8sd',
     requests: 17,
     errors: 0,
     lastModifiedTime: '50 minutes',
