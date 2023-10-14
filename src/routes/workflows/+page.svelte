@@ -12,7 +12,7 @@
   const handleClearSearch = () => (searchTerm = '')
 </script>
 
-<div class="flex flex-row justify-end w-full mb-4 relative">
+<div class="flex flex-row justify-end w-full mb-6 relative">
   <input
     type="text"
     placeholder="Search workflows"

@@ -13,7 +13,7 @@
 
 <h1 class="text-2xl mb-4">Projects</h1>
 
-<div class="flex flex-row justify-end w-full mb-4 relative">
+<div class="flex flex-row justify-end w-full mb-6 relative">
   <input
     type="text"
     placeholder="Search projects"
