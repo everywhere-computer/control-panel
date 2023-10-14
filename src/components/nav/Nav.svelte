@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { page } from '$app/stores'
+  import { navigating, page } from '$app/stores'
   import { fade, fly } from 'svelte/transition'
 
   import { sessionStore } from '$src/stores'
@@ -15,6 +15,11 @@
 
   let navOpen = false
   const handleToggleNav = () => (navOpen = !navOpen)
+  $: {
+    if ($navigating) {
+      navOpen = false
+    }
+  }
 
   $: navItems = [
     {
@@ -56,20 +61,22 @@
   {#if $sessionStore.session}
     {#if !inFooter && screenSize < 768}
       {@const activeNavItem = navItems.find(({ isActive }) => isActive)}
-      <button
-        on:click={handleToggleNav}
-        class="flex flex-row items-center justify-start gap-4 w-full h-full pl-3.5 box-border bg-odd-gray-150 font-sans text-body-lg text-odd-gray-500 transition-colors ease-in-out duration-200 hover:bg-odd-blue-400 hover:text-odd-blue-100"
-      >
-        <svelte:component this={activeNavItem.icon} />{activeNavItem.label}
-      </button>
-      {#if navOpen}
-        <div
-          class="absolute z-20 top-full left-0 right-0"
-          in:fly={{ x: -10, duration: 120 }}
-          out:fade={{ duration: 100 }}
+      {#if activeNavItem}
+        <button
+          on:click={handleToggleNav}
+          class="flex flex-row items-center justify-start gap-4 w-full h-full pl-3.5 box-border bg-odd-gray-150 font-sans text-body-lg text-odd-gray-500 transition-colors ease-in-out duration-200 hover:bg-odd-blue-400 hover:text-odd-blue-100"
         >
-          <NavItems inFooter {navItems} />
-        </div>
+          <svelte:component this={activeNavItem.icon} />{activeNavItem.label}
+        </button>
+        {#if navOpen}
+          <div
+            class="absolute z-20 top-full left-0 right-0"
+            in:fly={{ x: -10, duration: 120 }}
+            out:fade={{ duration: 100 }}
+          >
+            <NavItems inFooter {navItems} />
+          </div>
+        {/if}
       {/if}
     {:else}
       <NavItems {inFooter} {navItems} />
