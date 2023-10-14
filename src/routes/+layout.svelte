@@ -1,15 +1,19 @@
 <script lang="ts">
+  import { page } from '$app/stores'
+
   import '../global.css'
   import { addNotification } from '$lib/notifications'
   import { appDescription, appImageURL, appName, appURL } from '$lib/app-info'
-  import { sessionStore, themeStore } from '../stores'
+  import { sessionStore, themeStore } from '$src/stores'
   import { errorToMessage } from '$lib/session'
   import { initialize } from '$lib/init'
   import FullScreenLoadingSpinner from '$components/common/FullScreenLoadingSpinner.svelte'
-  // import Header from '$components/Header.svelte'
   import Footer from '$components/Footer.svelte'
   import Nav from '$components/nav/Nav.svelte'
   import Notifications from '$components/notifications/Notifications.svelte'
+
+  $: isHome = $page.route.id === '/'
+  let screenSize: number
 
   sessionStore.subscribe(session => {
     if (session.error) {
@@ -39,6 +43,8 @@
   <meta name="twitter:image:alt" content={appName} />
 </svelte:head>
 
+<svelte:window bind:innerWidth={screenSize} />
+
 <div data-theme={$themeStore.selectedTheme} class="min-h-screen">
   <Notifications />
 
@@ -46,13 +52,17 @@
     <FullScreenLoadingSpinner />
   {:else}
     <div class="flex flex-col min-h-screen">
-      <Nav />
-      <!-- <Header /> -->
+      {#if isHome && screenSize >= 768}
+        <Nav {screenSize} />
+      {:else if !isHome}
+        <Nav {screenSize} />
+      {/if}
+
       <div class="p-4">
         <slot />
       </div>
 
-      <Footer />
+      <Footer {screenSize} />
     </div>
   {/if}
 </div>

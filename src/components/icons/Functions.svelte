@@ -1,17 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" fill="none">
   <path
-    fill="#F1EDFD"
+    fill="currentColor"
     fill-rule="evenodd"
     d="M16.128 36.039c8.879 0 16.077-7.158 16.077-15.986 0-8.829-7.198-15.986-16.077-15.986C7.249 4.067.051 11.224.051 20.053c0 8.828 7.198 15.986 16.077 15.986Z"
     clip-rule="evenodd"
   />
   <path
-    stroke="#F1EDFD"
+    stroke="currentColor"
     stroke-width=".5"
     d="M34.068 17c0 8.145-6.64 14.75-14.835 14.75S4.398 25.145 4.398 17s6.64-14.75 14.835-14.75c8.194 0 14.835 6.605 14.835 14.75Z"
   />
   <path
-    stroke="#F1EDFD"
+    stroke="currentColor"
     stroke-width=".5"
     d="M36.08 13.5c0 7.316-5.966 13.25-13.327 13.25-7.362 0-13.327-5.934-13.327-13.25S15.391.25 22.753.25C30.114.25 36.08 6.184 36.08 13.5Z"
   />
