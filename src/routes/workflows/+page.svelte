@@ -1,6 +1,6 @@
 <script lang="ts">
   import { workflowsStore } from '$src/stores'
-  import Shield from '$components/icons/Shield.svelte'
+  import Workflows from '$components/icons/Workflows.svelte'
 
   let searchTerm = ''
   $: workflows = searchTerm
@@ -11,8 +11,6 @@
 
   const handleClearSearch = () => (searchTerm = '')
 </script>
-
-<!-- <h1 class="text-2xl mb-4">Workflows</h1> -->
 
 <div class="flex flex-row justify-end w-full mb-4 relative">
   <input
@@ -45,8 +43,8 @@
           <h3
             class="text-heading-sm sm:text-heading-m flex flex-row gap-2 items-center"
           >
-            <span class="text-blue-500">
-              <Shield />
+            <span class="text-odd-blue-500">
+              <Workflows />
             </span>
             <a href={`/workflows/${workflow?.id}`} class="underline">
               {workflow?.name}
