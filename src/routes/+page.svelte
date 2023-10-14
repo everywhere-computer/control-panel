@@ -12,7 +12,7 @@
     <img
       src={`${window.location.origin}/static-globe2x.png`}
       alt="Everywhere Computer Globe"
-      class="max-w-[560px] h-auto"
+      class="max-w-[560px] w-full h-auto"
     />
   </div>
 {:else}
