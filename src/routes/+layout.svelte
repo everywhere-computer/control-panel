@@ -58,7 +58,7 @@
         <Nav {screenSize} />
       {/if}
 
-      <div class="p-4">
+      <div class="p-6">
         <slot />
       </div>
 
