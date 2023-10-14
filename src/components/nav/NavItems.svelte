@@ -16,13 +16,13 @@
         navItem.href
       )
         ? '!bg-odd-gray-500'
-        : ''} transition-colors ease-in-out duration-200 h-[64px] px-6 {inFooter
+        : ''} transition-colors ease-in-out duration-200 h-[64px] {inFooter
         ? 'w-full'
         : ''}"
     >
       <a
         href={navItem.href}
-        class="flex flex-row items-center justify-start gap-4 h-full font-sans text-body-m text-odd-blue-100"
+        class="flex flex-row items-center justify-start gap-4 h-full px-6 font-sans text-body-m text-odd-blue-100"
       >
         <svelte:component this={navItem.icon} />{navItem.label}
       </a>
