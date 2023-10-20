@@ -1,5 +1,6 @@
 <script lang="ts">
   import { functionsStore } from '$src/stores'
+  import Search from '$components/common/Search.svelte'
 
   let searchTerm = ''
   $: functions = searchTerm
@@ -7,30 +8,16 @@
         func?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
       )
     : $functionsStore?.functions
-
-  const handleClearSearch = () => (searchTerm = '')
 </script>
 
-<!-- <h1 class="text-2xl mb-4">Tasks</h1> -->
+<div
+  class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 w-full"
+>
+  <p class="text-body-sm text-odd-gray-500 w-auto">
+    {functions?.length} Function{functions?.length === 1 ? '' : 's'}
+  </p>
 
-<div class="flex flex-row justify-end w-full mb-6 relative">
-  <input
-    type="text"
-    placeholder="Search functions"
-    class="input border border-gray-500 rounded-full w-full sm:max-w-xs pr-8 relative z-0"
-    bind:value={searchTerm}
-    on:keydown={event => {
-      if (event.key === 'Escape') {
-        handleClearSearch()
-      }
-    }}
-  />
-  <button
-    on:click={handleClearSearch}
-    class="absolute z-10 top-1/2 right-4 -translate-y-1/2 font-fold"
-  >
-    x
-  </button>
+  <Search bind:searchTerm placeholder="Find a function..." />
 </div>
 
 <div

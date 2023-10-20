@@ -70,7 +70,7 @@
       {#if activeNavItem}
         <button
           on:click={handleToggleNav}
-          class="flex flex-row items-center justify-start gap-4 w-full h-full pl-3.5 box-border bg-odd-gray-150 font-sans text-body-lg text-odd-gray-500 transition-colors ease-in-out duration-200 hover:bg-odd-blue-400 hover:text-odd-blue-100"
+          class="flex flex-row items-center justify-start gap-2 w-full h-full pl-3.5 box-border bg-odd-gray-500 font-sans text-body-sm text-odd-gray-0 transition-colors ease-in-out duration-200 hover:bg-odd-blue-400 hover:text-odd-blue-100"
         >
           <svelte:component this={activeNavItem.icon} />{activeNavItem.label}
         </button>

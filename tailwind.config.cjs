@@ -126,7 +126,7 @@ module.exports = {
             letterSpacing: '0.04em'
           }
         ],
-        'heading-m': ['28px', { lineHeight: '30px', letterSpacing: '-0.02em' }],
+        'heading-m': ['18px', { lineHeight: '20px', letterSpacing: '-0.36px' }],
         'heading-lg': [
           '38px',
           { lineHeight: '41px', letterSpacing: '-0.02em' }

@@ -1,0 +1,31 @@
+<script lang="ts">
+  import Search from '$components/icons/Search.svelte'
+
+  export let searchTerm: string
+  export let placeholder: string
+
+  const handleClearSearch = () => (searchTerm = '')
+</script>
+
+<div class="flex flex-row relative max-w-[267px]">
+  <div class="absolute z-10 top-1/2 left-4 -translate-y-1/2">
+    <Search />
+  </div>
+  <input
+    type="text"
+    {placeholder}
+    class="input border border-odd-gray-500 bg-odd-gray-0 text-odd-gray-300 placeholder-odd-gray-300 w-full h-8 sm:max-w-xs pl-10 relative z-0 rounded-none"
+    bind:value={searchTerm}
+    on:keydown={event => {
+      if (event.key === 'Escape') {
+        handleClearSearch()
+      }
+    }}
+  />
+  <!-- <button
+      on:click={handleClearSearch}
+      class="absolute z-10 top-1/2 right-4 -translate-y-1/2 font-bold"
+    >
+      x
+    </button> -->
+</div>
