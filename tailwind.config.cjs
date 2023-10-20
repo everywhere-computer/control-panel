@@ -55,6 +55,7 @@ module.exports = {
   theme: {
     extend: {
       animation: {
+        rotateAnimation: 'rotateAnimation 30s linear infinite',
         marquee: 'marquee 20s linear infinite'
       },
       aspectRatio: {
@@ -62,6 +63,7 @@ module.exports = {
       },
       colors: {
         'odd-gray': {
+          0: '#F3F3F7',
           100: '#E1E2EA',
           150: '#C8CADA',
           200: '#AAADC4',
@@ -139,6 +141,10 @@ module.exports = {
         ]
       },
       keyframes: {
+        rotateAnimation: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' }
+        },
         marquee: {
           '0%': { transform: 'translateX(102%)' },
           '100%': { transform: 'translateX(-100vw)' }

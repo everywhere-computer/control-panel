@@ -51,10 +51,16 @@
 
 <navbar
   class="relative flex flex-row p-0 w-full {inFooter
-    ? 'h-auto md:h-[64px] mt-auto'
-    : 'h-[64px]'}"
+    ? 'h-auto md:h-10 mt-auto'
+    : 'h-10'}"
 >
-  <a href="/" class={inFooter ? 'hidden md:inline-block' : ''}>
+  <a
+    href="/"
+    class="{inFooter ? 'hidden md:inline-block' : ''} {$page.url.pathname ===
+    '/'
+      ? 'text-odd-blue-500'
+      : 'text-odd-gray-500'} border-r border-odd-gray-100 hover:text-odd-blue-500 transition-colors ease-in-out duration-200"
+  >
     <HeaderLogo />
   </a>
 

@@ -21,9 +21,12 @@ h1, h2, h3, h4, h5, h6 {
   @apply font-sans;
 }
 
+body {
+  @apply bg-odd-gray-0;
+}
+
 body, input {
-  @apply font-sans;
-  @apply text-body-m;
+  @apply font-sans text-body-m;
   font-weight: 350;
 }
 

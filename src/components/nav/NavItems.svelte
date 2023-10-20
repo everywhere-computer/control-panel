@@ -12,17 +12,17 @@
 >
   {#each navItems as navItem}
     <li
-      class="flex-auto bg-odd-blue-500 hover:bg-odd-blue-400 {$page.url.pathname.includes(
+      class="flex-auto bg-odd-gray-500 hover:bg-odd-blue-500 {$page.url.pathname.includes(
         navItem.href
       )
-        ? '!bg-odd-gray-500'
-        : ''} transition-colors ease-in-out duration-200 h-[64px] {inFooter
+        ? '!bg-odd-blue-500'
+        : ''} transition-colors ease-in-out duration-200 h-10 {inFooter
         ? 'w-full'
         : ''}"
     >
       <a
         href={navItem.href}
-        class="flex flex-row items-center justify-start gap-4 h-full px-6 font-sans text-body-m text-odd-blue-100"
+        class="flex flex-row items-center justify-start gap-4 h-full px-6 font-sans text-body-sm text-odd-blue-100"
       >
         <svelte:component this={navItem.icon} />{navItem.label}
       </a>

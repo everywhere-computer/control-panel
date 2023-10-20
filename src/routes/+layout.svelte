@@ -45,7 +45,7 @@
 
 <svelte:window bind:innerWidth={screenSize} />
 
-<div data-theme={$themeStore.selectedTheme} class="min-h-screen">
+<div data-theme={$themeStore.selectedTheme} class="min-h-screen bg-odd-gray-0">
   <Notifications />
 
   {#if $sessionStore.loading}
