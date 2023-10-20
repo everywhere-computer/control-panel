@@ -115,7 +115,7 @@ module.exports = {
       fontSize: {
         'btn-sm': ['16px', { lineHeight: '17px' }],
         btn: ['20px', { lineHeight: '22px' }],
-        'body-xs': ['12px', { lineHeight: '18px' }],
+        'body-xs': ['14px', { lineHeight: '20px' }],
         'body-sm': ['16px', { lineHeight: '24px' }],
         'body-m': ['20px', { lineHeight: '30px' }],
         'body-lg': ['24px', { lineHeight: '36px' }],

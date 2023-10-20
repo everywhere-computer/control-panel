@@ -4,7 +4,7 @@
   import { onMount } from 'svelte'
 
   import { workflowsStore } from '$src/stores'
-  import chartData from '$routes/workflows/lib/chart-mocks'
+  // import chartData from '$routes/workflows/lib/chart-mocks'
   import Logs from '$routes/workflows/components/Logs.svelte'
 
   $: workflow = $workflowsStore?.workflows?.find(

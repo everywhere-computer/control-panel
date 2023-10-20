@@ -12,6 +12,7 @@
   import Nav from '$components/nav/Nav.svelte'
   import Notifications from '$components/notifications/Notifications.svelte'
 
+  $: isActivity = $page.route.id === '/activity'
   $: isHome = $page.route.id === '/'
   let screenSize: number
 
@@ -63,7 +64,7 @@
         <Nav {screenSize} />
       {/if}
 
-      <div class="p-6">
+      <div class={isActivity ? 'py-6' : 'p-6'}>
         <slot />
       </div>
 
