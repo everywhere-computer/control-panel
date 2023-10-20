@@ -29,7 +29,7 @@
   {/each}
 </div>
 
-<div class="flex flex-col mb-4 px-4 py-4 bg-odd-gray-0">
+<div class="flex flex-col mb-4 px-4 py-4 bg-odd-gray-0 overflow-x-scroll">
   {#if activeTab === tabs[0]}
     <div class="">
       <div class="flex flex-row items-center justify-end gap-4 mb-4">
