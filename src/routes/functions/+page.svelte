@@ -21,7 +21,7 @@
     <Search bind:searchTerm placeholder="Find a function..." />
   </div>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-8">
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-x-4 sm:gap-y-8">
     {#each functions as func}
       <div
         class="flex flex-col border border-neutral-700 bg-odd-gray-0 text-odd-gray-500 transition-colors hover:bg-odd-blue-100"
