@@ -3,6 +3,7 @@
   import { fade, fly } from 'svelte/transition'
 
   import { sessionStore } from '$src/stores'
+  import { clickOutside } from '$lib/utils'
   import Activity from '$components/icons/Activity.svelte'
   import Functions from '$components/icons/Functions.svelte'
   import HeaderLogo from '$components/icons/HeaderLogo.svelte'
@@ -47,6 +48,10 @@
       isActive: $page.url.pathname.includes('/settings/')
     }
   ]
+
+  function handleClickOutside() {
+    navOpen = false
+  }
 </script>
 
 <navbar
@@ -76,9 +81,11 @@
         </button>
         {#if navOpen}
           <div
-            class="absolute z-20 top-full left-0 right-0"
+            class="absolute z-20 top-full left-0 right-0 border-t border-odd-gray-100"
             in:fly={{ x: -10, duration: 120 }}
             out:fade={{ duration: 100 }}
+            use:clickOutside
+            on:click_outside={handleClickOutside}
           >
             <NavItems inFooter {navItems} />
           </div>

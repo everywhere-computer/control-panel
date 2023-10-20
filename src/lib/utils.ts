@@ -42,3 +42,22 @@ export async function fileToUint8Array(file: File): Promise<Uint8Array> {
     await new Blob([ file ]).arrayBuffer()
   )
 }
+
+/**
+ * Dispatch event on click outside of node
+ */
+export function clickOutside(node: Node): { destroy(): void } {
+  const handleClick = event => {
+    if (node && !node.contains(event.target) && !event.defaultPrevented) {
+      node.dispatchEvent(new CustomEvent('click_outside', node))
+    }
+  }
+
+  document.addEventListener('click', handleClick, true)
+
+  return {
+    destroy() {
+      document.removeEventListener('click', handleClick, true)
+    }
+  }
+}
