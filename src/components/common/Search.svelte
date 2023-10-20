@@ -1,8 +1,8 @@
 <script lang="ts">
   import Search from '$components/icons/Search.svelte'
 
-  export let searchTerm: string
-  export let placeholder: string
+  export let searchTerm: string = ''
+  export let placeholder: string = ''
 
   const handleClearSearch = () => (searchTerm = '')
 </script>
