@@ -11,58 +11,58 @@
     : $workflowsStore?.workflows
 </script>
 
-<div
-  class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 w-full"
->
-  <p class="text-body-sm text-odd-gray-500 w-auto">
-    {workflows?.length} Workflow Template{workflows?.length === 1 ? '' : 's'}
-  </p>
+<div class="w-full max-w-[800px] m-auto">
+  <div
+    class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 w-full"
+  >
+    <p class="text-body-sm text-odd-gray-500 w-auto">
+      {workflows?.length} Workflow Template{workflows?.length === 1 ? '' : 's'}
+    </p>
 
-  <Search bind:searchTerm placeholder="Find a workflow..." />
-</div>
-<!-- Workflow list -->
-<div class="flex flex-col gap-4">
-  {#each workflows as workflow}
-    <div
-      class="flex flex-col bg-odd-gray-0 text-odd-gray-500 transition-colors hover:bg-odd-blue-100"
-    >
-      <a href={`/workflows/${workflow?.id}`}>
-        <div class="flex flex-col gap-4 w-full p-4">
-          <h3 class="text-heading-m flex flex-row gap-2 items-center">
-            <a href={`/workflows/${workflow?.id}`}>
+    <Search bind:searchTerm placeholder="Find a workflow..." />
+  </div>
+  <!-- Workflow list -->
+  <div class="flex flex-col gap-4">
+    {#each workflows as workflow}
+      <div
+        class="flex flex-col bg-odd-gray-0 text-odd-gray-500 transition-colors hover:bg-odd-blue-100"
+      >
+        <a href={`/workflows/${workflow?.id}`}>
+          <div class="flex flex-col gap-4 w-full p-4">
+            <h3 class="font-semibold text-heading-m">
               {workflow?.name}
-            </a>
-          </h3>
+            </h3>
 
-          <div class="flex flex-col items-center text-body-sm w-full mt-auto">
-            <div class="flex flex-row items-center justify-between w-full">
-              <p class="text-odd-gray-300">Requests</p>
-              <p class="">{workflow?.requests}</p>
-            </div>
-            <div class="flex flex-row items-center justify-between w-full">
-              <p class="text-odd-gray-300">Errors</p>
-              <p class="">{workflow?.errors}</p>
-            </div>
-            <div class="flex flex-row items-center justify-between w-full">
-              <p class="text-odd-gray-300">Median CPU Time</p>
-              <p class="">{workflow?.medianCPUTime}</p>
+            <div class="flex flex-col items-center text-body-sm w-full mt-auto">
+              <div class="flex flex-row items-center justify-between w-full">
+                <p class="text-odd-gray-300 font-[550]">Requests</p>
+                <p>{workflow?.requests}</p>
+              </div>
+              <div class="flex flex-row items-center justify-between w-full">
+                <p class="text-odd-gray-300 font-[550]">Errors</p>
+                <p>{workflow?.errors}</p>
+              </div>
+              <div class="flex flex-row items-center justify-between w-full">
+                <p class="text-odd-gray-300 font-[550]">Median CPU Time</p>
+                <p>{workflow?.medianCPUTime}</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div
-          class="flex flex-row items-center gap-2 w-full px-4 py-3 bg-odd-gray-150 border-t border-neutral-700"
-        >
-          <Workflows />
-          <p class="text-body-sm">
-            Last run {workflow?.lastModifiedTime} ago
-          </p>
-        </div>
-      </a>
-    </div>
-  {/each}
+          <div
+            class="flex flex-row items-center gap-2 w-full px-4 py-3 bg-odd-gray-150 border-t border-neutral-700"
+          >
+            <Workflows />
+            <p class="text-body-sm">
+              Last run {workflow?.lastModifiedTime} ago
+            </p>
+          </div>
+        </a>
+      </div>
+    {/each}
+  </div>
+
+  <a href="/workflows/build" class="btn btn-primary fixed bottom-16 right-3">
+    + Build Workflow
+  </a>
 </div>
-
-<a href="/workflows/build" class="btn btn-primary fixed bottom-16 right-3">
-  + Build Workflow
-</a>

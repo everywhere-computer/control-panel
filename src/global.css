@@ -6,7 +6,7 @@
   font-family: 'Overpass';
   src: url('/fonts/overpass-variablefont_wght-webfont.woff2') format('woff2'),
         url('/fonts/overpass-variablefont_wght-webfont.woff') format('woff');
-  font-weight: 400 700;
+  font-weight: 400 550 600 700;
   font-style: normal;
 }
 
