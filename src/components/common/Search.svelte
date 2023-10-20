@@ -7,7 +7,7 @@
   const handleClearSearch = () => (searchTerm = '')
 </script>
 
-<div class="flex flex-row relative max-w-[267px]">
+<div class="flex flex-row relative w-full sm:max-w-[267px]">
   <div class="absolute z-10 top-1/2 left-4 -translate-y-1/2">
     <Search />
   </div>
