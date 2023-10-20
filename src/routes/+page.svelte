@@ -7,7 +7,7 @@
 {#if $sessionStore?.session}
   <!-- <Authed /> -->
   <div
-    class="flex items-center justify-center md:min-h-[calc(100vh-160px)] w-full py-[7vh]"
+    class="flex items-center justify-center min-h-[calc(100vh-248px)] md:min-h-[calc(100vh-160px)] w-full"
   >
     <div class="logo relative max-w-[60vmin] max-h-[60vmin]">
       <img
