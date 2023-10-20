@@ -12,7 +12,7 @@
 >
   {#each navItems as navItem}
     <li
-      class="flex-auto bg-odd-gray-500 hover:bg-odd-blue-500 {$page.url.pathname.includes(
+      class="flex-auto bg-odd-gray-500 group {$page.url.pathname.includes(
         navItem.href
       )
         ? '!bg-odd-blue-500'
@@ -22,7 +22,7 @@
     >
       <a
         href={navItem.href}
-        class="flex flex-row items-center justify-start gap-4 h-full px-6 font-sans text-body-sm text-odd-blue-100"
+        class="flex flex-row items-center justify-start gap-4 h-full px-6 font-sans text-body-sm text-odd-blue-100 group-hover:text-odd-blue-200 transition-colors ease-in-out duration-200"
       >
         <svelte:component this={navItem.icon} />{navItem.label}
       </a>
