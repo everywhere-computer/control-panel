@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from '$app/navigation'
   import { page } from '$app/stores'
 
   import '../global.css'
@@ -25,6 +26,14 @@
 
   const init = async () => {
     await initialize()
+
+    // Rediret to home if not logged in
+    if (
+      window.location.href !== window.location.origin &&
+      !$sessionStore.session
+    ) {
+      goto('/')
+    }
   }
 
   init()
