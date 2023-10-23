@@ -9,20 +9,20 @@
 >
   <a href={`/functions/${func?.id}`}>
     <div class="p-6">
-      <h3 class="mb-4 font-semibold text-heading-m">{func?.name}</h3>
+      <h3 class="mb-4 text-heading-sm">{func?.name}</h3>
 
       <div class="flex flex-col items-center text-body-sm w-full mt-auto">
         <div class="flex flex-row items-center justify-between w-full">
-          <p class="text-odd-gray-300 font-[550]">Version</p>
-          <p>{func?.version}</p>
+          <p class="text-odd-gray-300 text-label-m">Version</p>
+          <p class="text-body-m">{func?.version}</p>
         </div>
         <div class="flex flex-row items-center justify-between w-full">
-          <p class="text-odd-gray-300 font-[550]">Used by</p>
-          <p>{func?.numberOfProjectsUsing} workflows</p>
+          <p class="text-odd-gray-300 text-label-m">Used by</p>
+          <p class="text-body-m">{func?.numberOfProjectsUsing} workflows</p>
         </div>
         <div class="flex flex-row items-center justify-between w-full">
-          <p class="text-odd-gray-300 font-[550]">Last published</p>
-          <p>{func?.lastModifiedTime}</p>
+          <p class="text-odd-gray-300 text-label-m">Last published</p>
+          <p class="text-body-m">{func?.lastModifiedTime}</p>
         </div>
       </div>
     </div>

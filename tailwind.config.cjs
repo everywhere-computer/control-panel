@@ -109,36 +109,59 @@ module.exports = {
         }
       },
       fontFamily: {
+        mono: ['OverpassMono'],
         sans: ['Overpass'],
         serif: ['Literata']
       },
       fontSize: {
         'btn-sm': ['16px', { lineHeight: '17px' }],
         btn: ['20px', { lineHeight: '22px' }],
-        'body-xs': ['14px', { lineHeight: '20px' }],
-        'body-sm': ['16px', { lineHeight: '24px' }],
-        'body-m': ['20px', { lineHeight: '30px' }],
-        'body-lg': ['24px', { lineHeight: '36px' }],
-        'heading-sm': [
+        'code-sm': ['12.44px', { fontWeight: '400', lineHeight: '16px' }],
+        'code-m': ['14px', { fontWeight: '400', lineHeight: '20px' }],
+        'code-l': ['15.75px', { fontWeight: '400', lineHeight: '20px' }],
+        'code-xl': ['17.72px', { fontWeight: '400', lineHeight: '24px' }],
+        'input-sm': ['14.22px', { fontWeight: '400', lineHeight: '20px' }],
+        'input-m': ['16px', { fontWeight: '400', lineHeight: '20px' }],
+        'input-l': ['18px', { fontWeight: '400', lineHeight: '24px' }],
+        'label-sm': ['14.22px', { fontWeight: '550', lineHeight: '16px' }],
+        'label-m': ['16px', { fontWeight: '550', lineHeight: '16px' }],
+        'label-l': ['18px', { fontWeight: '550', lineHeight: '16px' }],
+        'body-xs': ['12.64px', { fontWeight: '400', lineHeight: '16px' }],
+        'body-sm': ['16px', { fontWeight: '400', lineHeight: '24px' }],
+        'body-m': ['16px', { fontWeight: '400', lineHeight: '20px' }],
+        'body-lg': ['18px', { fontWeight: '400', lineHeight: '24px' }],
+        'heading-xs': [
           '16px',
           {
-            lineHeight: '17px',
-            textTransform: 'uppercase',
-            letterSpacing: '0.04em'
+            fontWeight: '500',
+            lineHeight: '20px',
+            letterSpacing: '0.64px',
+            textTransform: 'uppercase'
           }
         ],
-        'heading-m': ['18px', { lineHeight: '20px', letterSpacing: '-0.36px' }],
+        'heading-sm': [
+          '18px',
+          {
+            fontWeight: '600',
+            lineHeight: '20px',
+            letterSpacing: '-0.36px'
+          }
+        ],
+        'heading-m': [
+          '20.25px',
+          { fontWeight: '700', lineHeight: '24px', letterSpacing: '-0.405px' }
+        ],
         'heading-lg': [
-          '38px',
-          { lineHeight: '41px', letterSpacing: '-0.02em' }
+          '22.78px',
+          { fontWeight: '700', lineHeight: '28px', letterSpacing: '-0.456px' }
         ],
         'heading-xl': [
-          '50px',
-          { lineHeight: '54px', letterSpacing: '-0.02em' }
+          '25.63px',
+          { fontWeight: '600', lineHeight: '32px', letterSpacing: '-0.513px' }
         ],
         'heading-2xl': [
-          '56px',
-          { lineHeight: '60px', letterSpacing: '-0.02em' }
+          '28.83px',
+          { fontWeight: '500', lineHeight: '32px', letterSpacing: '-0.577px' }
         ]
       },
       keyframes: {

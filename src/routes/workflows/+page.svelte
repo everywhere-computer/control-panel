@@ -15,7 +15,7 @@
   <div
     class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 w-full"
   >
-    <p class="text-body-sm text-odd-gray-500 w-auto">
+    <p class="text-label-m text-odd-gray-500 w-auto">
       {workflows?.length} Workflow Template{workflows?.length === 1 ? '' : 's'}
     </p>
 
@@ -28,7 +28,7 @@
     {/each}
   </div>
 
-  <a href="/workflows/build" class="btn btn-primary fixed bottom-16 right-3">
+  <!-- <a href="/workflows/build" class="btn btn-primary fixed bottom-16 right-3">
     + Build Workflow
-  </a>
+  </a> -->
 </div>

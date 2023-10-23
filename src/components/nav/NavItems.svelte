@@ -22,7 +22,7 @@
     >
       <a
         href={navItem.href}
-        class="flex flex-row items-center justify-start gap-4 h-full px-6 font-sans text-body-sm text-odd-blue-100 group-hover:text-odd-blue-200 transition-colors ease-in-out duration-200"
+        class="flex flex-row items-center justify-start gap-4 h-full px-6 font-sans text-label-m text-odd-blue-100 group-hover:text-odd-blue-200 transition-colors ease-in-out duration-200"
       >
         <svelte:component this={navItem.icon} />{navItem.label}
       </a>

@@ -25,7 +25,7 @@
       on:click={() => handleTabClick(tab)}
       class="tab {activeTab === tab
         ? 'tab-active bg-odd-gray-0 text-odd-gray-500 !border-odd-gray-300 !border-t !border-r !border-l mx-[0.5px]'
-        : 'bg-odd-gray-300 text-odd-gray-0'} capitalize text-body-sm"
+        : 'bg-odd-gray-300 text-odd-gray-0'} capitalize text-label-sm"
     >
       {tab}
     </button>
@@ -55,7 +55,7 @@
 
       <div class="px-4 overflow-x-scroll">
         {#each activityLogs as log}
-          <p class="text-body-xs font-mono whitespace-nowrap">{@html log}</p>
+          <p class="text-code-m font-mono whitespace-nowrap">{@html log}</p>
         {/each}
       </div>
     </div>

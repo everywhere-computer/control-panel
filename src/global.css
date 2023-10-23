@@ -10,6 +10,15 @@
   font-style: normal;
 }
 
+
+@font-face {
+  font-family: 'OverpassMono';
+  src: url('/fonts/overpassmono-variablefont_wght-webfont.woff2') format('woff2'),
+        url('/fonts/overpassmono-variablefont_wght-webfont.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
 @font-face {
   font-family: 'Literata';
   src: url('/fonts/Literata-VariableFont_opsz,wght.ttf') format('truetype');

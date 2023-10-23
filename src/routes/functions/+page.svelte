@@ -15,7 +15,7 @@
   <div
     class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 w-full"
   >
-    <p class="text-body-sm text-odd-gray-500 w-auto">
+    <p class="text-label-m text-odd-gray-500 w-auto">
       {functions?.length} Function{functions?.length === 1 ? '' : 's'}
     </p>
 
