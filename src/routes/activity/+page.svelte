@@ -16,33 +16,43 @@
     : logs
 </script>
 
-<div class="tabs gap-4 px-8 whitespace-nowrap overflow-x-scroll">
-  {#each tabs as tab}
-    <button
-      on:click={() => handleTabClick(tab)}
-      class="tab {activeTab === tab
-        ? 'tab-active bg-odd-gray-500 text-odd-gray-0'
-        : 'bg-odd-gray-150 text-odd-gray-500'} capitalize text-body-sm"
-    >
-      {tab}
-    </button>
-  {/each}
+<div
+  class="relative top-[1.5px] min-w-[485px] h-8 whitespace-nowrap overflo-x-scroll overflow-y-hidden"
+>
+  <div
+    class="tabs divide-x divide-odd-gray-0 px-8 min-w-[0px] overflow-x-scroll whitespace-nowrap w-full relative"
+  >
+    {#each tabs as tab}
+      <button
+        on:click={() => handleTabClick(tab)}
+        class="tab {activeTab === tab
+          ? 'tab-active bg-odd-gray-0 text-odd-gray-500 !border-odd-gray-300 !border-t !border-r !border-l mx-[0.5px]'
+          : 'bg-odd-gray-300 text-odd-gray-0'} capitalize text-body-sm"
+      >
+        {tab}
+      </button>
+    {/each}
+  </div>
 </div>
 
-<div class="flex flex-col mb-4 px-4 py-4 bg-odd-gray-0 overflow-x-scroll">
+<div
+  class="flex flex-col mb-4 px-4 pt-[62px] pb-4 bg-odd-gray-0 overflow-x-scroll border-odd-gray-300 border-t"
+>
   {#if activeTab === tabs[0]}
     <div class="">
-      <div class="flex flex-row items-center justify-end gap-4 mb-4">
+      <div
+        class="fixed top-[113px] left-4 sm:left-auto right-4 flex flex-row items-center justify-end gap-4 mb-4"
+      >
         <Search bind:searchTerm placeholder="Find in logs..." />
         <button
-          class="flex flex-row items-center justify-center w-[84px] h-[30px] bg-odd-gray-500 text-odd-gray-100 text-body-sm"
+          class="btn-filter flex flex-row items-center justify-center gap-1 px-3.5 w-[84px] h-[30px] border-2 border-odd-gray-500 bg-odd-gray-500 text-odd-gray-100 text-body-sm"
         >
           <Filter /> Filter
         </button>
       </div>
 
       {#each activityLogs as log}
-        <p class="text-body-xs font-mono whitespace-nowrap">{log}</p>
+        <p class="text-body-xs font-mono whitespace-nowrap">{@html log}</p>
       {/each}
     </div>
   {/if}

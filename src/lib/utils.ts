@@ -48,8 +48,18 @@ export async function fileToUint8Array(file: File): Promise<Uint8Array> {
  */
 export function clickOutside(node: Node): { destroy(): void } {
   const handleClick = event => {
-    if (node && !node.contains(event.target) && !event.defaultPrevented) {
-      node.dispatchEvent(new CustomEvent('click_outside', node))
+    const classList = [...event.target.classList]
+    try {
+      if (
+        node &&
+        !node.contains(event.target) &&
+        !event.defaultPrevented &&
+        !classList?.includes('toggle-trigger')
+      ) {
+        node.dispatchEvent(new CustomEvent('click_outside', node))
+      }
+    } catch (err) {
+      console.log(err)
     }
   }
 

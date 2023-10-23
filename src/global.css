@@ -17,8 +17,8 @@
   font-style: normal;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  @apply font-sans;
+html, body {
+  @apply overflow-x-hidden;
 }
 
 body {
@@ -28,6 +28,11 @@ body {
 body, input {
   @apply font-sans text-body-m;
   font-weight: 350;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-sans;
 }
 
 /* Button default styles */
@@ -91,6 +96,10 @@ body, input {
 
 .btn-link {
   @apply text-blue-500;
+}
+
+.btn-filter {
+  border-style: inset;
 }
 
 /* Input default styles */
