@@ -22,5 +22,5 @@ jobs:
         uses: fission-suite/publish-action@v1
         with:
           machine_key: ${{ secrets.FISSION_MACHINE_KEY }}
-          app_url: homestar-dashboard-0.fission.app
+          app_url: ec-control-panel-0.fission.app
           build_dir: ./build
