@@ -18,30 +18,26 @@
 </script>
 
 <div
-  class="relative top-[1.5px] min-w-[485px] h-8 whitespace-nowrap overflo-x-scroll overflow-y-hidden"
+  class="divide-x divide-odd-gray-0 min-w-[0px] h-8 px-8 relative top-[1.5px] whitespace-nowrap overflow-x-scroll"
 >
-  <div
-    class="tabs divide-x divide-odd-gray-0 px-8 min-w-[0px] overflow-x-scroll whitespace-nowrap w-full relative"
-  >
-    {#each tabs as tab}
-      <button
-        on:click={() => handleTabClick(tab)}
-        class="tab {activeTab === tab
-          ? 'tab-active bg-odd-gray-0 text-odd-gray-500 !border-odd-gray-300 !border-t !border-r !border-l mx-[0.5px]'
-          : 'bg-odd-gray-300 text-odd-gray-0'} capitalize text-body-sm"
-      >
-        {tab}
-      </button>
-    {/each}
-  </div>
+  {#each tabs as tab}
+    <button
+      on:click={() => handleTabClick(tab)}
+      class="tab {activeTab === tab
+        ? 'tab-active bg-odd-gray-0 text-odd-gray-500 !border-odd-gray-300 !border-t !border-r !border-l mx-[0.5px]'
+        : 'bg-odd-gray-300 text-odd-gray-0'} capitalize text-body-sm"
+    >
+      {tab}
+    </button>
+  {/each}
 </div>
 
 <div
-  class="flex flex-col mb-4 p-4 pb-10 bg-odd-gray-0 border-odd-gray-300 border-t"
+  class="flex flex-col mb-4 pt-4 pb-10 bg-odd-gray-0 border-odd-gray-300 border-t"
 >
   {#if activeTab === tabs[0]}
     <div class="">
-      <div class="flex flex-row items-center justify-end gap-2 mb-4">
+      <div class="flex flex-row items-center justify-end gap-2 px-4 mb-4">
         <Search bind:searchTerm placeholder="Find in logs..." />
 
         <button
@@ -57,7 +53,7 @@
         </button>
       </div>
 
-      <div class="overflow-x-scroll">
+      <div class="px-4 overflow-x-scroll">
         {#each activityLogs as log}
           <p class="text-body-xs font-mono whitespace-nowrap">{@html log}</p>
         {/each}
@@ -66,18 +62,18 @@
   {/if}
 
   {#if activeTab === tabs[1]}
-    <div class="">metrics</div>
+    <div class="px-4">metrics</div>
   {/if}
 
   {#if activeTab === tabs[2]}
-    <div class="">workflow queue</div>
+    <div class="px-4">workflow queue</div>
   {/if}
 
   {#if activeTab === tabs[3]}
-    <div class="">peers</div>
+    <div class="px-4">peers</div>
   {/if}
 
   {#if activeTab === tabs[4]}
-    <div class="">receipts</div>
+    <div class="px-4">receipts</div>
   {/if}
 </div>
