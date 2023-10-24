@@ -54,7 +54,7 @@
             <span
               class="{STATUS_CODE_COLOURS[
                 log.status
-              ]} px-1 rounded-sm text-input-sm"
+              ]} px-1 rounded-sm text-input-sm inline-block"
             >
               {log.status}
             </span>
