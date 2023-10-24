@@ -89,7 +89,7 @@
         <a
           href={`https://${workflow.name}.workflow.ipvm.dev`}
           target="_blank"
-          class="btn-filter flex flex-row items-center justify-center gap-1 px-3.5 h-[30px] border-2 border-odd-blue-500 bg-odd-blue-500 text-odd-blue-100 text-label-sm"
+          class="btn-odd-purple-900 btn-filter flex flex-row items-center justify-center gap-1 px-3.5 h-[30px] bg-odd-blue-500 text-odd-blue-100 text-label-sm"
         >
           <ExternalLink /> Preview
         </a>
