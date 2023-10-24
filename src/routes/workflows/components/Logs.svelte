@@ -22,8 +22,10 @@
 <div class="w-full overflow-x-auto">
   <table class="table table-xs table-pin-rows table-pin-cols w-full">
     <thead>
-      <tr class="divide-x divide-odd-gray-0 border-t border-y-odd-gray-0">
-        <th class="bg-odd-gray-100" />
+      <tr
+        class="bg-odd-gray-100 divide-x divide-odd-gray-0 border-t border-y-odd-gray-0"
+      >
+        <th class="bg-transparent" />
         <td class="bg-odd-gray-100 capitalize text-label-sm">Time</td>
         <td class="bg-odd-gray-100 capitalize text-label-sm">Status</td>
         <td class="bg-odd-gray-100 capitalize text-label-sm">Request</td>
@@ -33,9 +35,11 @@
     </thead>
     <tbody class="divide-y divide-odd-gray-200 border-t border-y-odd-gray-200">
       {#each logs as log, i}
-        <tr class="text-input-m group">
+        <tr
+          class="bg-odd-gray-0 text-input-m group transition-colors duration-200 ease-in-out hover:bg-odd-yellow-200"
+        >
           <th
-            class="px-4 text-center transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-200"
+            class="px-4 bg-clip-padding text-center transition-colors duration-200 ease-in-out bg-transparent group-hover:bg-odd-yellow-200"
           >
             {i + 1}
           </th>
