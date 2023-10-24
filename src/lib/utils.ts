@@ -49,6 +49,7 @@ export async function fileToUint8Array(file: File): Promise<Uint8Array> {
 export function clickOutside(node: Node): { destroy(): void } {
   const handleClick = event => {
     const classList = [...event.target.classList]
+
     try {
       if (
         node &&

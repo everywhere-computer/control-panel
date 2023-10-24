@@ -8,6 +8,7 @@
   import { sessionStore, themeStore } from '$src/stores'
   import { errorToMessage } from '$lib/session'
   import { initialize } from '$lib/init'
+  import DataWidget from '$components/common/DataWidget.svelte'
   import FullScreenLoadingSpinner from '$components/common/FullScreenLoadingSpinner.svelte'
   import Footer from '$components/Footer.svelte'
   import Nav from '$components/nav/Nav.svelte'
@@ -78,6 +79,10 @@
       </div>
 
       <Footer {screenSize} />
+
+      {#if $sessionStore.session}
+        <DataWidget />
+      {/if}
     </div>
   {/if}
 </div>

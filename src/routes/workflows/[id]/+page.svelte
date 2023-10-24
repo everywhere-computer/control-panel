@@ -74,7 +74,7 @@
 
 <div class="">
   {#if workflow}
-    <h1 class="text-heading-lg mb-4">{workflow.name}</h1>
+    <h1 class="text-heading-2xl mb-4">{workflow.name}</h1>
 
     <div
       class="flex flex-col mb-8 px-4 py-4 border border-odd-gray-500 rounded-lg"

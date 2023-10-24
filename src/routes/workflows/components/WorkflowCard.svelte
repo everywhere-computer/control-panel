@@ -10,7 +10,7 @@
 >
   <a href={`/workflows/${workflow?.id}`}>
     <div class="flex flex-col gap-4 w-full p-4">
-      <h3 class="font-semibold text-heading-sm">
+      <h3 class="text-heading-sm">
         {workflow?.name}
       </h3>
 
