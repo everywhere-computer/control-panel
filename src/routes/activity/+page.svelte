@@ -24,8 +24,8 @@
     <button
       on:click={() => handleTabClick(tab)}
       class="tab {activeTab === tab
-        ? 'tab-active bg-odd-gray-0 text-odd-gray-500 !border-odd-gray-300 !border-t !border-r !border-l mx-[0.5px]'
-        : 'bg-odd-gray-300 text-odd-gray-0'} capitalize text-label-sm"
+        ? 'tab-active bg-odd-gray-0 text-odd-gray-500 !border-odd-gray-200 !border-t !border-r !border-l mx-[0.5px]'
+        : 'bg-odd-gray-150 text-odd-gray-500'} capitalize text-label-sm"
     >
       {tab}
     </button>
@@ -33,7 +33,7 @@
 </div>
 
 <div
-  class="flex flex-col mb-4 pt-4 pb-10 bg-odd-gray-0 border-odd-gray-300 border-t"
+  class="flex flex-col mb-4 pt-4 pb-10 bg-odd-gray-0 border-odd-gray-200 border-t"
 >
   {#if activeTab === tabs[0]}
     <div class="">

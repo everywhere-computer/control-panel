@@ -5,6 +5,7 @@
 
   import { workflowsStore } from '$src/stores'
   // import chartData from '$routes/workflows/lib/chart-mocks'
+  import ExternalLink from '$components/icons/ExternalLink.svelte'
   import Logs from '$routes/workflows/components/Logs.svelte'
 
   $: workflow = $workflowsStore?.workflows?.find(
@@ -22,17 +23,17 @@
     'July'
   ]
 
-  const tabs = ['metrics', 'triggers', 'logs', 'settings']
-  let activeTab = 'metrics'
+  const tabs = ['metrics', 'triggers', 'logs', 'runs & receipts', 'settings']
+  let activeTab = 'logs'
   const handleTabClick = (tab: string) => {
     activeTab = tab
 
-    if (activeTab === 'metrics') {
-      let timeout = setTimeout(() => {
-        instantiateChart()
-        clearTimeout(timeout)
-      }, 0)
-    }
+    // if (activeTab === 'metrics') {
+    //   let timeout = setTimeout(() => {
+    //     instantiateChart()
+    //     clearTimeout(timeout)
+    //   }, 0)
+    // }
   }
 
   const instantiateChart = () => {
@@ -67,106 +68,60 @@
     })
   }
 
+  $: stats = [
+    { label: 'Custom Domains', value: workflow.customDomains },
+    { label: 'Routes', value: workflow.routes },
+    { label: 'Cron Triggers', value: workflow.cronTriggers },
+    { label: 'Connected Workflows', value: workflow.connectedWorkflows }
+  ]
+
   onMount(() => {
-    instantiateChart()
+    // instantiateChart()
   })
 </script>
 
-<div class="">
+<div class="py-2">
   {#if workflow}
-    <h1 class="text-heading-2xl mb-4">{workflow.name}</h1>
+    <div class="w-full max-w-[800px] m-auto mb-8">
+      <div class="flex flex-row items-center justify-between mb-5">
+        <h1 class="text-heading-2xl font-bold">{workflow.name}</h1>
 
-    <div
-      class="flex flex-col mb-8 px-4 py-4 border border-odd-gray-500 rounded-lg"
-    >
-      <p class="font-bold">Preview</p>
-      <a
-        href={`https://${workflow.name}.workflow.ipvm.dev`}
-        class="flex flex-row items-center gap-1 mb-4 text-xs underline text-blue-600"
+        <a
+          href={`https://${workflow.name}.workflow.ipvm.dev`}
+          target="_blank"
+          class="btn-filter flex flex-row items-center justify-center gap-1 px-3.5 h-[30px] border-2 border-odd-blue-500 bg-odd-blue-500 text-odd-blue-100 text-label-sm"
+        >
+          <ExternalLink /> Preview
+        </a>
+      </div>
+
+      <div
+        class="flex flex-row divide-x divide-odd-gray-100 items-center w-full text-label-sm text-odd-gray-400"
       >
-        {`https://${workflow.name}.workflow.ipvm.dev`}
-        <img
-          src={`${window.location.origin}/external-link.svg`}
-          class="w-[16px] h-auto text-blue-500"
-          alt="external link preview"
-        />
-      </a>
-
-      <div class="flex flex-row divide-x divide-odd-gray-500 items-center">
-        <div class="pr-4 min-w-[99px]">
-          <p class="text-xs">Custom Domains</p>
-          <div class="flex flex-row items-center justify-between">
-            <p class="font-bold">{workflow.customDomains}</p>
-            <a
-              href={`/workflows/${$page.params.slug}/custom-domains`}
-              class="text-xs text-blue-600 underline"
+        {#each stats as stat}
+          <div class="flex flex-col items-center justify-center basis-1/4">
+            <p
+              class="w-full py-2 bg-odd-gray-150 text-center border-b border-odd-gray-200"
             >
-              View
-            </a>
+              {stat.label}
+            </p>
+            <p class="w-full py-2 bg-odd-gray-0 text-body-lg text-center">
+              {stat.value}
+            </p>
           </div>
-        </div>
-
-        <div class="px-4 min-w-[99px]">
-          <p class="text-xs">Routes</p>
-          <div class="flex flex-row items-center justify-between">
-            <p class="font-bold">{workflow.routes}</p>
-            <a
-              href={`/workflows/${$page.params.slug}/routes`}
-              class="text-xs text-blue-600 underline"
-            >
-              View
-            </a>
-          </div>
-        </div>
-
-        <div class="px-4 min-w-[99px]">
-          <p class="text-xs">Cron Triggers</p>
-          <div class="flex flex-row items-center justify-between">
-            <p class="font-bold">{workflow.cronTriggers}</p>
-            <a
-              href={`/workflows/${$page.params.slug}/cron-triggers`}
-              class="text-xs text-blue-600 underline"
-            >
-              View
-            </a>
-          </div>
-        </div>
-
-        <div class="px-4 min-w-[99px]">
-          <p class="text-xs">Email Triggers</p>
-          <div class="flex flex-row items-center justify-between">
-            <p class="font-bold">{workflow.emailTriggers}</p>
-            <a
-              href={`/workflows/${$page.params.slug}/email-triggers`}
-              class="text-xs text-blue-600 underline"
-            >
-              View
-            </a>
-          </div>
-        </div>
-
-        <div class="pl-4 min-w-[99px]">
-          <p class="text-xs">Connected Workflows</p>
-          <div class="flex flex-row items-center justify-between">
-            <p class="font-bold">{workflow.connectedWorkflows}</p>
-            <a
-              href={`/workflows/${$page.params.slug}/connected-workflows`}
-              class="text-xs text-blue-600 underline"
-            >
-              View
-            </a>
-          </div>
-        </div>
+        {/each}
       </div>
     </div>
 
-    <div class="tabs mb-8 border-b border-odd-gray-500 box-border">
+    <div
+      class="relative z-10 divide-x divide-odd-gray-0 min-w-[0px] h-8 px-8 whitespace-nowrap overflow-x-scroll translate-y-[1px]"
+    >
       {#each tabs as tab}
         <button
           on:click={() => handleTabClick(tab)}
           class="tab {activeTab === tab
-            ? 'tab-active border-b border-odd-gray-500'
-            : ''} capitalize"
+            ? 'tab-active relative z-20 bg-odd-gray-0 text-odd-gray-500 !border-odd-gray-200 !border-t !border-r !border-l mx-[0.5px]'
+            : 'bg-odd-gray-150 text-odd-gray-500'} capitalize text-label-sm"
         >
           {tab}
         </button>
@@ -174,16 +129,17 @@
     </div>
 
     <div
-      class="flex flex-col mb-4 px-4 py-4 border border-odd-gray-500 rounded-lg"
+      class="relative z-0 flex flex-col mb-4 pb-4 border-t border-y-odd-gray-200"
     >
       {#if activeTab === tabs[0]}
-        <div class="">
-          <canvas id="chart" />
+        <div class="p-4 bg-odd-gray-0">
+          <!-- <canvas id="chart" /> -->
+          metrics
         </div>
       {/if}
 
       {#if activeTab === tabs[1]}
-        <div class="">triggers</div>
+        <div class="p-4 bg-odd-gray-0">triggers</div>
       {/if}
 
       {#if activeTab === tabs[2]}
@@ -193,7 +149,11 @@
       {/if}
 
       {#if activeTab === tabs[3]}
-        <div class="">settings</div>
+        <div class="p-4 bg-odd-gray-0">runs & receipts</div>
+      {/if}
+
+      {#if activeTab === tabs[4]}
+        <div class="p-4 bg-odd-gray-0">settings</div>
       {/if}
     </div>
   {/if}

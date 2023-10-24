@@ -9,39 +9,71 @@
     status: statuses[Math.floor(Math.random() * statuses.length)],
     host: 'https://hello-world-shiny-star-f6bf.workflow.ipvm.dev',
     request: methods[Math.floor(Math.random() * methods.length)],
-    message: ''
+    message: 'Here is a relevant message'
   }))
+
+  const STATUS_CODE_COLOURS = {
+    200: 'bg-odd-green-200 text-odd-green-600',
+    301: 'bg-odd-yellow-200 text-odd-gray-600',
+    404: 'bg-odd-red-200 text-odd-red-600'
+  }
 </script>
 
-<div class="overflow-x-auto">
-  <table class="table table-xs table-pin-rows table-pin-cols">
+<div class="w-full overflow-x-auto">
+  <table class="table table-xs table-pin-rows table-pin-cols w-full">
     <thead>
-      <tr>
-        <th />
-        <td>Time</td>
-        <td>Status</td>
-        <td>Host</td>
-        <td>Request</td>
-        <td>Message</td>
-        <th />
+      <tr class="divide-x divide-odd-gray-0 border-t border-y-odd-gray-0">
+        <th class="bg-odd-gray-100" />
+        <td class="bg-odd-gray-100 capitalize text-label-sm">Time</td>
+        <td class="bg-odd-gray-100 capitalize text-label-sm">Status</td>
+        <td class="bg-odd-gray-100 capitalize text-label-sm">Request</td>
+        <td class="bg-odd-gray-100 capitalize text-label-sm">Host</td>
+        <td class="bg-odd-gray-100 capitalize text-label-sm">Message</td>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="divide-y divide-odd-gray-200 border-t border-y-odd-gray-200">
       {#each logs as log, i}
-        <tr>
-          <th>{i + 1}</th>
-          <td>
+        <tr class="text-input-m group">
+          <th
+            class="px-4 text-center transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-200"
+          >
+            {i + 1}
+          </th>
+          <td
+            class="transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-200 border-l border-x-odd-gray-0"
+          >
             {log.time}
           </td>
-          <td>{log.status}</td>
-          <td>{log.host}</td>
-          <td>{log.request}</td>
-          <td>{log.message}</td>
-          <th>{i + 1}</th>
+          <td
+            class="transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-200 text-center border-l border-x-odd-gray-0"
+          >
+            <span
+              class="{STATUS_CODE_COLOURS[
+                log.status
+              ]} px-1 rounded-sm text-input-sm"
+            >
+              {log.status}
+            </span>
+          </td>
+          <td
+            class="transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-200 text-center border-l border-x-odd-gray-0"
+          >
+            {log.request}
+          </td>
+          <td
+            class="transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-200 border-l border-x-odd-gray-0"
+          >
+            {log.host}
+          </td>
+          <td
+            class="transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-200 border-l border-x-odd-gray-0"
+          >
+            {log.message}
+          </td>
         </tr>
       {/each}
     </tbody>
-    <tfoot>
+    <!-- <tfoot>
       <tr>
         <th />
         <td>Time</td>
@@ -51,6 +83,6 @@
         <td>Message</td>
         <th />
       </tr>
-    </tfoot>
+    </tfoot> -->
   </table>
 </div>

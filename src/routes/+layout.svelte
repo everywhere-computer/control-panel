@@ -14,7 +14,8 @@
   import Nav from '$components/nav/Nav.svelte'
   import Notifications from '$components/notifications/Notifications.svelte'
 
-  $: isActivity = $page.route.id === '/activity'
+  $: isFullWidth =
+    $page.route.id === '/activity' || $page.route.id === '/workflows/[id]'
   $: isHome = $page.route.id === '/'
   let screenSize: number
 
@@ -74,7 +75,7 @@
         <Nav {screenSize} />
       {/if}
 
-      <div class={isActivity ? 'py-6' : 'p-6'}>
+      <div class={isFullWidth ? 'py-6' : 'p-6'}>
         <slot />
       </div>
 
