@@ -61,7 +61,7 @@
   data-theme={$themeStore.selectedTheme}
   class="min-h-screen {isHome
     ? 'bg-odd-gray-0'
-    : 'bg-odd-gray-100'} duration-200 ease-in-out transition-colors"
+    : 'bg-odd-gray-50'} duration-200 ease-in-out transition-colors"
 >
   <Notifications />
 
