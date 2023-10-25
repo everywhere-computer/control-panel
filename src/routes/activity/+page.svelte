@@ -46,13 +46,13 @@
         <Search bind:searchTerm placeholder="Find in logs..." />
 
         <button
-          class="btn-odd-gray-900 btn-filter flex flex-row items-center justify-center gap-1 px-3.5 h-[30px] bg-odd-gray-700 text-odd-gray-100 text-body-sm"
+          class="btn-odd-gray-900 flex flex-row items-center justify-center gap-1 px-3.5 h-[30px] bg-odd-gray-700 text-odd-gray-100 text-body-sm"
         >
           <Filter /> Filter
         </button>
 
         <button
-          class="btn-odd-gray-700 btn-filter flex flex-row items-center justify-center px-3 h-[30px] bg-odd-gray-100 text-odd-gray-700"
+          class="btn-odd-gray-100 flex flex-row items-center justify-center px-3 h-[30px] bg-odd-gray-100 text-odd-gray-700"
         >
           <VerticalDots />
         </button>

@@ -107,26 +107,19 @@ h1, h2, h3, h4, h5, h6 {
   @apply text-blue-500;
 }
 
-.btn-filter {
-  border-style: inset;
-}
-
-.btn-odd-gray-700 {
-  @apply border-4 rounded-sm;
-  border-image-slice: 4;
-  border-image-source: url('/border-gray-500.svg');
+.btn-odd-gray-100 {
+  @apply border-4 border-odd-gray-100 rounded-sm;
+  border-style: ridge;
 }
 
 .btn-odd-gray-900 {
-  @apply border-4 rounded-sm;
-  border-image-slice: 4;
-  border-image-source: url('/border-gray-900.svg');
+  @apply border-4 border-odd-gray-900 rounded-sm;
+  border-style: ridge;
 }
 
-.btn-odd-purple-900 {
-  @apply border-4 rounded-sm;
-  border-image-slice: 4;
-  border-image-source: url('/border-purple-900.svg');
+.btn-odd-purple-500 {
+  @apply border-4 border-odd-purple-500 rounded-sm;
+  border-style: ridge;
 }
 
 /* Input default styles */
