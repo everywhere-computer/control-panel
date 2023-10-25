@@ -53,11 +53,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-circle {
-  @apply text-odd-gray-700;
-  @apply bg-odd-gray-200;
-  @apply h-8;
-  @apply min-h-8;
-  @apply w-8;
+  @apply text-odd-gray-700 bg-odd-gray-200 h-8 min-h-8 w-8;
 }
 
 .btn-circle:hover {
@@ -65,23 +61,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-outline {
-  @apply text-btn;
-  @apply text-odd-gray-700;
-  @apply bg-odd-gray-200;
-  @apply px-4;
+  @apply text-btn text-odd-gray-700 bg-odd-gray-200 px-4;
 }
 
 .btn-clear {
-  @apply text-btn;
-  @apply text-odd-purple-500;
-  @apply bg-transparent;
+  @apply text-btn text-odd-purple-500 bg-transparent;
 }
 
 .btn-primary {
-  @apply text-btn;
-  @apply text-odd-purple-100;
-  @apply bg-odd-purple-500;
-  @apply px-4;
+  @apply text-btn text-odd-purple-100 bg-odd-purple-500 px-4;
 }
 
 .btn-primary:hover {
@@ -89,14 +77,11 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary:disabled {
-  @apply bg-odd-purple-500;
-  @apply text-odd-purple-100;
-  @apply opacity-50;
+  @apply bg-odd-purple-500 text-odd-purple-100 opacity-50;
 }
 
 .btn-warning {
-  @apply bg-odd-pink-500;
-  @apply text-odd-pink-100;
+  @apply bg-odd-pink-500 text-odd-pink-100;
 }
 
 .btn-warning:hover {
@@ -124,23 +109,16 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Input default styles */
 .input-bordered {
-  @apply text-base-content;
-  @apply border-2;
-  @apply border-base-content;
+  @apply text-base-content border-2 border-base-content;
 }
 
 .modal {
-  @apply bg-base-100;
-  @apply bg-opacity-75;
+  @apply bg-base-100 bg-opacity-75;
 }
 
 /* Modal default styles */
 .modal-box {
-  @apply p-12;
-  @apply border-2;
-  @apply border-base-content;
-  @apply min-w-[33vw];
-  @apply max-w-2xl;
+  @apply p-12 border-2 border-base-content min-w-[33vw] max-w-2xl;
 }
 
 /* Label default styles */
