@@ -1,6 +1,7 @@
 <script lang="ts">
   import Filter from '$components/icons/Filter.svelte'
   import Search from '$components/common/Search.svelte'
+  import Tabs from '$components/common/Tabs.svelte'
   import VerticalDots from '$components/icons/VerticalDots.svelte'
   import logs from '$routes/activity/lib/log-mocks'
 
@@ -8,34 +9,13 @@
 
   const tabs = ['logs', 'metrics', 'workflow queue', 'peers', 'receipts']
   let activeTab = 'logs'
-  const handleTabClick = (tab: string) => {
-    activeTab = tab
-  }
 
   $: activityLogs = searchTerm
     ? logs.filter(log => log.toLowerCase().includes(searchTerm?.toLowerCase()))
     : logs
 </script>
 
-<div
-  class="min-w-[0px] relative top-[1px] z-10 h-8 px-8 whitespace-nowrap overflow-x-scroll"
->
-  {#each tabs as tab}
-    <button
-      on:click={() => handleTabClick(tab)}
-      class="tab {activeTab === tab
-        ? 'tab-active top-[0px] bg-odd-gray-0 text-odd-gray-700 !border-odd-gray-500 !border-t !border-t !border-r !border-l'
-        : 'bg-odd-gray-200 text-odd-gray-700 border-odd-gray-500 border-b'} relative mr-0.5 capitalize text-label-sm rounded-t-sm"
-    >
-      {tab}
-      {#if activeTab !== tab}
-        <span
-          class="absolute right-0 bottom-0 left-0 h-[1px] bg-odd-gray-500"
-        />
-      {/if}
-    </button>
-  {/each}
-</div>
+<Tabs {tabs} bind:activeTab />
 
 <div
   class="relative z-0 flex flex-col mb-4 pt-4 pb-10 bg-odd-gray-0 border-odd-gray-500 border-t"

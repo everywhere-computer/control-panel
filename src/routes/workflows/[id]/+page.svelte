@@ -7,6 +7,7 @@
   // import chartData from '$routes/workflows/lib/chart-mocks'
   import ExternalLink from '$components/icons/ExternalLink.svelte'
   import Logs from '$routes/workflows/components/Logs.svelte'
+  import Tabs from '$components/common/Tabs.svelte'
 
   $: workflow = $workflowsStore?.workflows?.find(
     workflow => workflow?.id === $page.params.id
@@ -25,16 +26,16 @@
 
   const tabs = ['runs & receipts', 'metrics', 'triggers', 'logs']
   let activeTab = 'logs'
-  const handleTabClick = (tab: string) => {
-    activeTab = tab
+  // const handleTabClick = (tab: string) => {
+  //   activeTab = tab
 
-    // if (activeTab === 'metrics') {
-    //   let timeout = setTimeout(() => {
-    //     instantiateChart()
-    //     clearTimeout(timeout)
-    //   }, 0)
-    // }
-  }
+  //   // if (activeTab === 'metrics') {
+  //   //   let timeout = setTimeout(() => {
+  //   //     instantiateChart()
+  //   //     clearTimeout(timeout)
+  //   //   }, 0)
+  //   // }
+  // }
 
   const instantiateChart = () => {
     const ctx = document.getElementById('chart') as HTMLCanvasElement
@@ -115,25 +116,7 @@
       </div>
     </div>
 
-    <div
-      class="min-w-[0px] relative top-[1px] z-10 h-8 px-8 whitespace-nowrap overflow-x-scroll"
-    >
-      {#each tabs as tab}
-        <button
-          on:click={() => handleTabClick(tab)}
-          class="tab {activeTab === tab
-            ? 'tab-active top-[0px] bg-odd-gray-0 text-odd-gray-700 !border-odd-gray-500 !border-t !border-t !border-r !border-l'
-            : 'bg-odd-gray-200 text-odd-gray-700 border-odd-gray-500 border-b'} relative mr-0.5 capitalize text-label-sm rounded-t-sm"
-        >
-          {tab}
-          {#if activeTab !== tab}
-            <span
-              class="absolute right-0 bottom-0 left-0 h-[1px] bg-odd-gray-500"
-            />
-          {/if}
-        </button>
-      {/each}
-    </div>
+    <Tabs {tabs} bind:activeTab />
 
     <div
       class="relative z-0 flex flex-col mb-4 pb-4 border-t border-y-odd-gray-500"
