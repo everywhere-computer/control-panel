@@ -31,7 +31,7 @@ html, body {
 }
 
 body {
-  @apply bg-odd-gray-0;
+  @apply bg-odd-gray-50;
 }
 
 body, input {
@@ -53,7 +53,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-circle {
-  @apply text-odd-gray-500;
+  @apply text-odd-gray-700;
   @apply bg-odd-gray-200;
   @apply h-8;
   @apply min-h-8;
@@ -66,31 +66,31 @@ h1, h2, h3, h4, h5, h6 {
 
 .btn-outline {
   @apply text-btn;
-  @apply text-odd-gray-500;
+  @apply text-odd-gray-700;
   @apply bg-odd-gray-200;
   @apply px-4;
 }
 
 .btn-clear {
   @apply text-btn;
-  @apply text-odd-blue-500;
+  @apply text-odd-purple-500;
   @apply bg-transparent;
 }
 
 .btn-primary {
   @apply text-btn;
-  @apply text-odd-blue-100;
-  @apply bg-odd-blue-500;
+  @apply text-odd-purple-100;
+  @apply bg-odd-purple-500;
   @apply px-4;
 }
 
 .btn-primary:hover {
-  @apply bg-odd-blue-400;
+  @apply bg-odd-purple-400;
 }
 
 .btn-primary:disabled {
-  @apply bg-odd-blue-500;
-  @apply text-odd-blue-100;
+  @apply bg-odd-purple-500;
+  @apply text-odd-purple-100;
   @apply opacity-50;
 }
 
@@ -111,20 +111,20 @@ h1, h2, h3, h4, h5, h6 {
   border-style: inset;
 }
 
-.btn-odd-gray-500 {
-  @apply border-4;
+.btn-odd-gray-700 {
+  @apply border-4 rounded-sm;
   border-image-slice: 4;
   border-image-source: url('/border-gray-500.svg');
 }
 
 .btn-odd-gray-900 {
-  @apply border-4;
+  @apply border-4 rounded-sm;
   border-image-slice: 4;
   border-image-source: url('/border-gray-900.svg');
 }
 
 .btn-odd-purple-900 {
-  @apply border-4;
+  @apply border-4 rounded-sm;
   border-image-slice: 4;
   border-image-source: url('/border-purple-900.svg');
 }

@@ -6,25 +6,25 @@
 </script>
 
 <div
-  class="flex flex-col bg-odd-gray-0 text-odd-gray-500 transition-colors hover:bg-odd-blue-100"
+  class="flex flex-col bg-odd-gray-0 text-odd-gray-700 transition-colors hover:bg-odd-purple-100"
 >
   <a href={`/workflows/${workflow?.id}`}>
     <div class="flex flex-col gap-4 w-full p-4">
-      <h3 class="text-heading-sm">
+      <h3 class="text-heading-sm text-odd-purple-500">
         {workflow?.name}
       </h3>
 
       <div class="flex flex-col items-center text-body-sm w-full mt-auto">
         <div class="flex flex-row items-center justify-between w-full">
-          <p class="text-label-m text-odd-gray-300">Requests</p>
+          <p class="text-label-m text-odd-gray-500">Requests</p>
           <p class="text-body-m">{workflow?.requests}</p>
         </div>
         <div class="flex flex-row items-center justify-between w-full">
-          <p class="text-label-m text-odd-gray-300">Errors</p>
+          <p class="text-label-m text-odd-gray-500">Errors</p>
           <p class="text-body-m">{workflow?.errors}</p>
         </div>
         <div class="flex flex-row items-center justify-between w-full">
-          <p class="text-label-m text-odd-gray-300">Median CPU Time</p>
+          <p class="text-label-m text-odd-gray-500">Median CPU Time</p>
           <p class="text-body-m">{workflow?.medianCPUTime}</p>
         </div>
       </div>

@@ -13,43 +13,41 @@
   }))
 
   const STATUS_CODE_COLOURS = {
-    200: 'bg-odd-green-200 text-odd-green-600',
-    301: 'bg-odd-yellow-200 text-odd-gray-600',
-    404: 'bg-odd-red-200 text-odd-red-600'
+    200: 'bg-odd-green-150 text-odd-green-700',
+    301: 'bg-odd-yellow-150 text-odd-gray-600',
+    404: 'bg-odd-red-150 text-odd-red-700'
   }
 </script>
 
 <div class="w-full overflow-x-auto">
   <table class="table table-xs table-pin-rows table-pin-cols w-full">
     <thead>
-      <tr
-        class="bg-odd-gray-100 divide-x divide-odd-gray-0 border-t border-y-odd-gray-0"
-      >
+      <tr class="bg-odd-gray-50 border-t border-y-odd-gray-0">
         <th class="bg-transparent" />
-        <td class="bg-odd-gray-100 capitalize text-label-sm">Time</td>
-        <td class="bg-odd-gray-100 capitalize text-label-sm">Status</td>
-        <td class="bg-odd-gray-100 capitalize text-label-sm">Request</td>
-        <td class="bg-odd-gray-100 capitalize text-label-sm">Host</td>
-        <td class="bg-odd-gray-100 capitalize text-label-sm">Message</td>
+        <td class="py-2 bg-odd-gray-50 capitalize text-label-sm">Time</td>
+        <td class="py-2 bg-odd-gray-50 capitalize text-label-sm">Status</td>
+        <td class="py-2 bg-odd-gray-50 capitalize text-label-sm">Request</td>
+        <td class="py-2 bg-odd-gray-50 capitalize text-label-sm">Host</td>
+        <td class="py-2 bg-odd-gray-50 capitalize text-label-sm">Message</td>
       </tr>
     </thead>
-    <tbody class="divide-y divide-odd-gray-200 border-t border-y-odd-gray-200">
+    <tbody class="divide-y divide-odd-gray-500 border-t border-y-odd-gray-500">
       {#each logs as log, i}
         <tr
-          class="bg-odd-gray-0 text-input-m group transition-colors duration-200 ease-in-out hover:bg-odd-yellow-200"
+          class="bg-odd-gray-0 text-input-m group transition-colors duration-200 ease-in-out hover:bg-odd-yellow-150"
         >
           <th
-            class="px-4 bg-clip-padding text-center transition-colors duration-200 ease-in-out bg-transparent group-hover:bg-odd-yellow-200"
+            class="py-2 px-4 bg-clip-padding text-center transition-colors duration-200 ease-in-out bg-transparent group-hover:bg-odd-yellow-150"
           >
             {i + 1}
           </th>
           <td
-            class="transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-200 border-l border-x-odd-gray-0"
+            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-150"
           >
             {log.time}
           </td>
           <td
-            class="transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-200 text-center border-l border-x-odd-gray-0"
+            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-150 text-center"
           >
             <span
               class="{STATUS_CODE_COLOURS[
@@ -60,17 +58,17 @@
             </span>
           </td>
           <td
-            class="transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-200 text-center border-l border-x-odd-gray-0"
+            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-150 text-center"
           >
             {log.request}
           </td>
           <td
-            class="transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-200 border-l border-x-odd-gray-0"
+            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-150"
           >
             {log.host}
           </td>
           <td
-            class="transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-200 border-l border-x-odd-gray-0"
+            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-150"
           >
             {log.message}
           </td>
