@@ -52,7 +52,7 @@
         </button>
 
         <button
-          class="btn-odd-gray-100 flex flex-row items-center justify-center px-3 h-[30px] bg-odd-gray-100 text-odd-gray-700"
+          class="btn-odd-gray-100 flex flex-row items-center justify-center px-2 h-[30px] bg-odd-gray-100 text-odd-gray-700"
         >
           <VerticalDots />
         </button>
