@@ -15,7 +15,7 @@
       on:click={() => handleTabClick(tab)}
       class="tab {activeTab === tab
         ? 'tab-active top-[0px] bg-odd-gray-0 text-odd-gray-700 !border-odd-gray-500 !border-t !border-t !border-r !border-l'
-        : 'bg-odd-gray-200 text-odd-gray-700 border-odd-gray-500 border-b'} relative mr-0.5 capitalize text-label-sm rounded-t-sm"
+        : 'bg-odd-gray-200 text-odd-gray-700 border-odd-gray-500 border-b'} relative mr-0.5 capitalize text-label-sm rounded-t-sm transition-colors duration-200 ease-in-out"
     >
       {tab}
       {#if activeTab !== tab}
