@@ -1,73 +1,18 @@
 <script lang="ts">
   import { page } from '$app/stores'
-  import Chart from 'chart.js/auto'
-  import { onMount } from 'svelte'
 
   import { workflowsStore } from '$src/stores'
-  // import chartData from '$routes/workflows/lib/chart-mocks'
   import ExternalLink from '$components/icons/ExternalLink.svelte'
   import Logs from '$routes/workflows/components/Logs.svelte'
+  import Metrics from '$routes/workflows/components/Metrics.svelte'
   import Tabs from '$components/common/Tabs.svelte'
 
   $: workflow = $workflowsStore?.workflows?.find(
     workflow => workflow?.id === $page.params.id
   )
 
-  const chartValues = [0, 10, 5, 50, 20, 30, 0]
-  const chartLabels = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July'
-  ]
-
   const tabs = ['runs & receipts', 'metrics', 'triggers', 'logs']
   let activeTab = 'logs'
-  // const handleTabClick = (tab: string) => {
-  //   activeTab = tab
-
-  //   // if (activeTab === 'metrics') {
-  //   //   let timeout = setTimeout(() => {
-  //   //     instantiateChart()
-  //   //     clearTimeout(timeout)
-  //   //   }, 0)
-  //   // }
-  // }
-
-  const instantiateChart = () => {
-    const ctx = document.getElementById('chart') as HTMLCanvasElement
-    const chart = new Chart(ctx, {
-      //Type of the chart
-      type: 'line',
-      data: {
-        //labels on x-axis
-        labels: chartLabels,
-        datasets: [
-          {
-            //The label for the dataset which appears in the legend and tooltips.
-            label: 'Requests',
-            //data for the line
-            data: chartValues,
-            //styling of the chart
-            backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-            borderColor: ['rgba(255, 99, 132, 1)'],
-            borderWidth: 1
-          }
-        ]
-      },
-      options: {
-        scales: {
-          //make sure Y-axis starts at 0
-          // y: {
-          //   beginAtZero: true
-          // }
-        }
-      }
-    })
-  }
 
   $: stats = [
     { label: 'Custom Domains', value: workflow.customDomains },
@@ -75,13 +20,9 @@
     { label: 'Cron Triggers', value: workflow.cronTriggers },
     { label: 'Connected Workflows', value: workflow.connectedWorkflows }
   ]
-
-  onMount(() => {
-    // instantiateChart()
-  })
 </script>
 
-<div class="py-2">
+<div class="pt-2">
   {#if workflow}
     <div class="w-full max-w-[800px] m-auto mb-8">
       <div class="flex flex-row items-center justify-between mb-5">
@@ -119,16 +60,15 @@
     <Tabs {tabs} bind:activeTab />
 
     <div
-      class="relative z-0 flex flex-col mb-4 pb-4 border-t border-y-odd-gray-500"
+      class="relative z-0 flex flex-col pb-4 border-t border-y-odd-gray-500 bg-odd-gray-0"
     >
       {#if activeTab === tabs[0]}
         <div class="p-4 bg-odd-gray-0">runs & receipts</div>
       {/if}
 
       {#if activeTab === tabs[1]}
-        <div class="p-4 bg-odd-gray-0">
-          <!-- <canvas id="chart" /> -->
-          metrics
+        <div class="px-4 py-8 bg-odd-gray-0">
+          <Metrics />
         </div>
       {/if}
 

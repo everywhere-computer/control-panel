@@ -1,47 +1,81 @@
-export default {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [
-    {
-      label: 'My First dataset',
-      fill: true,
-      lineTension: 0.3,
-      backgroundColor: 'rgba(225, 204,230, .3)',
-      borderColor: 'rgb(205, 130, 158)',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgb(205, 130,1 58)',
-      pointBackgroundColor: 'rgb(255, 255, 255)',
-      pointBorderWidth: 10,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgb(0, 0, 0)',
-      pointHoverBorderColor: 'rgba(220, 220, 220,1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [65, 59, 80, 81, 56, 55, 40]
-    },
-    {
-      label: 'My Second dataset',
-      fill: true,
-      lineTension: 0.3,
-      backgroundColor: 'rgba(184, 185, 210, .3)',
-      borderColor: 'rgb(35, 26, 136)',
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: 'rgb(35, 26, 136)',
-      pointBackgroundColor: 'rgb(255, 255, 255)',
-      pointBorderWidth: 10,
-      pointHoverRadius: 5,
-      pointHoverBackgroundColor: 'rgb(0, 0, 0)',
-      pointHoverBorderColor: 'rgba(220, 220, 220, 1)',
-      pointHoverBorderWidth: 2,
-      pointRadius: 1,
-      pointHitRadius: 10,
-      data: [28, 48, 40, 19, 86, 27, 90]
-    }
-  ]
+export type Metric = {
+  name: string
+  datasets: DataSet[]
 }
+
+type DataSet = {
+  label: string
+  backgroundColor: string
+  data: number[]
+}
+
+const generateDataSetData = (max = 70, n = 6) => {
+  let data = []
+  for (let index = 0; index < n; index++) {
+    data = [...data, Math.floor(10 + Math.random() * (max - 10 + 1))]
+  }
+  return data
+}
+
+export const metrics = [
+  {
+    name: 'Runs',
+    datasets: [
+      {
+        label: 'computed',
+        backgroundColor: '#119163',
+        data: generateDataSetData(100)
+      },
+      {
+        label: 'from network',
+        backgroundColor: '#2863D8',
+        data: generateDataSetData()
+      },
+      {
+        label: 'failed',
+        backgroundColor: '#BA2F41',
+        data: generateDataSetData()
+      }
+    ]
+  },
+  {
+    name: 'Runs',
+    datasets: [
+      {
+        label: 'computed',
+        backgroundColor: '#119163',
+        data: generateDataSetData(100)
+      },
+      {
+        label: 'from network',
+        backgroundColor: '#2863D8',
+        data: generateDataSetData()
+      },
+      {
+        label: 'failed',
+        backgroundColor: '#BA2F41',
+        data: generateDataSetData()
+      }
+    ]
+  },
+  {
+    name: 'Runs',
+    datasets: [
+      {
+        label: 'computed',
+        backgroundColor: '#119163',
+        data: generateDataSetData(100)
+      },
+      {
+        label: 'from network',
+        backgroundColor: '#2863D8',
+        data: generateDataSetData()
+      },
+      {
+        label: 'failed',
+        backgroundColor: '#BA2F41',
+        data: generateDataSetData()
+      }
+    ]
+  },
+]

@@ -2,7 +2,8 @@
   export let activeTab: string
   export let tabs: string[]
 
-  const handleTabClick = (tab: string) => {
+  // Default tab click handler, but a custom handler can be passed in as a prop
+  export let handleTabClick = (tab: string) => {
     activeTab = tab
   }
 </script>

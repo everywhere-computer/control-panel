@@ -75,7 +75,7 @@
         <Nav {screenSize} />
       {/if}
 
-      <div class={isFullWidth ? 'py-6' : 'p-6'}>
+      <div class={isFullWidth ? 'pt-6' : 'p-6'}>
         <slot />
       </div>
 
