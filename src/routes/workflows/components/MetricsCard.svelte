@@ -39,33 +39,20 @@
     })
   }
 
-  const debounce = (func: () => void, delay: number) => {
-    let timeout
-
-    return function () {
-      const context = this
-      const args = arguments
-      clearTimeout(timeout)
-      timeout = setTimeout(() => func.apply(context, args), delay)
-    }
-  }
-
-  const reRenderChart = () => {
+  const handleRenderChart = () => {
     chartInstance.resize()
   }
 
-  const debouncedReRenderChart = debounce(reRenderChart, 200)
-
   onMount(() => {
     instantiateChart()
-    window.addEventListener('resize', debouncedReRenderChart)
   })
 
   onDestroy(() => {
-    window.removeEventListener('resize', debouncedReRenderChart)
     chartInstance.destroy()
   })
 </script>
+
+<svelte:window on:resize={handleRenderChart} />
 
 <div class="w-full">
   <div class="p-6 bg-odd-gray-100">
