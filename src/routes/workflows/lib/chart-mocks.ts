@@ -34,7 +34,7 @@ export const metrics = [
       {
         label: 'failed',
         backgroundColor: '#BA2F41',
-        data: generateDataSetData()
+        data: generateDataSetData(20)
       }
     ]
   },
@@ -54,7 +54,7 @@ export const metrics = [
       {
         label: 'failed',
         backgroundColor: '#BA2F41',
-        data: generateDataSetData()
+        data: generateDataSetData(20)
       }
     ]
   },
@@ -74,7 +74,7 @@ export const metrics = [
       {
         label: 'failed',
         backgroundColor: '#BA2F41',
-        data: generateDataSetData()
+        data: generateDataSetData(20)
       }
     ]
   },
