@@ -1,5 +1,5 @@
 <script lang="ts">
-  const statuses = [200, 404, 301]
+  const statuses = [200, 404, 301, 102]
   const methods = ['GET', 'PUT', 'POST', 'DELETE']
   const logs = [...Array(20).keys()].map((_, i) => ({
     time: new Intl.DateTimeFormat('en-US', {
@@ -13,9 +13,10 @@
   }))
 
   const STATUS_CODE_COLOURS = {
-    200: 'bg-odd-green-150 text-odd-green-700',
-    301: 'bg-odd-yellow-150 text-odd-gray-600',
-    404: 'bg-odd-red-150 text-odd-red-700'
+    102: 'bg-odd-blue-100 text-odd-blue-900 border border-odd-blue-400',
+    200: 'bg-odd-green-100 text-odd-green-900 border border-odd-green-400',
+    301: 'bg-odd-yellow-100 text-odd-gray-900 border border-odd-yellow-400',
+    404: 'bg-odd-red-100 text-odd-red-900 border border-odd-red-400'
   }
 </script>
 
@@ -34,20 +35,20 @@
     <tbody class="divide-y divide-odd-gray-500 border-t border-y-odd-gray-500">
       {#each logs as log, i}
         <tr
-          class="bg-odd-gray-0 text-input-m group transition-colors duration-200 ease-in-out hover:bg-odd-yellow-150"
+          class="bg-odd-gray-0 text-input-m group transition-colors duration-200 ease-in-out hover:bg-odd-teal-50"
         >
           <th
-            class="py-2 px-4 bg-clip-padding text-center transition-colors duration-200 ease-in-out bg-transparent group-hover:bg-odd-yellow-150"
+            class="py-2 px-4 bg-clip-padding text-center transition-colors duration-200 ease-in-out bg-transparent group-hover:bg-odd-teal-50"
           >
             {i + 1}
           </th>
           <td
-            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-150"
+            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50"
           >
             {log.time}
           </td>
           <td
-            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-150 text-center"
+            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50 text-center"
           >
             <span
               class="{STATUS_CODE_COLOURS[
@@ -58,17 +59,17 @@
             </span>
           </td>
           <td
-            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-150 text-center"
+            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50 text-center"
           >
             {log.request}
           </td>
           <td
-            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-150"
+            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50"
           >
             {log.host}
           </td>
           <td
-            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-yellow-150"
+            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50"
           >
             {log.message}
           </td>

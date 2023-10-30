@@ -76,14 +76,14 @@
         id="three"
         name="Rotate90"
         status="ready"
-        position={{ x: 50, y: 470 }}
+        position={{ x: 50, y: 500 }}
         previousNode={{ status: 'ready' }}
       />
       <Node
         id="four"
         name="Rotate90"
         status="ready"
-        position={{ x: 440, y: 470 }}
+        position={{ x: 440, y: 500 }}
         previousNode={{ status: 'ready' }}
       />
     </Svelvet>
