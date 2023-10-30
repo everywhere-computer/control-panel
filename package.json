@@ -63,7 +63,7 @@
     "marked": "^9.0.3",
     "qrcode-svg": "^1.1.0",
     "sanitize-html": "^2.11.0",
-    "svelvet": "^8.1.0",
+    "svelvet": "npm:meetspur-svelvet@^8.1.1",
     "three": "^0.156.1",
     "three-globe": "^2.29.3",
     "three-trackballcontrols": "^0.9.0",

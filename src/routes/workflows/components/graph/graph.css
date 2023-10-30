@@ -1,0 +1,50 @@
+.svelvet-anchor {
+  background-color: transparent !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  background-size: cover !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  width: 11px !important;
+  height: 11px !important;
+  transform: translateX(1);
+}
+
+.svelvet-anchor.input {
+  background: url('/anchor-north-inactive.svg');
+}
+.svelvet-anchor.input.connected {
+  background: url('/anchor-north-active.svg');
+}
+.running .svelvet-anchor.input.connected {
+  background: url('/anchor-north-running.svg');
+}
+
+.svelvet-anchor.output {
+  background: url('/anchor-south-inactive.svg');
+}
+.svelvet-anchor.output.connected {
+  background: url('/anchor-south-active.svg');
+}
+.running .svelvet-anchor.output.connected {
+  background: url('/anchor-south-running.svg');
+}
+
+.running-edge {
+  stroke: #6A50EB;
+  stroke-width: 2px;
+  stroke-dashoffset: 100;
+  animation: firstAnimation 10000ms linear infinite;
+}
+
+@keyframes firstAnimation {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  50% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 100;
+  }
+}

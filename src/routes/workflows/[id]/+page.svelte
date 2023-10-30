@@ -5,6 +5,7 @@
   import ExternalLink from '$components/icons/ExternalLink.svelte'
   import Logs from '$routes/workflows/components/Logs.svelte'
   import Metrics from '$routes/workflows/components/Metrics.svelte'
+  import RunsAndReceipts from '$routes/workflows/components/RunsAndReceipts.svelte'
   import Tabs from '$components/common/Tabs.svelte'
 
   $: workflow = $workflowsStore?.workflows?.find(
@@ -12,7 +13,7 @@
   )
 
   const tabs = ['runs & receipts', 'metrics', 'triggers', 'logs']
-  let activeTab = 'logs'
+  let activeTab = 'runs & receipts'
 
   $: stats = [
     { label: 'Custom Domains', value: workflow.customDomains },
@@ -24,7 +25,7 @@
 
 <div class="pt-2">
   {#if workflow}
-    <div class="w-full max-w-[800px] m-auto mb-8">
+    <div class="w-full max-w-[800px] m-auto mb-8 rounded-sm overflow-hidden">
       <div class="flex flex-row items-center justify-between mb-5">
         <h1 class="text-heading-2xl font-bold">{workflow.name}</h1>
 
@@ -60,20 +61,20 @@
     <Tabs {tabs} bind:activeTab />
 
     <div
-      class="relative z-0 flex flex-col pb-4 border-t border-y-odd-gray-500 bg-odd-gray-0"
+      class="relative z-0 flex flex-col border-t border-y-odd-gray-500 bg-odd-gray-0"
     >
       {#if activeTab === tabs[0]}
-        <div class="p-4 bg-odd-gray-0">runs & receipts</div>
+        <RunsAndReceipts />
       {/if}
 
       {#if activeTab === tabs[1]}
-        <div class="px-4 py-8 bg-odd-gray-0">
+        <div class="px-4 py-8">
           <Metrics />
         </div>
       {/if}
 
       {#if activeTab === tabs[2]}
-        <div class="p-4 bg-odd-gray-0">triggers</div>
+        <div class="p-4">triggers</div>
       {/if}
 
       {#if activeTab === tabs[3]}

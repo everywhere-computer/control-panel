@@ -32,7 +32,7 @@ on:click_outside={handleClickOutside} -->
 {/if}
 
 <button
-  class="toggle-trigger fixed right-4 bottom-4 z-30 w-16 h-16 hover:opacity-80 transition duration-200 ease-in-out"
+  class="toggle-trigger fixed right-4 bottom-4 z-30 w-16 h-16 hover:opacity-[.92] transition duration-200 ease-in-out"
   on:click={handleOpenWidget}
 >
   <img

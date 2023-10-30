@@ -98,12 +98,12 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-odd-gray-900 {
-  @apply border-4 border-odd-gray-900 rounded-sm;
+  @apply border-4 border-odd-gray-800 rounded-sm;
   border-style: ridge;
 }
 
 .btn-odd-purple-500 {
-  @apply border-4 border-odd-purple-500 rounded-sm;
+  @apply border-4 border-odd-purple-400 rounded-sm;
   border-style: ridge;
 }
 

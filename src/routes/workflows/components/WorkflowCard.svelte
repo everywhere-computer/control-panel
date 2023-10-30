@@ -6,7 +6,7 @@
 </script>
 
 <div
-  class="flex flex-col bg-odd-gray-0 text-odd-gray-700 transition-colors hover:bg-odd-purple-100"
+  class="flex flex-col bg-odd-gray-0 text-odd-gray-700 transition-colors hover:bg-odd-purple-100 rounded-sm"
 >
   <a href={`/workflows/${workflow?.id}`}>
     <div class="flex flex-col gap-4 w-full p-4">
@@ -31,7 +31,7 @@
     </div>
 
     <div
-      class="flex flex-row items-center gap-2 w-full px-4 py-3 bg-odd-gray-150 border-t border-neutral-700"
+      class="flex flex-row items-center gap-2 w-full px-4 py-3 bg-odd-gray-150 border-t border-neutral-700 rounded-b-sm"
     >
       <Workflows />
       <p class="text-label-m">

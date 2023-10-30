@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none">
   <g clip-path="url(#a)">
     <path
-      stroke="#E1E2EA"
+      stroke="currentColor"
       stroke-linecap="round"
       stroke-linejoin="round"
       stroke-width="1.25"
