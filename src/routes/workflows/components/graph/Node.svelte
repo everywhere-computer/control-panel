@@ -1,10 +1,8 @@
 <script lang="ts">
-  import { writable } from 'svelte/store'
   import { Anchor, Node } from 'svelvet'
 
   import './graph.css'
   import { STATUS_COLOURS } from '$routes/workflows/lib/graph'
-  // import Anchor from '$routes/workflows/components/graph/Anchor.svelte'
   import Edge from '$routes/workflows/components/graph/Edge.svelte'
 
   export let id: string
@@ -30,21 +28,20 @@
         ? 'running'
         : ''}"
     >
-      <Anchor id={`${id}_1`} edge={Edge} input direction="north" />
+      <Anchor id={`${id}_1`} edge={Edge} input direction="north">
+        <Edge slot="edge" {previousNode} {status} direction="north" />
+      </Anchor>
     </div>
     <div
       class="absolute top-full left-4 {status === 'running' ? 'running' : ''}"
     >
-      <Anchor
-        id={`${id}_2`}
-        edge={Edge}
-        output
-        direction="south"
-        edgeColor={writable('#40425E')}
-        {connections}
-      />
+      <Anchor id={`${id}_2`} edge={Edge} output direction="south" {connections}>
+        <Edge slot="edge" {previousNode} {status} direction="south" />
+      </Anchor>
     </div>
-    <div class="flex flex-row items-center justify-between p-4 bg-odd-gray-100">
+    <div
+      class="flex flex-row items-center justify-between px-4 py-2 bg-odd-gray-100"
+    >
       <h4 class="text-label-m">{name}</h4>
       <p
         class="{STATUS_COLOURS[

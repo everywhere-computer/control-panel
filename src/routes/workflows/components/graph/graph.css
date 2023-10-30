@@ -30,14 +30,22 @@
   background: url('/anchor-south-running.svg');
 }
 
+.ready-edge {
+  stroke: #40425E;
+  stroke-width: 1px;
+}
+
 .running-edge {
   stroke: #6A50EB;
   stroke-width: 2px;
   stroke-dashoffset: 100;
-  animation: firstAnimation 10000ms linear infinite;
+  -webkit-animation: edgeAnimation 20000ms linear infinite;
+  -moz-animation: edgeAnimation 20000ms linear infinite;
+  -o-animation: edgeAnimation 20000ms linear infinite;
+  animation: edgeAnimation 20000ms linear infinite;
 }
 
-@keyframes firstAnimation {
+@keyframes edgeAnimation {
   0% {
     stroke-dashoffset: 100;
   }

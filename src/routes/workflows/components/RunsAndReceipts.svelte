@@ -43,7 +43,7 @@
     >
       {#each runs as run}
         <button
-          class="flex flex-row items-center justify-between w-full p-4 text-label-m capitalize"
+          class="flex flex-row items-center justify-between w-full p-4 text-label-m capitalize duration-200 transition-colors ease-in-out hover:bg-odd-gray-150"
         >
           {run.name}
           <span
@@ -67,9 +67,24 @@
       <Node
         id="two"
         name="Rotate90"
-        status="ready"
-        position={{ x: 50, y: 300 }}
+        status="from cache"
+        connections={['three', 'four']}
+        position={{ x: 50, y: 260 }}
         previousNode={{ status: 'running' }}
+      />
+      <Node
+        id="three"
+        name="Rotate90"
+        status="ready"
+        position={{ x: 50, y: 470 }}
+        previousNode={{ status: 'ready' }}
+      />
+      <Node
+        id="four"
+        name="Rotate90"
+        status="ready"
+        position={{ x: 440, y: 470 }}
+        previousNode={{ status: 'ready' }}
       />
     </Svelvet>
   </div>

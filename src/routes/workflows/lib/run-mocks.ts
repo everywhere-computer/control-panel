@@ -1,7 +1,7 @@
 const runs = [
   {
     name: 'run 18',
-    status: 'replayed',
+    status: 'from cache',
     steps: [
       {
         name: 'Rotate90',
@@ -19,11 +19,11 @@ const runs = [
   },
   {
     name: 'run 17',
-    status: 'replayed'
+    status: 'from cache'
   },
   {
     name: 'run 16',
-    status: 'replayed'
+    status: 'from cache'
   },
   {
     name: 'run 15',
@@ -31,15 +31,15 @@ const runs = [
   },
   {
     name: 'run 14',
-    status: 'replayed'
+    status: 'from cache'
   },
   {
     name: 'run 13',
-    status: 'replayed'
+    status: 'from cache'
   },
   {
     name: 'run 12',
-    status: 'replayed'
+    status: 'from cache'
   },
   {
     name: 'run 11',
@@ -47,11 +47,11 @@ const runs = [
   },
   {
     name: 'run 10',
-    status: 'replayed'
+    status: 'from cache'
   },
   {
     name: 'run 9',
-    status: 'replayed'
+    status: 'from cache'
   },
   {
     name: 'run 8',
@@ -59,7 +59,7 @@ const runs = [
   },
   {
     name: 'run 7',
-    status: 'replayed'
+    status: 'from cache'
   },
   {
     name: 'run 8',
@@ -67,11 +67,11 @@ const runs = [
   },
   {
     name: 'run 6',
-    status: 'replayed'
+    status: 'from cache'
   },
   {
     name: 'run 5',
-    status: 'replayed'
+    status: 'from cache'
   },
   {
     name: 'run 4',
@@ -79,15 +79,15 @@ const runs = [
   },
   {
     name: 'run 3',
-    status: 'replayed'
+    status: 'from cache'
   },
   {
     name: 'run 2',
-    status: 'replayed'
+    status: 'from cache'
   },
   {
     name: 'run 1',
-    status: 'replayed'
+    status: 'from cache'
   }
 ]
 
