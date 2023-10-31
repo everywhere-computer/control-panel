@@ -61,7 +61,7 @@
     <Tabs {tabs} bind:activeTab />
 
     <div
-      class="relative z-0 flex flex-col border-t border-y-odd-gray-500 bg-odd-gray-0"
+      class="relative z-0 flex flex-col border-t border-y-base-300 bg-odd-gray-0"
     >
       {#if activeTab === tabs[0]}
         <RunsAndReceipts />

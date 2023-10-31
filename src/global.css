@@ -41,7 +41,7 @@ body, input {
 
 
 h1, h2, h3, h4, h5, h6 {
-  @apply font-sans;
+  @apply font-sans text-base-content;
 }
 
 /* Button default styles */

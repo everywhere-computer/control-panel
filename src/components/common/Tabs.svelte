@@ -15,14 +15,12 @@
     <button
       on:click={() => handleTabClick(tab)}
       class="tab {activeTab === tab
-        ? 'tab-active top-[0px] bg-odd-gray-0 text-odd-gray-700 !border-odd-gray-500 !border-t !border-t !border-r !border-l'
-        : 'bg-odd-gray-200 text-odd-gray-700 border-odd-gray-500 border-b'} relative mr-0.5 capitalize text-label-sm rounded-t-sm transition-colors duration-200 ease-in-out"
+        ? 'tab-active top-[0px] bg-odd-gray-0 text-base-content !border-base-300 !border-t !border-t !border-r !border-l'
+        : 'bg-base-300 text-primary !border-base-300 border-b'} relative mr-1.5 capitalize text-label-sm rounded-t-sm transition-colors duration-200 ease-in-out"
     >
       {tab}
       {#if activeTab !== tab}
-        <span
-          class="absolute right-0 bottom-0 left-0 h-[1px] bg-odd-gray-500"
-        />
+        <span class="absolute right-0 bottom-0 left-0 h-[1px] bg-base-300" />
       {/if}
     </button>
   {/each}

@@ -31,7 +31,7 @@
     </div>
 
     <div
-      class="flex flex-row items-center gap-2 w-full px-4 py-3 bg-odd-gray-150 border-t border-neutral-700 rounded-b-sm"
+      class="flex flex-row items-center gap-2 w-full px-4 py-3 bg-odd-gray-150 rounded-b-sm"
     >
       <Workflows />
       <p class="text-label-m">

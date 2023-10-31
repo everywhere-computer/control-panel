@@ -18,7 +18,7 @@
 <Tabs {tabs} bind:activeTab />
 
 <div
-  class="relative z-0 flex flex-col py-4 pb-10 bg-odd-gray-0 border-odd-gray-500 border-t"
+  class="relative z-0 flex flex-col py-4 pb-10 bg-odd-gray-0 border-y-base-300 border-t"
 >
   {#if activeTab === tabs[0]}
     <div class="">
