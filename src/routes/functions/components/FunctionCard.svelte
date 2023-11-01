@@ -5,7 +5,7 @@
 </script>
 
 <div
-  class="flex flex-col border border-neutral-700 bg-odd-gray-0 text-odd-gray-700 transition-colors hover:bg-odd-purple-100 rounded-sm"
+  class="flex flex-col bg-odd-gray-0 text-odd-gray-700 transition-colors hover:bg-odd-purple-100 rounded-sm"
 >
   <a href={`/functions/${func?.id}`}>
     <div class="p-6">

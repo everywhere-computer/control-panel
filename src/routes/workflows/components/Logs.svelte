@@ -32,7 +32,7 @@
         <td class="py-2 bg-odd-gray-50 capitalize text-label-sm">Message</td>
       </tr>
     </thead>
-    <tbody class="divide-y divide-odd-gray-500 border-t border-y-odd-gray-500">
+    <tbody class="divide-y divide-base-300 border-t border-y-odd-gray-500">
       {#each logs as log, i}
         <tr
           class="bg-odd-gray-0 text-input-m group transition-colors duration-200 ease-in-out hover:bg-odd-teal-50"
