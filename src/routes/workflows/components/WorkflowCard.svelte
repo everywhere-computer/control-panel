@@ -6,7 +6,7 @@
 </script>
 
 <div
-  class="flex flex-col bg-odd-gray-0 text-odd-gray-700 transition-colors hover:bg-odd-purple-100 rounded-sm"
+  class="flex flex-col bg-base-100 text-odd-gray-700 border border-odd-gray-50 transition-colors hover:border-primary rounded-sm"
 >
   <a href={`/workflows/${workflow?.id}`}>
     <div class="flex flex-col gap-4 w-full p-4">
