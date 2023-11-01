@@ -23,11 +23,15 @@
 <div class="w-full overflow-x-auto">
   <table class="table table-xs table-pin-rows table-pin-cols w-full">
     <thead>
-      <tr class="bg-odd-gray-50 border-t border-y-odd-gray-0">
+      <tr class="bg-odd-gray-50 border-t border-y-odd-gray-0 text-base-content">
         <th class="bg-transparent" />
         <td class="py-2 bg-odd-gray-50 capitalize text-label-sm">Time</td>
-        <td class="py-2 bg-odd-gray-50 capitalize text-label-sm">Status</td>
-        <td class="py-2 bg-odd-gray-50 capitalize text-label-sm">Request</td>
+        <td class="py-2 bg-odd-gray-50 capitalize text-label-sm text-center">
+          Status
+        </td>
+        <td class="py-2 bg-odd-gray-50 capitalize text-label-sm text-center">
+          Request
+        </td>
         <td class="py-2 bg-odd-gray-50 capitalize text-label-sm">Host</td>
         <td class="py-2 bg-odd-gray-50 capitalize text-label-sm">Message</td>
       </tr>
@@ -38,17 +42,17 @@
           class="bg-odd-gray-0 text-input-m group transition-colors duration-200 ease-in-out hover:bg-odd-teal-50"
         >
           <th
-            class="py-2 px-4 bg-clip-padding text-center transition-colors duration-200 ease-in-out bg-transparent group-hover:bg-odd-teal-50"
+            class="py-2 px-4 bg-clip-padding text-input-m text-center transition-colors duration-200 ease-in-out bg-transparent group-hover:bg-odd-teal-50"
           >
             {i + 1}
           </th>
           <td
-            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50"
+            class="py-2 text-input-m transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50"
           >
             {log.time}
           </td>
           <td
-            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50 text-center"
+            class="py-2 text-input-m transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50 text-center"
           >
             <span
               class="{STATUS_CODE_COLOURS[
@@ -59,17 +63,17 @@
             </span>
           </td>
           <td
-            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50 text-center"
+            class="py-2 text-input-m transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50 text-center"
           >
             {log.request}
           </td>
           <td
-            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50"
+            class="py-2 text-input-m transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50"
           >
             {log.host}
           </td>
           <td
-            class="py-2 transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50"
+            class="py-2 text-input-m transition-colors duration-200 ease-in-out bg-odd-gray-0 group-hover:bg-odd-teal-50"
           >
             {log.message}
           </td>
