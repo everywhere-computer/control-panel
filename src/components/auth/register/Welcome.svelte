@@ -1,6 +1,6 @@
 <script lang="ts">
   import { appName } from '$lib/app-info'
-  import { sessionStore } from '../../../stores'
+  import { sessionStore } from '$lib/stores'
   import WelcomeCheckIcon from '$components/icons/WelcomeCheckIcon.svelte'
 </script>
 

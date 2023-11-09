@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sessionStore } from '$src/stores'
+  import { sessionStore } from '$lib/stores'
   import { appName } from '$lib/app-info'
   import Alert from '$components/icons/Alert.svelte'
   import Connect from '$components/icons/Connect.svelte'

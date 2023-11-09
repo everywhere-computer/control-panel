@@ -1,7 +1,7 @@
 <script lang="ts">
   import { get as getStore } from 'svelte/store'
 
-  import { sessionStore } from '$src/stores'
+  import { sessionStore } from '$lib/stores'
   import {
     createDID,
     prepareUsername,

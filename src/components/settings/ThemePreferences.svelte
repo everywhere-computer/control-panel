@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { themeStore } from '$src/stores'
+  import { themeStore } from '$lib/stores'
   import { getSystemDefaultTheme, storeTheme, DEFAULT_THEME_KEY, type Theme, type ThemeOptions } from '$lib/theme'
 
   const options = [

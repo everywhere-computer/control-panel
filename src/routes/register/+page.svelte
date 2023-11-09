@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sessionStore } from '$src/stores'
+  import { sessionStore } from '$lib/stores'
 
   import Register from '$components/auth/register/Register.svelte'
   import Welcome from '$components/auth/register/Welcome.svelte'

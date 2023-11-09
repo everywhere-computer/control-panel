@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sessionStore } from '$src/stores'
+  import { sessionStore } from '$lib/stores'
 
   $: usernameParts = $sessionStore?.username?.full?.split('#')
 </script>

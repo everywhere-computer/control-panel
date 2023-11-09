@@ -1,7 +1,7 @@
 <script lang="ts">
   import * as uint8arrays from 'uint8arrays'
 
-  import { sessionStore } from '$src/stores'
+  import { sessionStore } from '$lib/stores'
   import {
     RECOVERY_STATES,
     USERNAME_STORAGE_KEY,

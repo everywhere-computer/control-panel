@@ -1,7 +1,7 @@
 <script lang="ts">
   import { flip } from 'svelte/animate'
 
-  import { notificationStore } from '../../stores'
+  import { notificationStore } from '$lib/stores'
   import Notification from '$components/notifications/Notification.svelte'
 </script>
 

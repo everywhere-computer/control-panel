@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { workflowsStore } from '$src/stores'
+  import { workflowsStore } from '$lib/stores'
   import Search from '$components/common/Search.svelte'
+  import WorkflowBuilder from '$routes/workflows/components/WorkflowBuilder.svelte'
   import WorkflowCard from '$routes/workflows/components/WorkflowCard.svelte'
 
   let searchTerm = ''
@@ -9,6 +10,9 @@
         workflow?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
       )
     : $workflowsStore?.workflows
+  $: showBuilder = false
+
+  const handleShowBuilder = () => (showBuilder = true)
 </script>
 
 <div class="w-full max-w-[800px] m-auto">
@@ -19,7 +23,16 @@
       {workflows?.length} Workflow Template{workflows?.length === 1 ? '' : 's'}
     </p>
 
-    <Search bind:searchTerm placeholder="Find a workflow..." />
+    <div class="flex flex-col sm:flex-row items-center gap-4">
+      <Search bind:searchTerm placeholder="Find a workflow..." />
+
+      <button
+        on:click={handleShowBuilder}
+        class="btn btn-primary btn-odd-purple-500 h-8 text-label-m"
+      >
+        + New Workflow
+      </button>
+    </div>
   </div>
   <!-- Workflow list -->
   <div class="flex flex-col gap-4">
@@ -32,3 +45,7 @@
     + Build Workflow
   </a> -->
 </div>
+
+{#if showBuilder}
+  <WorkflowBuilder bind:showBuilder />
+{/if}

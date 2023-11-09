@@ -2,7 +2,7 @@
   import { navigating, page } from '$app/stores'
   import { fade, fly } from 'svelte/transition'
 
-  import { sessionStore } from '$src/stores'
+  import { sessionStore } from '$lib/stores'
   import { clickOutside } from '$lib/utils'
   import Activity from '$components/icons/Activity.svelte'
   import Functions from '$components/icons/Functions.svelte'

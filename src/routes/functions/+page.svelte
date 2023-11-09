@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { functionsStore } from '$src/stores'
+  import { functionsStore } from '$lib/stores'
   import Search from '$components/common/Search.svelte'
   import FunctionCard from '$routes/functions/components/FunctionCard.svelte'
 

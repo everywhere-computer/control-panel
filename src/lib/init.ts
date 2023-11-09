@@ -1,7 +1,7 @@
 import * as odd from '@oddjs/odd'
 import { dev } from '$app/environment'
 
-import { filesystemStore, sessionStore } from '../stores'
+import { filesystemStore, sessionStore } from './stores'
 import { getBackupStatus, type BackupStatus } from '$lib/auth/backup'
 import { USERNAME_STORAGE_KEY, createDID } from '$lib/auth/account'
 import { oddNamespace } from '$lib/app-info'

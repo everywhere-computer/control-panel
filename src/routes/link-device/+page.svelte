@@ -6,7 +6,7 @@
   import { addNotification } from '$lib/notifications'
   import { createAccountLinkingConsumer } from '$lib/auth/linking'
   import { loadAccount } from '$lib/auth/account'
-  import { sessionStore } from '$src/stores'
+  import { sessionStore } from '$lib/stores'
   import { waitForDataRoot } from '$lib/auth/account'
   import type { LinkDeviceView } from '$lib/views'
   import FilesystemActivity from '$components/common/FilesystemActivity.svelte'

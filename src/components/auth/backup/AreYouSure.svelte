@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
 
-  import { filesystemStore, sessionStore } from '../../../stores'
+  import { filesystemStore, sessionStore } from '$lib/stores'
   import { setBackupStatus } from '$lib/auth/backup'
 
   const skipBackup = () => {

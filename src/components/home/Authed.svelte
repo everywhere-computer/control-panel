@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { projectsStore } from '$src/stores'
+  import { projectsStore } from '$lib/stores'
 
   let searchTerm = ''
   $: projects = searchTerm

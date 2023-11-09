@@ -2,6 +2,7 @@ import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
 import type FileSystem from '@oddjs/odd/fs/index'
 
+import type { Maybe } from '$lib'
 import { loadTheme } from '$lib/theme'
 import type { AccountSettings } from '$lib/account-settings'
 import type { Notification } from '$lib/notifications'
@@ -11,7 +12,8 @@ import type { ProjectsStore } from '$lib/projects'
 import projects from '$routes/projects/lib/project-mocks'
 import type { FunctionsStore } from '$lib/functions'
 import functions from '$routes/functions/lib/function-mocks'
-import type { WorkflowsStore } from '$lib/workflows'
+import type { Run, WorkflowsStore } from '$lib/workflows'
+import generateBuilderTemplate from '$lib/workflows/builder/builder-template'
 import workflows from '$routes/workflows/lib/workflow-mocks'
 
 export const themeStore: Writable<Theme> = writable(loadTheme())
@@ -46,5 +48,8 @@ export const functionsStore: Writable<FunctionsStore> = writable({
 
 export const workflowsStore: Writable<WorkflowsStore> = writable({
   loading: false,
-  workflows,
+  builder: generateBuilderTemplate(),
+  workflows
 })
+
+export const unsavedRunStore: Writable<Maybe<Run | Record<string, unknown>>> = writable({})

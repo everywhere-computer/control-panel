@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
 
-  import { sessionStore } from '$src/stores'
+  import { sessionStore } from '$lib/stores'
 </script>
 
 <div class="flex flex-col gap-4">

@@ -6,7 +6,7 @@ import type { CID } from 'multiformats/cid'
 import type { PuttableUnixTree, File as WNFile } from '@oddjs/odd/fs/types'
 import type { Metadata } from '@oddjs/odd/fs/metadata'
 
-import { accountSettingsStore, filesystemStore, sessionStore } from '$src/stores'
+import { accountSettingsStore, filesystemStore, sessionStore } from '$lib/stores'
 import { addNotification } from '$lib/notifications'
 import { fileToUint8Array } from './utils'
 

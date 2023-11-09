@@ -1,19 +1,18 @@
 <script lang="ts">
   import { page } from '$app/stores'
 
-  import { workflowsStore } from '$src/stores'
-  import ExternalLink from '$components/icons/ExternalLink.svelte'
-  import Logs from '$routes/workflows/components/Logs.svelte'
-  import Metrics from '$routes/workflows/components/Metrics.svelte'
+  import { workflowsStore } from '$lib/stores'
+  // import Logs from '$routes/workflows/components/Logs.svelte'
+  // import Metrics from '$routes/workflows/components/Metrics.svelte'
   import RunsAndReceipts from '$routes/workflows/components/RunsAndReceipts.svelte'
-  import Tabs from '$components/common/Tabs.svelte'
+  // import Tabs from '$components/common/Tabs.svelte'
 
   $: workflow = $workflowsStore?.workflows?.find(
     workflow => workflow?.id === $page.params.id
   )
 
-  const tabs = ['runs & receipts', 'metrics', 'triggers', 'logs']
-  let activeTab = 'runs & receipts'
+  // const tabs = ['runs & receipts', 'metrics', 'triggers', 'logs']
+  // let activeTab = 'runs & receipts'
 
   $: stats = [
     { label: 'Custom Domains', value: workflow.customDomains },
@@ -25,32 +24,26 @@
 
 <div class="pt-2">
   {#if workflow}
-    <div class="w-full max-w-[800px] m-auto mb-8 rounded-sm overflow-hidden">
-      <div class="flex flex-row items-center justify-between mb-5">
+    <div
+      class="w-full max-w-[800px] m-auto mb-8 px-4 rounded-sm overflow-hidden"
+    >
+      <div class="flex flex-row items-center justify-start mb-5">
         <h1 class="text-heading-2xl font-bold">{workflow.name}</h1>
-
-        <a
-          href={`https://${workflow.name}.workflow.ipvm.dev`}
-          target="_blank"
-          class="btn-odd-purple-500 flex flex-row items-center justify-center gap-1 px-3.5 h-[30px] bg-odd-purple-500 text-odd-purple-100 text-label-sm"
-        >
-          <ExternalLink /> Preview
-        </a>
       </div>
 
       <div
-        class="flex flex-row divide-x divide-odd-gray-50 items-center w-full text-label-sm text-odd-gray-400"
+        class="flex flex-col md:flex-row w-full divide-x divide-odd-gray-50 items-center w-full text-label-sm text-odd-gray-400"
       >
         {#each stats as stat}
           <div
-            class="flex flex-col items-center justify-center basis-1/4 text-odd-gray-700"
+            class="flex flex-col items-center justify-center md:basis-1/4 w-full md:w-auto text-odd-gray-700"
           >
             <p
-              class="w-full py-2 bg-odd-gray-150 text-center border-b border-odd-gray-300"
+              class="w-full py-2 bg-odd-gray-200 text-center border-b border-odd-gray-300"
             >
               {stat.label}
             </p>
-            <p class="w-full py-2 bg-odd-gray-0 text-body-lg text-center">
+            <p class="w-full py-2 bg-base-200 text-body-lg text-center">
               {stat.value}
             </p>
           </div>
@@ -58,14 +51,14 @@
       </div>
     </div>
 
-    <Tabs {tabs} bind:activeTab />
+    <!-- <Tabs {tabs} bind:activeTab /> -->
 
     <div
-      class="relative z-0 flex flex-col border-t border-y-base-300 bg-odd-gray-0"
+      class="relative z-0 flex flex-col md:border-t md:border-y-base-300 bg-odd-gray-0"
     >
-      {#if activeTab === tabs[0]}
-        <RunsAndReceipts />
-      {/if}
+      <!-- {#if activeTab === tabs[0]} -->
+      <RunsAndReceipts bind:workflow />
+      <!-- {/if}
 
       {#if activeTab === tabs[1]}
         <div class="px-4 py-8">
@@ -81,7 +74,7 @@
         <div class="">
           <Logs />
         </div>
-      {/if}
+      {/if} -->
     </div>
   {/if}
 </div>

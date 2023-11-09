@@ -1,7 +1,7 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
-  import { sessionStore, themeStore } from '../stores'
+  import { sessionStore, themeStore } from '../lib/stores'
   import { DEFAULT_THEME_KEY, storeTheme, type ThemeOptions } from '$lib/theme'
   import Avatar from '$components/settings/Avatar.svelte'
   import BrandLogo from '$components/icons/BrandLogo.svelte'

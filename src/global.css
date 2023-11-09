@@ -46,10 +46,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Button default styles */
 .btn {
-  @apply font-sans;
-  @apply border-0;
-  @apply transition-colors;
-  @apply ease-in;
+  @apply min-h-0 font-sans border-0 transition-colors ease-in-out;
 }
 
 .btn-circle {
@@ -69,7 +66,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary {
-  @apply text-btn text-odd-purple-100 bg-odd-purple-500 px-4;
+  @apply text-btn text-odd-purple-100 bg-odd-purple-500 px-2;
 }
 
 .btn-primary:hover {
@@ -93,17 +90,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-odd-gray-100 {
-  @apply border-4 border-odd-gray-100 rounded-sm;
+  @apply bg-base-200 border-4 border-odd-gray-100 rounded-sm text-base-content text-label-sm;
   border-style: ridge;
 }
 
 .btn-odd-gray-900 {
-  @apply border-4 border-odd-gray-800 rounded-sm;
+  @apply border-4 border-odd-gray-800 rounded-sm hover:bg-odd-gray-800 hover:border-odd-gray-800;
   border-style: ridge;
 }
 
 .btn-odd-purple-500 {
-  @apply border-4 border-odd-purple-400 rounded-sm;
+  @apply border-4 border-odd-purple-400 rounded-sm text-odd-purple-100 text-label-sm;
   border-style: ridge;
 }
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import clipboardCopy from 'clipboard-copy'
 
-  import { sessionStore } from '$src/stores'
+  import { sessionStore } from '$lib/stores'
   import { addNotification } from '$lib/notifications'
   import ClipboardIcon from '$components/icons/ClipboardIcon.svelte'
   import TruncatedUsername from '$components/settings/TruncatedUsername.svelte'

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { page } from '$app/stores'
 
-  import { projectsStore } from '$src/stores'
+  import { projectsStore } from '$lib/stores'
 
   $: project = $projectsStore?.projects?.find(
     project => project?.id === $page.params.id

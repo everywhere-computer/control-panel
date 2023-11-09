@@ -46,29 +46,34 @@ export async function fileToUint8Array(file: File): Promise<Uint8Array> {
 /**
  * Dispatch event on click outside of node
  */
-export function clickOutside(node: Node): { destroy(): void } {
-  const handleClick = event => {
-    const classList = [...event.target.classList]
-
-    try {
-      if (
-        node &&
-        !node.contains(event.target) &&
-        !event.defaultPrevented &&
-        !classList?.includes('toggle-trigger')
-      ) {
-        node.dispatchEvent(new CustomEvent('click_outside', node))
-      }
-    } catch (err) {
-      console.log(err)
+export function clickOutside(node, { enabled: initialEnabled, cb }) {
+  const handleOutsideClick = ({ target }) => {
+    if (!node.contains(target)) {
+      cb()
     }
   }
 
-  document.addEventListener('click', handleClick, true)
+  function update({ enabled }) {
+    if (enabled) {
+      window.addEventListener('click', handleOutsideClick)
+    } else {
+      window.removeEventListener('click', handleOutsideClick)
+    }
+  }
 
+  update({ enabled: initialEnabled })
   return {
+    update,
     destroy() {
-      document.removeEventListener('click', handleClick, true)
+      window.removeEventListener('click', handleOutsideClick)
     }
   }
 }
+
+/**
+ * Convert string to camelCase
+ */
+export const camelCase = (str: string): string =>
+  str.replace(/(?:^\w|[A-Z]|\b\w)/g,
+    (word, index) => index == 0 ? word.toLowerCase() : word.toUpperCase()
+  ).replace(/\s+/g, '')

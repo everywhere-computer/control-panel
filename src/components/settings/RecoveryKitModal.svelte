@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { sessionStore } from '$src/stores'
+  import { sessionStore } from '$lib/stores'
   import { generateRecoveryKit } from '$lib/account-settings'
   import Download from '$components/icons/Download.svelte'
 

@@ -1,91 +1,135 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
   import { Svelvet } from 'svelvet'
 
-  import { STATUS_COLOURS } from '$routes/workflows/lib/graph'
-  import { runs as runMocks } from '$routes/workflows/lib/run-mocks'
-  import Filter from '$components/icons/Filter.svelte'
+  import '$routes/workflows/components/graph/graph.css'
+  import { FUNCTION_NODE_SIZES } from '$routes/workflows/lib/graph'
+  import Actions from '$routes/workflows/components/graph/Actions.svelte'
+  import ImageNode from '$routes/workflows/components/graph/ImageNode.svelte'
   import Node from '$routes/workflows/components/graph/Node.svelte'
-  import Search from '$components/common/Search.svelte'
+  import Runs from '$routes/workflows/components/Runs.svelte'
 
-  let columnWidth
-  let graphWidth
+  export let workflow
+
+  $: editing = false
+  $: selectedRunIndex = 1
+  $: selectedRun = workflow?.runs?.find(
+    r => Number(r?.label?.split('run ')[1]) === selectedRunIndex
+  )
+  $: sidebarOpen = false
+  $: uploadedImage = null
+
+  let columnWidth = 272
   let windowHeight = window.innerHeight
   let windowWidth = window.innerWidth
+  let graphWidth = windowWidth < 768 ? windowWidth : windowWidth - columnWidth
 
   const handleWindowResize = () => {
     windowHeight = window.innerHeight
     windowWidth = window.innerWidth
+
+    graphWidth = windowWidth < 768 ? windowWidth : windowWidth - columnWidth
+
+    if (windowWidth > 768) {
+      sidebarOpen = false
+    }
   }
+
+  const getTasks = async () => {}
 
   let searchTerm = ''
   $: runs = searchTerm
-    ? runMocks.filter(run =>
-        run.name.toLowerCase().includes(searchTerm?.toLowerCase())
+    ? workflow?.runs?.filter(run =>
+        run?.label?.toLowerCase()?.includes(searchTerm?.toLowerCase())
       )
-    : runMocks
+    : workflow?.runs
+
+  $: {
+    // console.log('workflow', workflow)
+    console.log('selectedRun', selectedRun)
+    // console.log('graphWidth', graphWidth)
+  }
+
+  // onMount(async () => {
+  //   await getTasks()
+  // })
 </script>
 
 <svelte:window on:resize={handleWindowResize} />
 
-<div class="w-full flex flex-row">
-  <div class="grow w-full max-w-[382px] pt-4 textrder-r border-odd-gray-200">
-    <div class="flex flex-row gap-2 bg-odd-gray-50 p-2 mx-4 rounded-sm">
-      <Search bind:searchTerm placeholder="Find in runs..." />
-      <button
-        class="flex flex-row items-center justify-center gap-1 px-3.5 h-[30px] text-odd-gray-700 text-body-sm"
-      >
-        <Filter /> Filter
-      </button>
-    </div>
-
-    <div
-      class="max-h-[calc(100vh-330px)] overflow-y-auto divide-y divide-odd-gray-200"
-    >
-      {#each runs as run}
-        <button
-          class="flex flex-row items-center justify-between w-full p-4 text-label-m capitalize duration-200 transition-colors ease-in-out hover:bg-odd-gray-150"
-        >
-          {run.name}
-          <span
-            class="px-1 text-code-sm border {STATUS_COLOURS[
-              run.status
-            ]} rounded-sm capitalize"
-          >
-            {run.status}
-          </span>
-        </button>
-      {/each}
-    </div>
+<div class="flex flex-row w-full px-4 md:px-0 bg-base-200 md:bg-base-100">
+  <div class="w-[{columnWidth}px] md:border-r border-odd-gray-200">
+    <Runs
+      bind:editing
+      bind:runs
+      bind:searchTerm
+      bind:selectedRunIndex
+      bind:sidebarOpen
+      bind:workflow
+    />
   </div>
 
   <div
-    class="w-full max-w-[calc(100vw-{columnWidth}px)]"
+    class="w-full w-[calc(100vw-{columnWidth}px)] border-odd-gray-400 border md:border-0 rounded-sm md:rounded-none"
     bind:offsetWidth={graphWidth}
   >
-    <Svelvet width={graphWidth} height={windowHeight - 263} zoom={1} locked>
-      <Node id="one" name="Rotate90" status="running" connections={['two']} />
-      <Node
-        id="two"
-        name="Rotate90"
-        status="from cache"
-        connections={['three', 'four']}
-        position={{ x: 50, y: 260 }}
-        previousNode={{ status: 'running' }}
+    <Actions
+      bind:selectedRun
+      bind:selectedRunIndex
+      bind:sidebarOpen
+      bind:editing
+      bind:uploadedImage
+      bind:workflow
+    />
+
+    <Svelvet
+      width={graphWidth}
+      height={windowHeight - 230}
+      zoom={1}
+      disableSelection
+    >
+      <ImageNode
+        id="0"
+        connections={['1']}
+        position={{ x: 34, y: 90 }}
+        bind:uploadedImage
       />
-      <Node
-        id="three"
-        name="Rotate90"
-        status="ready"
-        position={{ x: 50, y: 500 }}
-        previousNode={{ status: 'ready' }}
-      />
-      <Node
-        id="four"
-        name="Rotate90"
-        status="ready"
-        position={{ x: 440, y: 500 }}
-        previousNode={{ status: 'ready' }}
-      />
+
+      {@const tasks =
+        selectedRun?.payload?.workflow.tasks || workflow.payload.workflow.tasks}
+      {#each tasks as task, i}
+        <Node
+          id={`${i + 1}`}
+          connections={[`${i + 2}`]}
+          name={task.run.input.func}
+          args={task.run.input.args}
+          position={{ x: i === 0 ? 186 : (i + 1) * 361 - 170, y: 90 }}
+          previousNode={{
+            status: selectedRun?.status
+              ? selectedRun?.status
+              : workflow?.status === 'running'
+              ? 'running'
+              : selectedRun?.receipts?.length
+              ? selectedRun.receipts[i - 1]?.status
+              : 'ready'
+          }}
+          status={selectedRun && selectedRun?.receipts?.length
+            ? selectedRun.receipts[i]?.status
+            : workflow?.status === 'running'
+            ? 'running'
+            : 'ready'}
+          receipt={selectedRun?.receipts[i]}
+          {selectedRun}
+          {editing}
+        />
+        <!-- status={selectedRun?.status
+            ? selectedRun?.status
+            : workflow?.status === 'running'
+            ? 'running'
+            : selectedRun?.receipts?.length
+            ? selectedRun.receipts[i]?.status
+            : 'ready'} -->
+      {/each}
     </Svelvet>
   </div>
 </div>

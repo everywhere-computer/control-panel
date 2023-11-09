@@ -16,8 +16,8 @@
 
       <div class="flex flex-col items-center text-body-sm w-full mt-auto">
         <div class="flex flex-row items-center justify-between w-full">
-          <p class="text-label-m text-odd-gray-500">Requests</p>
-          <p class="text-body-m">{workflow?.requests}</p>
+          <p class="text-label-m text-odd-gray-500">Runs</p>
+          <p class="text-body-m">{workflow?.runs?.length}</p>
         </div>
         <div class="flex flex-row items-center justify-between w-full">
           <p class="text-label-m text-odd-gray-500">Errors</p>

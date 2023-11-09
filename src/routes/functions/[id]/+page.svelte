@@ -4,7 +4,7 @@
   import sanitizeHtml from 'sanitize-html'
 
   import '$routes/functions/styles/markdown-styles-light.css'
-  import { functionsStore } from '$src/stores'
+  import { functionsStore } from '$lib/stores'
 
   $: func = $functionsStore?.functions?.find(f => f?.id === $page.params.id)
 </script>
@@ -13,7 +13,6 @@
   {#if func}
     <div class="flex flex-col gap-4 mb-4">
       <h1 class="text-heading-lg">{func?.name}</h1>
-      <!-- <button class="btn sm:hidden">Add to workflow</button> -->
     </div>
 
     <div class="flex flex-col md:flex-row gap-8">
@@ -24,7 +23,9 @@
       </div>
 
       <div class="flex flex-col gap-4">
-        <button class="btn">Add to workflow</button>
+        <button class="btn btn-primary btn-odd-purple-500">
+          Add to workflow
+        </button>
         <div class="">
           <p>Repository</p>
           <p class="font-bold text-body-sm underline text-blue-600">

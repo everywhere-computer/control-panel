@@ -1,7 +1,7 @@
 import type * as odd from '@oddjs/odd'
 import { get as getStore } from 'svelte/store'
 
-import { sessionStore } from '$src/stores'
+import { sessionStore } from '$lib/stores'
 
 
 export const createAccountLinkingConsumer = async (

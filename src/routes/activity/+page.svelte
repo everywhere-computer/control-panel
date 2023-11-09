@@ -1,9 +1,12 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
+
   import Filter from '$components/icons/Filter.svelte'
   import Search from '$components/common/Search.svelte'
   import Tabs from '$components/common/Tabs.svelte'
   import VerticalDots from '$components/icons/VerticalDots.svelte'
   import logs from '$routes/activity/lib/log-mocks'
+  import { requestMetrics } from '$lib/metrics'
 
   let searchTerm = ''
 
@@ -13,6 +16,11 @@
   $: activityLogs = searchTerm
     ? logs.filter(log => log.toLowerCase().includes(searchTerm?.toLowerCase()))
     : logs
+
+  onMount(async () => {
+    const metrics = await requestMetrics()
+    console.log('metrics', metrics)
+  })
 </script>
 
 <Tabs {tabs} bind:activeTab />

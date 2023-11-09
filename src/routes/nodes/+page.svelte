@@ -4,7 +4,7 @@
   import ThreeGlobe from 'three-globe'
   import TrackballControls from 'three-trackballcontrols'
 
-  import { themeStore } from '$src/stores'
+  import { themeStore } from '$lib/stores'
 
   let mapHeight
   let mapWidth

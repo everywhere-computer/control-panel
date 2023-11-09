@@ -1,11 +1,13 @@
 <script lang="ts">
   import { goto } from '$app/navigation'
   import { page } from '$app/stores'
+  import { onDestroy, onMount } from 'svelte'
 
   import '../global.css'
   import { addNotification } from '$lib/notifications'
   import { appDescription, appImageURL, appName, appURL } from '$lib/app-info'
-  import { sessionStore, themeStore } from '$src/stores'
+  import { sessionStore, themeStore } from '$lib/stores'
+  import { subscribeRPC, unsubscribeRPC } from '$lib/rpc'
   import { errorToMessage } from '$lib/session'
   import { initialize } from '$lib/init'
   import DataWidget from '$components/common/DataWidget.svelte'
@@ -15,7 +17,9 @@
   import Notifications from '$components/notifications/Notifications.svelte'
 
   $: isFullWidth =
-    $page.route.id === '/activity' || $page.route.id === '/workflows/[id]'
+    $page.route.id === '/activity' ||
+    $page.route.id === '/workflows/[id]' ||
+    $page.route.id === '/workflows/build'
   $: isHome = $page.route.id === '/'
   let screenSize: number
 
@@ -39,6 +43,14 @@
   }
 
   init()
+
+  onMount(() => {
+    subscribeRPC()
+  })
+
+  onDestroy(() => {
+    unsubscribeRPC()
+  })
 </script>
 
 <svelte:head>

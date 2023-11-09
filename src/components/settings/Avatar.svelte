@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { accountSettingsStore, sessionStore } from '$src/stores'
+  import { accountSettingsStore, sessionStore } from '$lib/stores'
   import { getAvatarFromWNFS } from '$lib/account-settings'
 
   export let size = 'large'

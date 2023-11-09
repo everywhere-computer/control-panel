@@ -1,3 +1,12 @@
+/* Svelvet */
+[data-theme="light"] #background-wrapper {
+  background-color: #F5F5FC !important;
+}
+[data-theme="dark"] #background-wrapper {
+  background-color: #232538 !important;
+}
+
+/* Anchors */
 .svelvet-anchor {
   background-color: transparent !important;
   background-repeat: no-repeat !important;
@@ -11,34 +20,35 @@
 }
 
 .svelvet-anchor.input {
-  background: url('/anchor-north-inactive.svg');
+  background: none;
 }
 .svelvet-anchor.input.connected {
-  background: url('/anchor-north-active.svg');
+  background: url('/anchor-west-active.svg');
 }
 .running .svelvet-anchor.input.connected {
-  background: url('/anchor-north-running.svg');
+  background: url('/anchor-west-running.svg');
 }
 
 .svelvet-anchor.output {
-  background: url('/anchor-south-inactive.svg');
+  background: none;
 }
 .svelvet-anchor.output.connected {
-  background: url('/anchor-south-active.svg');
+  background: url('/anchor-east-active.svg');
 }
 .running .svelvet-anchor.output.connected {
-  background: url('/anchor-south-running.svg');
+  background: url('/anchor-east-running.svg');
 }
 
+/* Edges */
 .ready-edge {
-  stroke: #40425E;
+  stroke: #8989B0;
   stroke-width: 1px;
 }
 
 .running-edge {
-  stroke: #6A50EB;
+  stroke: #F55693;
   stroke-width: 2px;
-  stroke-dashoffset: 100;
+  stroke-dashoffset: -100;
   -webkit-animation: edgeAnimation 20000ms linear infinite;
   -moz-animation: edgeAnimation 20000ms linear infinite;
   -o-animation: edgeAnimation 20000ms linear infinite;
@@ -47,10 +57,7 @@
 
 @keyframes edgeAnimation {
   0% {
-    stroke-dashoffset: 100;
-  }
-  50% {
-    stroke-dashoffset: 0;
+    stroke-dashoffset: -100;
   }
   100% {
     stroke-dashoffset: 100;

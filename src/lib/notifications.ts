@@ -1,9 +1,9 @@
-import { notificationStore } from '../stores'
+import { notificationStore } from './stores'
 
 export type Notification = {
   id?: string
   msg?: string
-  type?: NotificationType 
+  type?: NotificationType
   timeout?: number
 }
 
