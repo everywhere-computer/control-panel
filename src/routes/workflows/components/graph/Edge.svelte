@@ -1,10 +1,7 @@
 <script lang="ts">
   import { Edge } from 'svelvet'
 
-  // import { STATUS_COLOURS } from '$routes/workflows/lib/graph'
-
   export let direction: string = 'west'
-  export let previousNode = { status: 'ready' }
   export let status: string = 'ready'
 </script>
 

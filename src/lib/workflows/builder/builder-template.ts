@@ -1,8 +1,10 @@
-import * as HSWorkflow from '@fission-codes/homestar/workflow'
 import { get as getStore } from 'svelte/store'
 
 import { camelCase } from '$lib/utils'
 import type { WorkflowsStore } from '$lib/workflows'
+import generateFunction, {
+  DEFAULT_PARAMS
+} from '$lib/workflows/builder/function-template'
 import defaultWorkflows from '$routes/workflows/lib/workflow-mocks'
 
 const generateBuilderTemplate = (store = null) => {
@@ -16,8 +18,8 @@ const generateBuilderTemplate = (store = null) => {
     name: workflowName,
     nodes: [
       {
-        functionName: 'crop',
-        params: [],
+        functionName: 'blur',
+        params: Object.values(DEFAULT_PARAMS['blur']),
         id: '1',
         connections: [],
         position: {
@@ -26,34 +28,20 @@ const generateBuilderTemplate = (store = null) => {
         }
       }
     ],
-    functions: [
-      {
-        name: 'crop',
-        params: [],
-        image: null
-      }
-    ],
     payload: {
       name: camelCase(workflowName),
       workflow: {
         tasks: [
-          HSWorkflow.cropBase64({
-            name: 'crop64',
-            resource:
-              'ipfs://bafybeiczefaiu7464ehupezpzulnti5jvcwnvdalqrdliugnnwcdz6ljia',
-            args: {
-              // @ts-ignore-next-line
-              data: null,
-              height: 100,
-              width: 100,
-              x: 100,
-              y: 100
-            }
+          generateFunction({
+            functionName: 'blur',
+            label: 'blur64',
+            base64: true
           })
         ]
       }
     },
-    connections: []
+    connections: [],
+    savedImage: null
   }
 
   return defaultBuilderTemplate

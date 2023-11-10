@@ -7,7 +7,7 @@ export default {
       Workflow.cropBase64({
         name: 'crop64',
         resource:
-          'ipfs://bafybeiczefaiu7464ehupezpzulnti5jvcwnvdalqrdliugnnwcdz6ljia',
+          import.meta.env.VITE_WORKFLOW_RESOURCE,
         args: {
           // @ts-ignore-next-line
           data: '',
@@ -17,11 +17,11 @@ export default {
           y: 100
         }
       }),
-      Workflow.blurBase64({
-        name: 'blur64',
+      Workflow.blur({
+        name: 'blur',
         needs: 'crop64',
         resource:
-          'ipfs://bafybeiczefaiu7464ehupezpzulnti5jvcwnvdalqrdliugnnwcdz6ljia',
+          import.meta.env.VITE_WORKFLOW_RESOURCE,
         args: {
           data: '{{needs.crop64.output}}',
           sigma: 0.1

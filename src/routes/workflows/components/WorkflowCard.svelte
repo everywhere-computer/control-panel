@@ -21,12 +21,16 @@
         </div>
         <div class="flex flex-row items-center justify-between w-full">
           <p class="text-label-m text-odd-gray-500">Errors</p>
-          <p class="text-body-m">{workflow?.errors}</p>
+          <p class="text-body-m">
+            {workflow?.runs?.length
+              ? workflow?.runs.filter(w => w.status === 'failed')?.length
+              : 0}
+          </p>
         </div>
-        <div class="flex flex-row items-center justify-between w-full">
+        <!-- <div class="flex flex-row items-center justify-between w-full">
           <p class="text-label-m text-odd-gray-500">Median CPU Time</p>
           <p class="text-body-m">{workflow?.medianCPUTime}</p>
-        </div>
+        </div> -->
       </div>
     </div>
 

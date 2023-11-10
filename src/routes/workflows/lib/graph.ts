@@ -18,19 +18,23 @@ export const STATUS_COLOURS = {
 }
 
 export const FUNCTION_PARAMS = {
-  blur: [{ name: 'sigma', type: 'number', max: 1, note: 'float' }],
-  'blur-base64': [{ name: 'sigma', type: 'number', max: 1, note: 'float' }],
+  blur: [
+    { name: 'sigma', type: 'number', max: 0.99, note: 'float', default: 0.1 }
+  ],
+  'blur-base64': [
+    { name: 'sigma', type: 'number', max: 0.99, note: 'float', default: 0.1 }
+  ],
   crop: [
-    { name: 'x', type: 'number' },
-    { name: 'y', type: 'number' },
-    { name: 'width', type: 'number' },
-    { name: 'height', type: 'number' }
+    { name: 'x', type: 'number', default: 50 },
+    { name: 'y', type: 'number', default: 50 },
+    { name: 'width', type: 'number', default: 100 },
+    { name: 'height', type: 'number', default: 100 }
   ],
   'crop-base64': [
-    { name: 'x', type: 'number' },
-    { name: 'y', type: 'number' },
-    { name: 'width', type: 'number' },
-    { name: 'height', type: 'number' }
+    { name: 'x', type: 'number', default: 50 },
+    { name: 'y', type: 'number', default: 50 },
+    { name: 'width', type: 'number', default: 100 },
+    { name: 'height', type: 'number', default: 100 }
   ],
   'grayscale-base64': [],
   grayscale: [],

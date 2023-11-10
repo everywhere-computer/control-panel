@@ -27,8 +27,13 @@
   export let receipt: Receipt
 
   // Save the updated params to the unsavedRunStore to be referenced in Actions
-  const handleParamChange = (event, index: number): void => {
+  const handleParamChange = (event, param, index: number): void => {
     const updatedArg = Number(event?.target?.value)
+
+    if (param?.max && updatedArg > param.max) {
+      addNotification(`Param must be less than ${param.max}`)
+      return
+    }
 
     if (updatedArg < 0 || updatedArg === 0) {
       addNotification('Param must be greater than 0', 'error')
@@ -163,7 +168,7 @@
               type={param.type}
               placeholder="Enter a number..."
               value={args[i + 1]}
-              on:keyup={event => handleParamChange(event, i)}
+              on:keyup={event => handleParamChange(event, param, i)}
               disabled={!editing}
               min="0"
               required

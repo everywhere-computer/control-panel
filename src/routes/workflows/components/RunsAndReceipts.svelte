@@ -17,7 +17,6 @@
     r => Number(r?.label?.split('run ')[1]) === selectedRunIndex
   )
   $: sidebarOpen = false
-  $: uploadedImage = null
 
   let columnWidth = 272
   let windowHeight = window.innerHeight
@@ -35,8 +34,6 @@
     }
   }
 
-  const getTasks = async () => {}
-
   let searchTerm = ''
   $: runs = searchTerm
     ? workflow?.runs?.filter(run =>
@@ -45,14 +42,15 @@
     : workflow?.runs
 
   $: {
+    // console.log('selectedRun', selectedRun)
     // console.log('workflow', workflow)
-    console.log('selectedRun', selectedRun)
-    // console.log('graphWidth', graphWidth)
   }
 
-  // onMount(async () => {
-  //   await getTasks()
-  // })
+  onMount(() => {
+    // Set the selected run to the most recent run on page load
+    selectedRunIndex =
+      workflow.runs.length > 0 ? workflow.runs.length : selectedRunIndex
+  })
 </script>
 
 <svelte:window on:resize={handleWindowResize} />
@@ -78,7 +76,7 @@
       bind:selectedRunIndex
       bind:sidebarOpen
       bind:editing
-      bind:uploadedImage
+      bind:uploadedImage={workflow.savedImage}
       bind:workflow
     />
 
@@ -92,7 +90,7 @@
         id="0"
         connections={['1']}
         position={{ x: 34, y: 90 }}
-        bind:uploadedImage
+        bind:uploadedImage={workflow.savedImage}
       />
 
       {@const tasks =
@@ -105,15 +103,20 @@
           args={task.run.input.args}
           position={{ x: i === 0 ? 186 : (i + 1) * 361 - 170, y: 90 }}
           previousNode={{
-            status: selectedRun?.status
-              ? selectedRun?.status
-              : workflow?.status === 'running'
-              ? 'running'
-              : selectedRun?.receipts?.length
-              ? selectedRun.receipts[i - 1]?.status
-              : 'ready'
+            status:
+              selectedRun && !!selectedRun?.receipts[i - 1]
+                ? selectedRun?.receipts[i - 1]?.status
+                : selectedRun?.status
+                ? selectedRun?.status
+                : workflow?.status === 'running'
+                ? 'running'
+                : selectedRun?.receipts?.length
+                ? selectedRun.receipts[i - 1]?.status
+                : 'ready'
           }}
-          status={selectedRun && selectedRun?.receipts?.length
+          status={selectedRun &&
+          selectedRun?.receipts?.length &&
+          !!selectedRun.receipts[i]?.status
             ? selectedRun.receipts[i]?.status
             : workflow?.status === 'running'
             ? 'running'

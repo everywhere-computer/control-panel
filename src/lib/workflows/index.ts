@@ -18,19 +18,19 @@ export type WorkflowsStore = {
 export type Workflow = {
   id: string
   name: string
-  requests: number
-  errors: number
-  lastModifiedTime: string
-  medianCPUTime: string
-  customDomains: number
-  routes: number
-  cronTriggers: number
-  emailTriggers: number
-  connectedWorkflows: number
   status: string
   payload: Payload
   runs: Run[]
   savedImage: string
+  requests?: number
+  errors?: number
+  lastModifiedTime?: string
+  medianCPUTime?: string
+  customDomains?: number
+  routes?: number
+  cronTriggers?: number
+  emailTriggers?: number
+  connectedWorkflows?: number
 }
 
 export type Run = {
@@ -41,12 +41,25 @@ export type Run = {
   receipts: Receipt[]
 }
 
+// export type SimplePayload = {
+//   name: string
+//   workflow: {
+//     tasks: SimpleTask[]
+//   }
+// }
+// type SimpleTask = {
+//   name: string
+//   data: string
+//   args: number[]
+// }
+
 export type Payload = {
   name: string
   workflow: {
     tasks: Task[]
   }
 }
+
 
 type Task = {
   cause: null
@@ -90,6 +103,12 @@ export type WorkflowState = {
   failedPingCount: number
 }
 
+export type Connection = {
+  sourceNodeId: string
+  targetAnchorId: string
+  targetNodeId: string
+}
+
 type Node = {
   functionName: string
   params: number[]
@@ -101,30 +120,20 @@ type Node = {
   }
 }
 
-type Connection = {
-  sourceNodeId: string
-  targetAnchorId: string
-  targetNodeId: string
-}
-
-type WorkflowFunction = {
-  name: string
-  params: number[]
-  image: string
-}
-
 export type Builder = {
   name: string
-  functions: WorkflowFunction[]
   payload: Payload
   nodes: Node[]
   connections: Connection[]
+  savedImage: string
 }
 
 const prepareWorkflow = async (payload: any, dataUrl: string) => {
   payload.workflow.tasks[0].run.input.args[0] = dataUrl
+
   const builtWorkflow = await workflowBuilder(payload)
-  console.log('build builtWorkflow', builtWorkflow)
+  // console.log('build builtWorkflow', builtWorkflow)
+
   return builtWorkflow
 }
 
@@ -165,7 +174,7 @@ export const runWorkflow = async (workflowId: string, uploadedImage: string, run
                         status: 'running',
                         payload: {
                           ...r.payload,
-                          ...payloadToRun,
+                          ...rawPayloadToRun,
                           name: runName
                         }
                       }
@@ -178,7 +187,7 @@ export const runWorkflow = async (workflowId: string, uploadedImage: string, run
                       label: `run ${runIndex}`,
                       status: 'running',
                       payload: {
-                        ...payloadToRun,
+                        ...rawPayloadToRun,
                         name: runName
                       },
                       receipts: []
@@ -282,17 +291,6 @@ export const handleMessage = async (message: Message): Promise<void> => {
                     ? 'completed'
                     : 'from cache'
                 }
-
-                // // Unsubscribe from from workflow
-                // if (status === 'completed' || status === 'from cache') {
-                //   rpcClient
-                //     .request({
-                //       method: 'unsubscribe_run_workflow',
-                //       params: [subscriptionID]
-                //     })
-                //     .then(() => console.log('unsubscribed'))
-                //     .catch(err => console.error(err))
-                // }
 
                 return {
                   ...matchingRun,

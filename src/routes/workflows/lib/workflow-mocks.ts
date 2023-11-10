@@ -17,7 +17,8 @@ export default [
     connectedWorkflows: 0,
     payload: workflowOne,
     runs: [],
-    status: 'ready'
+    status: 'ready',
+    savedImage: null
   },
   {
     id: 'sampleWorkflowTwo',
@@ -33,7 +34,8 @@ export default [
     connectedWorkflows: 0,
     payload: workflowTwo,
     runs: [],
-    status: 'ready'
+    status: 'ready',
+    savedImage: null
   },
   {
     id: 'sampleWorkflowThree',
@@ -49,6 +51,7 @@ export default [
     connectedWorkflows: 0,
     payload: workflowThree,
     runs: [],
-    status: 'ready'
+    status: 'ready',
+    savedImage: null
   }
 ]

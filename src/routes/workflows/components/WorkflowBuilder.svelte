@@ -1,56 +1,163 @@
 <script lang="ts">
-  // import { goto } from '$app/navigation'
+  import { onDestroy, onMount } from 'svelte'
   import { expoInOut } from 'svelte/easing'
   import { fly } from 'svelte/transition'
   import { Svelvet } from 'svelvet'
 
   import '$routes/workflows/components/graph/graph.css'
   import { workflowsStore } from '$lib/stores'
+  import { camelCase } from '$lib/utils'
+  import generateBuilderTemplate from '$lib/workflows/builder/builder-template'
+  import generateFunction, {
+    DEFAULT_PARAMS
+  } from '$lib/workflows/builder/function-template'
   import Close from '$components/icons/Close.svelte'
   import ImageNode from '$routes/workflows/components/graph/ImageNode.svelte'
+  import LoadingSpinner from '$components/common/LoadingSpinner.svelte'
   import Node from '$routes/workflows/components/graph/NewFunctionNode.svelte'
   import PlusBoxed from '$components/icons/PlusBoxed.svelte'
+  import { addNotification } from '$lib/notifications'
 
   export let showBuilder = false
 
+  let saving = false
+  let showGraph = false
   let windowHeight = window.innerHeight
   let windowWidth = window.innerWidth
 
+  // Window resize handler(used to update svelvet graph size)
   const handleWindowResize = () => {
     windowHeight = window.innerHeight
     windowWidth = window.innerWidth
   }
 
   // Close the builder and navigate to the workflows page
-  const handleCloseBuilder = () => {
-    // goto('/workflows')
-    showBuilder = false
+  const handleCloseBuilder = () => (showBuilder = false)
+
+  // Add a workflow to the workflowsStore
+  const handleSaveWorkflow = () => {
+    saving = true
+
+    // Don't allow workflows with duplicate names to be saved
+    if (
+      $workflowsStore.workflows.find(
+        w => w.name.toLowerCase() === $workflowsStore.builder.name.toLowerCase()
+      )
+    ) {
+      addNotification('Workflow name must be unique', 'error')
+      saving = false
+      return
+    }
+
+    $workflowsStore.builder.payload = {
+      name: camelCase($workflowsStore.builder.name),
+      workflow: {
+        tasks: $workflowsStore.builder.nodes.map(
+          ({ functionName, params }, i) => {
+            const argKeys = Object.keys(DEFAULT_PARAMS[functionName])
+            const options = {
+              functionName,
+              label: `${functionName}${i}`,
+              args: params.reduce(
+                (acc, param, k) => ({
+                  ...acc,
+                  [argKeys[k]]: param
+                }),
+                {}
+              ),
+              ...(i === 0
+                ? {
+                    base64: true,
+                    data:
+                      $workflowsStore.builder.payload.workflow.tasks[0].run
+                        .input.args[0]
+                  }
+                : {
+                    data: `{{needs.${
+                      $workflowsStore.builder.nodes[i - 1].functionName
+                    }${i - 1}.output}}`
+                  })
+            }
+
+            return generateFunction(options)
+          }
+        )
+      }
+    }
+
+    $workflowsStore.workflows.push({
+      name: $workflowsStore.builder.name,
+      id: crypto.randomUUID(),
+      status: 'ready',
+      payload: $workflowsStore.builder.payload,
+      runs: [],
+      savedImage: $workflowsStore.builder.savedImage
+    })
+
+    console.log('$workflowsStore', $workflowsStore)
+
+    saving = false
   }
 
-  const handleSaveWorkflow = () => {}
+  // Add a new Function node to the graph
+  const handleAddFunction = () => {
+    const currentNumberOfNodes = $workflowsStore.builder.nodes.length
+    const mostRecentNodeID =
+      $workflowsStore.builder.nodes[currentNumberOfNodes - 1].id
 
-  const handleAddFunction = () => {}
+    $workflowsStore.builder.nodes[currentNumberOfNodes - 1].connections = [
+      `${Number(mostRecentNodeID) + 1}`
+    ]
 
+    $workflowsStore.builder.nodes = [
+      ...$workflowsStore.builder.nodes,
+      {
+        functionName: 'rotate90',
+        params: Object.values(DEFAULT_PARAMS['rotate90']),
+        id: `${Number(mostRecentNodeID) + 1}`,
+        connections: [],
+        position: { x: windowWidth - 272, y: 76 }
+      }
+    ]
+  }
+
+  // Listen for connections between nodes
   const handleConnection = async e => {
-    let sourceNodeId = e.detail.sourceNode.id.split('-')[1]
-    let targetNodeId = e.detail.targetNode.id.split('-')[1]
-    let targetAnchorId = e.detail.targetAnchor.id
+    const sourceNodeId = e.detail.sourceNode.id.split('-')[1]
+    const targetNodeId = e.detail.targetNode.id.split('-')[1]
+    const targetAnchorId = e.detail.targetAnchor.id
       .replace('A-', '')
       .split('/')[0]
     $workflowsStore.builder.connections = [
       ...$workflowsStore.builder.connections,
       { sourceNodeId, targetNodeId, targetAnchorId }
     ]
-
-    console.log(
-      'Triggered connection event, props stored to $connections: ',
-      $workflowsStore.builder.connections
-    )
   }
 
   $: {
+    // Attach savedImage to builder for easy access
+    $workflowsStore.builder.savedImage =
+      $workflowsStore.builder.payload.workflow.tasks[0].run.input.args[0]
+
     console.log('$workflowsStore.builder', $workflowsStore.builder)
   }
+
+  onMount(() => {
+    // We need to set a brief timeout during the animate in to allow the svelvet canvas to render properly
+    const timeout = setTimeout(() => {
+      showGraph = true
+      clearTimeout(timeout)
+    }, 350)
+  })
+
+  onDestroy(() => {
+    // Clear the builder state when the builder screen closes
+    workflowsStore.update(store => ({
+      ...store,
+      // @ts-ignore
+      builder: generateBuilderTemplate()
+    }))
+  })
 </script>
 
 <svelte:window on:resize={handleWindowResize} />
@@ -95,8 +202,10 @@
           Cancel
         </button>
 
+        <!-- Disable save button unless an image has been uploaded -->
         <button
           on:click={handleSaveWorkflow}
+          disabled={saving}
           class="btn btn-primary btn-odd-purple-500 w-[85px] h-10 !text-label-l"
         >
           Save
@@ -112,27 +221,34 @@
     >
       <PlusBoxed />Add a function
     </button>
-
-    <Svelvet
-      width={windowWidth}
-      height={windowHeight - 120}
-      zoom={1}
-      disableSelection
-      on:connection={handleConnection}
-    >
-      <ImageNode
-        id="0"
-        connections={['1']}
-        position={{ x: 37, y: 26 }}
-        bind:uploadedImage={$workflowsStore.builder.payload.workflow.tasks[0]
-          .run.input.args[0]}
-      />
-      {#each $workflowsStore.builder.nodes as { functionName, position, ...rest }}
-        <Node bind:functionName bind:position {...rest} />
-      {/each}
-      <!-- <Node id="2" connections={['3']} position={{ x: 189, y: 26 }} /> -->
-      <!-- <Node id="3" position={{ x: 600, y: 26 }} /> -->
-      <!-- <Node id="3" position={{ x: 485, y: 26 }} /> -->
-    </Svelvet>
+    {#if showGraph}
+      <Svelvet
+        width={windowWidth}
+        height={windowHeight - 120}
+        zoom={1}
+        disableSelection
+      >
+        <ImageNode
+          id="0"
+          connections={['1']}
+          position={{ x: 37, y: 26 }}
+          bind:uploadedImage={$workflowsStore.builder.payload.workflow.tasks[0]
+            .run.input.args[0]}
+        />
+        {#each $workflowsStore.builder.nodes as { functionName, position, ...rest }, nodeIndex}
+          <Node bind:functionName bind:position {nodeIndex} {...rest} />
+        {/each}
+      </Svelvet>
+    {:else}
+      <div
+        class="flex items-center justify-center w-full bg-base-100"
+        style="height: {windowHeight - 120}px"
+      >
+        <LoadingSpinner />
+      </div>
+    {/if}
+    <!-- <Node id="2" connections={['3']} position={{ x: 189, y: 26 }} /> -->
+    <!-- <Node id="3" position={{ x: 600, y: 26 }} /> -->
+    <!-- <Node id="3" position={{ x: 485, y: 26 }} /> -->
   </div>
 </div>

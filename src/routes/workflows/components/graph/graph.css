@@ -39,6 +39,22 @@
   background: url('/anchor-east-running.svg');
 }
 
+/* .svelvet-node .anchors {
+  @apply absolute;
+}
+.svelvet-node .anchors.left {
+  @apply right-full top-2;
+}
+.svelvet-node .anchors.right {
+  @apply left-full top-2;
+}
+.svelvet-node .anchors.top {
+  @apply left-2 bottom-full;
+}
+.svelvet-node .anchors.bottom {
+  @apply left-2 top-full;
+} */
+
 /* Edges */
 .ready-edge {
   stroke: #8989B0;
