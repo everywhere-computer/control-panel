@@ -14,7 +14,7 @@
   <!-- use:clickOutside
 on:click_outside={handleClickOutside} -->
   <div
-    class="fixed right-4 bottom-24 p-4 max-w-[320px] pt-8 bg-odd-gray-0 border-odd-gray-400 border rounded-2xl text-body-sm"
+    class="fixed right-4 bottom-24 z-50 p-4 max-w-[320px] pt-8 bg-odd-gray-0 border-odd-gray-400 border rounded-2xl text-body-sm"
   >
     <button class="absolute top-4 right-4" on:click={handleOpenWidget}>
       <XIcon />

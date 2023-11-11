@@ -1,13 +1,13 @@
 import { get as getStore } from 'svelte/store'
 
 import { camelCase } from '$lib/utils'
-import type { WorkflowsStore } from '$lib/workflows'
+import type { Builder, WorkflowsStore } from '$lib/workflows'
 import generateFunction, {
   DEFAULT_PARAMS
 } from '$lib/workflows/builder/function-template'
 import defaultWorkflows from '$routes/workflows/lib/workflow-mocks'
 
-const generateBuilderTemplate = (store = null) => {
+const generateBuilderTemplate = (store = null, functionName = 'blur'): Builder => {
   const numberOfWorkflows = store
     ? (getStore(store) as WorkflowsStore)?.workflows?.length
     : defaultWorkflows.length
@@ -18,8 +18,8 @@ const generateBuilderTemplate = (store = null) => {
     name: workflowName,
     nodes: [
       {
-        functionName: 'blur',
-        params: Object.values(DEFAULT_PARAMS['blur']),
+        functionName,
+        params: Object.values(DEFAULT_PARAMS[functionName]),
         id: '1',
         connections: [],
         position: {
@@ -33,8 +33,8 @@ const generateBuilderTemplate = (store = null) => {
       workflow: {
         tasks: [
           generateFunction({
-            functionName: 'blur',
-            label: 'blur64',
+            functionName,
+            label: `${functionName}64`,
             base64: true
           })
         ]

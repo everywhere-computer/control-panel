@@ -39,23 +39,32 @@
   // Delete node and update connections
   const graph = getContext('graph')
   const handleDelete = node => {
-    const updatedNodes = $workflowsStore.builder.nodes
-      .map(node => {
-        // Update connection for preceding node
-        if (Number(node.id) === Number(id) - 1) {
-          return {
-            ...node,
-            // position,
-            connections: [`${Number(id) + 1}`]
-          }
+    // @ts-ignore-next-line
+    graph.nodes.delete(node.id)
+
+    const updatedNodeConnections = $workflowsStore.builder.nodes.map(n => {
+      // Update connection for preceding node
+      if (Number(n.id) === Number(id) - 1) {
+        return {
+          ...n,
+          // position,
+          connections: [`${Number(id) + 1}`]
         }
+      }
 
-        return node
-      })
-      .filter(node => node.id !== id)
-    // graph.nodes.delete(node.id)
+      // Set a flag on the current node so it's not included in the built workflow
+      if (n.id === id) {
+        return {
+          ...n,
+          connections: [],
+          deleted: true
+        }
+      }
 
-    $workflowsStore.builder.nodes = updatedNodes
+      return n
+    })
+
+    $workflowsStore.builder.nodes = updatedNodeConnections
   }
 
   // Save the updated params to the unsavedRunStore to be referenced in Actions
@@ -159,7 +168,6 @@
               use:clickOutside={{
                 enabled: dropdownOpen,
                 cb: () => {
-                  console.log('clicked')
                   dropdownOpen = false
                 }
               }}

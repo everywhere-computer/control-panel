@@ -27,10 +27,15 @@
         : 0
     },
     {
+      label: 'From Cache',
+      value: workflow?.runs?.length
+        ? workflow?.runs.filter(w => w.status === 'from cache')?.length
+        : 0
+    },
+    {
       label: 'Last Run',
       value: timeSinceLastRun || 'None yet'
-    },
-    { label: 'Cron Triggers', value: 0 }
+    }
     // { label: 'Custom Domains', value: workflow.customDomains },
     // { label: 'Routes', value: workflow.routes },
     // { label: 'Cron Triggers', value: workflow.cronTriggers },
@@ -40,7 +45,7 @@
   // Check for the time since the last run
   const interval = setInterval(() => {
     timeSinceLastRun = timeSinceNow(workflow.lastRunTime)
-  }, 10000)
+  }, 3000)
 
   $: {
     timeSinceLastRun = timeSinceNow(workflow.lastRunTime)

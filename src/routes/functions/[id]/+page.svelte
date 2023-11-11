@@ -1,10 +1,12 @@
 <script lang="ts">
   import { page } from '$app/stores'
-  import { marked } from 'marked'
-  import sanitizeHtml from 'sanitize-html'
+  // import { marked } from 'marked'
+  // import sanitizeHtml from 'sanitize-html'
 
   import '$routes/functions/styles/markdown-styles-light.css'
   import { functionsStore, workflowsStore } from '$lib/stores'
+  import generateBuilderTemplate from '$lib/workflows/builder/builder-template'
+  import WorkflowBuilder from '$routes/workflows/components/WorkflowBuilder.svelte'
 
   $: func = $functionsStore?.functions?.find(f => f?.id === $page.params.id)
 
@@ -14,12 +16,19 @@
       t.run.input.func.includes(func.name.toLowerCase())
     )
   )?.length
+
+  $: showBuilder = false
+
+  const handleShowBuilder = () => {
+    $workflowsStore.builder = generateBuilderTemplate(workflowsStore, func.slug)
+    showBuilder = true
+  }
 </script>
 
 <div class="max-w-[800px] m-auto py-8">
   {#if func}
     <div class="flex flex-col gap-4 mb-4">
-      <h1 class="text-heading-lg">{func?.name}</h1>
+      <h1 class="text-heading-lg">{func.name}</h1>
     </div>
 
     <div class="flex flex-col md:flex-row gap-8 justify-between w-full">
@@ -31,15 +40,18 @@
       </div>
 
       <div class="flex flex-col gap-4">
-        <!-- <button class="btn btn-primary btn-odd-purple-500">
+        <button
+          on:click={handleShowBuilder}
+          class="btn btn-primary btn-odd-purple-500 btn-sm min-w-[150px]"
+        >
           Add to workflow
-        </button> -->
+        </button>
         <div class="">
           <p>Documentation</p>
           <p class="font-bold text-body-sm underline text-blue-600">
             <a
               class="text-primary"
-              href={func?.repository}
+              href={func.repository}
               target="_blank"
               rel="noreferrer"
             >
@@ -50,7 +62,7 @@
         <div class="">
           <p>Version</p>
           <p class="font-bold text-body-sm">
-            {func?.version}
+            {func.version}
           </p>
         </div>
         <div class="">
@@ -75,3 +87,7 @@
     </div>
   {/if}
 </div>
+
+{#if showBuilder}
+  <WorkflowBuilder bind:showBuilder />
+{/if}

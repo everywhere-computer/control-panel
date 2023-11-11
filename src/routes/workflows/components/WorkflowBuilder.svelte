@@ -111,8 +111,9 @@
       $workflowsStore.builder.payload = {
         name: camelCase($workflowsStore.builder.name),
         workflow: {
-          tasks: $workflowsStore.builder.nodes.map(
-            ({ functionName, params }, i) => {
+          tasks: $workflowsStore.builder.nodes
+            .filter(n => !n.deleted)
+            .map(({ functionName, params }, i) => {
               const argKeys = Object.keys(DEFAULT_PARAMS[functionName])
               const options = {
                 functionName,
@@ -127,9 +128,7 @@
                 ...(i === 0
                   ? {
                       base64: true,
-                      data:
-                        $workflowsStore.builder.payload.workflow.tasks[0].run
-                          .input.args[0]
+                      data: $workflowsStore.builder.savedImage
                     }
                   : {
                       data: `{{needs.${
@@ -142,8 +141,7 @@
               }
 
               return generateFunction(options)
-            }
-          )
+            })
         }
       }
 
@@ -196,10 +194,6 @@
   }
 
   $: {
-    // Attach savedImage to builder for easy access
-    $workflowsStore.builder.savedImage =
-      $workflowsStore.builder.payload.workflow.tasks[0].run.input.args[0]
-
     console.log('$workflowsStore.builder', $workflowsStore.builder)
   }
 
@@ -334,12 +328,12 @@
           position={{ x: 37, y: 26 }}
           bind:imageBitmap
           bind:imageModalOpen
-          bind:uploadedImage={$workflowsStore.builder.payload.workflow.tasks[0]
-            .run.input.args[0]}
+          bind:uploadedImage={$workflowsStore.builder.savedImage}
         />
-        {#each $workflowsStore.builder.nodes as { functionName, position, ...rest }, nodeIndex}
+        {#each $workflowsStore.builder.nodes as { functionName, position, connections, ...rest }, nodeIndex}
           <Node
             bind:functionName
+            bind:connections
             bind:position
             bind:imageBitmap
             {nodeIndex}

@@ -112,6 +112,9 @@ type Node = {
     x: number
     y: number
   }
+  // This is a flag set when deleting a node. We can't remove the node from the array entirely because
+  // svelvet will re-render the following node in the same position as this one
+  deleted?: boolean
 }
 
 export type Builder = {
