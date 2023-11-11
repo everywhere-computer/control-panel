@@ -40,10 +40,6 @@
       <WorkflowCard {workflow} index={i} />
     {/each}
   </div>
-
-  <!-- <a href="/workflows/build" class="btn btn-primary fixed bottom-16 right-3">
-    + Build Workflow
-  </a> -->
 </div>
 
 {#if showBuilder}

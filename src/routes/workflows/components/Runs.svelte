@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte'
+  import { onDestroy, onMount } from 'svelte'
   import { expoInOut } from 'svelte/easing'
   import { fly } from 'svelte/transition'
 
@@ -50,6 +50,21 @@
     // console.log('conditionalProps', conditionalProps)
   }
 
+  onMount(() => {
+    // Inject an initial run into the list if there aren't any yet
+    if (!searchTerm && !runs.length) {
+      workflow.runs = [
+        {
+          label: 'run 1',
+          name: `${workflow.payload.name}_1`,
+          payload: workflow.payload,
+          receipts: [],
+          status: 'ready'
+        }
+      ]
+    }
+  })
+
   onDestroy(unsubscribe)
 </script>
 
@@ -81,21 +96,6 @@
   <div
     class="w-full max-h-[calc(100vh-306px)] mt-3 overflow-y-auto divide-y divide-odd-gray-200"
   >
-    {#if !runs.length}
-      <button
-        on:click={() => handleRunClick(1)}
-        class="flex flex-row items-center justify-between w-full p-4 text-code-m capitalize duration-200 transition-colors ease-in-out hover:bg-odd-teal-100 bg-odd-teal-100"
-      >
-        Run 1
-        <span
-          class="px-1 text-code-sm border {STATUS_COLOURS[
-            'ready'
-          ]} rounded-sm capitalize"
-        >
-          ready
-        </span>
-      </button>
-    {/if}
     {#each runs as run, i}
       {@const runIndex = runs.length - i}
       <button

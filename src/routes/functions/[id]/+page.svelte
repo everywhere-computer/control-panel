@@ -4,33 +4,46 @@
   import sanitizeHtml from 'sanitize-html'
 
   import '$routes/functions/styles/markdown-styles-light.css'
-  import { functionsStore } from '$lib/stores'
+  import { functionsStore, workflowsStore } from '$lib/stores'
 
   $: func = $functionsStore?.functions?.find(f => f?.id === $page.params.id)
+
+  $: workflowsUsedBy = $workflowsStore.workflows.filter(w =>
+    w.payload.workflow.tasks.find(t =>
+      // @ts-ignore-next-line
+      t.run.input.func.includes(func.name.toLowerCase())
+    )
+  )?.length
 </script>
 
-<div class="py-8">
+<div class="max-w-[800px] m-auto py-8">
   {#if func}
     <div class="flex flex-col gap-4 mb-4">
       <h1 class="text-heading-lg">{func?.name}</h1>
     </div>
 
-    <div class="flex flex-col md:flex-row gap-8">
-      <div class="">
-        <div class="markdown-body">
-          {@html sanitizeHtml(marked(func?.description))}
+    <div class="flex flex-col md:flex-row gap-8 justify-between w-full">
+      <div class="grow">
+        <div class="p-4 bg-base-100 rounded-sm text-code-m font-mono">
+          <!-- {@html sanitizeHtml(marked(func?.description))} -->
+          {func.description}
         </div>
       </div>
 
       <div class="flex flex-col gap-4">
-        <button class="btn btn-primary btn-odd-purple-500">
+        <!-- <button class="btn btn-primary btn-odd-purple-500">
           Add to workflow
-        </button>
+        </button> -->
         <div class="">
-          <p>Repository</p>
+          <p>Documentation</p>
           <p class="font-bold text-body-sm underline text-blue-600">
-            <a href={func?.repository} target="_blank" rel="noreferrer">
-              {func?.repository}
+            <a
+              class="text-primary"
+              href={func?.repository}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Visit docs
             </a>
           </p>
         </div>
@@ -43,10 +56,10 @@
         <div class="">
           <p>Used in</p>
           <p class="font-bold text-body-sm">
-            {func?.numberOfProjectsUsing} workflows
+            {workflowsUsedBy} workflows
           </p>
         </div>
-        <div class="">
+        <!-- <div class="">
           <p>Last published</p>
           <p class="font-bold text-body-sm">
             {func?.lastModifiedTime} ago
@@ -57,7 +70,7 @@
           <p class="font-bold text-body-sm">
             {func?.license}
           </p>
-        </div>
+        </div> -->
       </div>
     </div>
   {/if}

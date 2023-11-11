@@ -5,7 +5,7 @@ import workflowThree from '$lib/workflows/samples/workflowThree'
 export default [
   {
     id: 'sampleWorkflowOne',
-    name: 'hello-world-driving-crooner-f6bf',
+    name: 'Sample Workflow #1',
     requests: 124,
     errors: 1,
     lastRunTime: null,
@@ -22,7 +22,7 @@ export default [
   },
   {
     id: 'sampleWorkflowTwo',
-    name: 'image-compression-adventure-365-a4vd',
+    name: 'Sample Workflow #2',
     requests: 482,
     errors: 0,
     lastRunTime: null,
@@ -39,7 +39,7 @@ export default [
   },
   {
     id: 'sampleWorkflowThree',
-    name: 'weather-tracking-sloppy-steaks-h8sd',
+    name: 'Sample Workflow #3',
     requests: 17,
     errors: 0,
     lastRunTime: null,

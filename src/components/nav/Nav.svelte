@@ -15,7 +15,11 @@
   export let screenSize: number | null
 
   let navOpen = false
+  // Toggle the mobile nav open and closed
   const handleToggleNav = () => (navOpen = !navOpen)
+
+  // Explicitly close the nav when clicking outside
+  const handleClickOutside = () => (navOpen = false)
 
   $: {
     if ($navigating) {
@@ -49,9 +53,6 @@
       isActive: $page.url.pathname.includes('/settings/')
     }
   ]
-
-  // Close the nav when clicking outside
-  const handleClickOutside = () => (navOpen = false)
 </script>
 
 <navbar

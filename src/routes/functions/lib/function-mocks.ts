@@ -161,10 +161,11 @@ export default [
     id: '4cfbe3a5-7935-4bb6-b64b-67cb6787018f',
     name: 'Blur',
     slug: 'blur',
-    description: sampleMarkdown,
+    description: `Performs a Gaussian blur on an image. sigma is a measure of how much to blur by.`,
     version: '0.0.1',
     license: 'MIT',
-    repository: 'https://github.com/hexagon/croner',
+    repository:
+      'https://docs.rs/image/latest/image/enum.DynamicImage.html#method.blur',
     numberOfProjectsUsing: 500,
     lastModifiedTime: '50 minutes'
   },
@@ -172,10 +173,11 @@ export default [
     id: 'baebfe64-02e7-4eb2-8700-da6f709b98b2',
     name: 'Crop',
     slug: 'crop',
-    description: sampleMarkdown,
+    description: `Return a cut-out of an image delimited by the bounding rectangle.`,
     version: '0.0.1',
     license: 'MIT',
-    repository: 'https://github.com/hexagon/croner',
+    repository:
+      'https://docs.rs/image/latest/image/enum.DynamicImage.html#method.crop',
     numberOfProjectsUsing: 312,
     lastModifiedTime: '1 hour'
   },
@@ -183,10 +185,11 @@ export default [
     id: 'fd54f26f-3963-437f-be04-b1d396013625',
     name: 'Grayscale',
     slug: 'grayscale',
-    description: sampleMarkdown,
+    description: `Return a grayscale version of an image. Returns Luma images in most cases. However, for f32 images, this will return a grayscale Rgb/Rgba image instead.`,
     version: '0.0.1',
     license: 'MIT',
-    repository: 'https://github.com/hexagon/croner',
+    repository:
+      'https://docs.rs/image/latest/image/enum.DynamicImage.html#method.grayscale',
     numberOfProjectsUsing: 7,
     lastModifiedTime: '50 minutes'
   },
@@ -194,10 +197,11 @@ export default [
     id: '7aebf670-2405-4c85-9504-d37a26a046dc',
     name: 'Rotate90',
     slug: 'rotate90',
-    description: sampleMarkdown,
+    description: `Rotate an image 90 degrees clockwise.`,
     version: '0.0.1',
     license: 'MIT',
-    repository: 'https://github.com/hexagon/croner',
+    repository:
+      'https://docs.rs/image/latest/image/enum.DynamicImage.html#method.rotate90',
     numberOfProjectsUsing: 2,
     lastModifiedTime: '3 hours'
   }

@@ -2,9 +2,17 @@
   import { fly } from 'svelte/transition'
 
   import type { Func } from '$lib/functions'
+  import { workflowsStore } from '$lib/stores'
 
   export let func: Func
   export let index: number
+
+  $: workflowsUsedBy = $workflowsStore.workflows.filter(w =>
+    w.payload.workflow.tasks.find(t =>
+      // @ts-ignore-next-line
+      t.run.input.func.includes(func.name.toLowerCase())
+    )
+  )?.length
 </script>
 
 <div
@@ -27,7 +35,7 @@
         </div>
         <div class="flex flex-row items-center justify-between w-full">
           <p class="text-odd-gray-500 text-label-m">Used by</p>
-          <p class="text-body-m">{func?.numberOfProjectsUsing} workflows</p>
+          <p class="text-body-m">{workflowsUsedBy} workflows</p>
         </div>
         <!-- <div class="flex flex-row items-center justify-between w-full">
           <p class="text-odd-gray-500 text-label-m">Last published</p>
