@@ -1,10 +1,19 @@
 <script lang="ts">
+  import { fly } from 'svelte/transition'
+
   import type { Func } from '$lib/functions'
 
   export let func: Func
+  export let index: number
 </script>
 
 <div
+  in:fly={{
+    y: 20,
+    duration: 200,
+    delay: index === 0 ? 0 : 20 * index,
+    opacity: 0
+  }}
   class="flex flex-col bg-base-100 text-odd-gray-700 border border-transparent transition-colors hover:border-primary rounded-sm"
 >
   <a href={`/functions/${func?.id}`}>
@@ -20,10 +29,10 @@
           <p class="text-odd-gray-500 text-label-m">Used by</p>
           <p class="text-body-m">{func?.numberOfProjectsUsing} workflows</p>
         </div>
-        <div class="flex flex-row items-center justify-between w-full">
+        <!-- <div class="flex flex-row items-center justify-between w-full">
           <p class="text-odd-gray-500 text-label-m">Last published</p>
           <p class="text-body-m">{func?.lastModifiedTime}</p>
-        </div>
+        </div> -->
       </div>
     </div>
   </a>

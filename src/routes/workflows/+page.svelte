@@ -36,8 +36,8 @@
   </div>
   <!-- Workflow list -->
   <div class="flex flex-col gap-4">
-    {#each workflows as workflow}
-      <WorkflowCard {workflow} />
+    {#each workflows as workflow, i}
+      <WorkflowCard {workflow} index={i} />
     {/each}
   </div>
 

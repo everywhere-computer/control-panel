@@ -20,6 +20,8 @@
     r => Number(r?.label?.split('run ')[1]) === selectedRunIndex
   )
   $: sidebarOpen = false
+  $: tasks =
+    selectedRun?.payload?.workflow.tasks || workflow.payload.workflow.tasks
 
   let columnWidth = 272
   let windowHeight = window.innerHeight
@@ -94,7 +96,7 @@
     <Svelvet
       width={graphWidth}
       height={windowHeight - 230}
-      zoom={1}
+      zoom={tasks?.length > 3 ? 0.95 : 1}
       disableSelection
     >
       <ImageNode
@@ -106,8 +108,6 @@
         bind:uploadedImage={workflow.savedImage}
       />
 
-      {@const tasks =
-        selectedRun?.payload?.workflow.tasks || workflow.payload.workflow.tasks}
       {#each tasks as task, i}
         <Node
           id={`${i + 1}`}

@@ -50,6 +50,7 @@
     }
   ]
 
+  // Close the nav when clicking outside
   const handleClickOutside = () => (navOpen = false)
 </script>
 
@@ -74,6 +75,10 @@
       {#if activeNavItem}
         <button
           on:click={handleToggleNav}
+          use:clickOutside={{
+            enabled: navOpen,
+            cb: handleClickOutside
+          }}
           class="toggle-trigger flex flex-row items-center justify-start gap-2 w-full h-full pl-3.5 box-border bg-odd-gray-700 font-sans text-body-sm text-odd-gray-0"
         >
           <svelte:component this={activeNavItem.icon} />{activeNavItem.label}
@@ -83,8 +88,6 @@
             class="absolute z-20 top-full left-0 right-0 border-t border-odd-gray-100"
             in:fly={{ x: -10, duration: 120 }}
             out:fade={{ duration: 100 }}
-            use:clickOutside
-            on:click_outside={handleClickOutside}
           >
             <NavItems inFooter {navItems} />
           </div>

@@ -1,12 +1,21 @@
 <script lang="ts">
+  import { fly } from 'svelte/transition'
+
   import { timeSinceNow } from '$lib/utils'
   import type { Workflow } from '$lib/workflows'
   import Workflows from '$components/icons/Workflows.svelte'
 
+  export let index: number
   export let workflow: Workflow
 </script>
 
 <div
+  in:fly={{
+    y: 20,
+    duration: 200,
+    delay: index === 0 ? 0 : 20 * index,
+    opacity: 0
+  }}
   class="flex flex-col bg-base-100 text-odd-gray-700 border border-odd-gray-50 transition-colors hover:border-primary rounded-sm"
 >
   <a href={`/workflows/${workflow?.id}`}>

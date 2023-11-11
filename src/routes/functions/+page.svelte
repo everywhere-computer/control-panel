@@ -23,8 +23,8 @@
   </div>
 
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    {#each functions as func}
-      <FunctionCard {func} />
+    {#each functions as func, i}
+      <FunctionCard {func} index={i} />
     {/each}
   </div>
 </div>
