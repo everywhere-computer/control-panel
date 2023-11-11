@@ -31,7 +31,9 @@
           <p class="md:w-full md:max-w-[156px] text-label-m text-odd-gray-500">
             Runs
           </p>
-          <p class="text-body-m">{workflow?.runs?.length}</p>
+          <p class="min-w-[10px] text-center text-body-m">
+            {workflow?.runs?.length}
+          </p>
         </div>
         <div
           class="flex flex-row items-center justify-between md:justify-start w-full"
@@ -39,7 +41,7 @@
           <p class="md:w-full md:max-w-[156px] text-label-m text-odd-gray-500">
             Errors
           </p>
-          <p class="text-body-m">
+          <p class="min-w-[10px] text-center text-body-m">
             {workflow?.runs?.length
               ? workflow?.runs.filter(w => w.status === 'failed')?.length
               : 0}
