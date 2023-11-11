@@ -17,25 +17,21 @@ export const STATUS_COLOURS = {
   success: 'bg-odd-green-100 border-transparent text-odd-green-600',
 }
 
+export const BLUR_PARAMS = [
+  { name: 'sigma', type: 'number', min: 0.1, max: 0.99, note: 'float < 1', default: 0.1 }
+]
+export const CROP_PARAMS = [
+  { name: 'x', type: 'number', default: 50 },
+  { name: 'y', type: 'number', default: 50 },
+  { name: 'width', type: 'number', default: 100 },
+  { name: 'height', type: 'number', default: 100 }
+]
+
 export const FUNCTION_PARAMS = {
-  blur: [
-    { name: 'sigma', type: 'number', max: 0.99, note: 'float', default: 0.1 }
-  ],
-  'blur-base64': [
-    { name: 'sigma', type: 'number', max: 0.99, note: 'float', default: 0.1 }
-  ],
-  crop: [
-    { name: 'x', type: 'number', default: 50 },
-    { name: 'y', type: 'number', default: 50 },
-    { name: 'width', type: 'number', default: 100 },
-    { name: 'height', type: 'number', default: 100 }
-  ],
-  'crop-base64': [
-    { name: 'x', type: 'number', default: 50 },
-    { name: 'y', type: 'number', default: 50 },
-    { name: 'width', type: 'number', default: 100 },
-    { name: 'height', type: 'number', default: 100 }
-  ],
+  blur: BLUR_PARAMS,
+  'blur-base64': BLUR_PARAMS,
+  crop: CROP_PARAMS,
+  'crop-base64': CROP_PARAMS,
   'grayscale-base64': [],
   grayscale: [],
   'rotate90-base64': [],

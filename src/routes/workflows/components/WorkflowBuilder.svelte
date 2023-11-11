@@ -7,19 +7,23 @@
   import '$routes/workflows/components/graph/graph.css'
   import { workflowsStore } from '$lib/stores'
   import { camelCase } from '$lib/utils'
+  import { addNotification } from '$lib/notifications'
   import generateBuilderTemplate from '$lib/workflows/builder/builder-template'
   import generateFunction, {
     DEFAULT_PARAMS
   } from '$lib/workflows/builder/function-template'
+  import { CROP_PARAMS } from '$routes/workflows/lib/graph'
   import Close from '$components/icons/Close.svelte'
   import ImageNode from '$routes/workflows/components/graph/ImageNode.svelte'
   import LoadingSpinner from '$components/common/LoadingSpinner.svelte'
   import Node from '$routes/workflows/components/graph/NewFunctionNode.svelte'
   import PlusBoxed from '$components/icons/PlusBoxed.svelte'
-  import { addNotification } from '$lib/notifications'
 
   export let showBuilder = false
 
+  $: imageBitmap = null
+
+  let imageModalOpen = false
   let saving = false
   let showGraph = false
   let windowHeight = window.innerHeight
@@ -38,65 +42,128 @@
   const handleSaveWorkflow = () => {
     saving = true
 
-    // Don't allow workflows with duplicate names to be saved
-    if (
-      $workflowsStore.workflows.find(
-        w => w.name.toLowerCase() === $workflowsStore.builder.name.toLowerCase()
-      )
-    ) {
-      addNotification('Workflow name must be unique', 'error')
-      saving = false
-      return
-    }
+    try {
+      // Don't allow workflows with duplicate names to be saved
+      if (
+        $workflowsStore.workflows.find(
+          w =>
+            w.name.toLowerCase() === $workflowsStore.builder.name.toLowerCase()
+        )
+      ) {
+        addNotification('Workflow name must be unique', 'error')
+        saving = false
+        return
+      }
 
-    $workflowsStore.builder.payload = {
-      name: camelCase($workflowsStore.builder.name),
-      workflow: {
-        tasks: $workflowsStore.builder.nodes.map(
-          ({ functionName, params }, i) => {
-            const argKeys = Object.keys(DEFAULT_PARAMS[functionName])
-            const options = {
-              functionName,
-              label: `${functionName}${i}`,
-              args: params.reduce(
-                (acc, param, k) => ({
-                  ...acc,
-                  [argKeys[k]]: param
-                }),
-                {}
-              ),
-              ...(i === 0
-                ? {
-                    base64: true,
-                    data:
-                      $workflowsStore.builder.payload.workflow.tasks[0].run
-                        .input.args[0]
-                  }
-                : {
-                    data: `{{needs.${
-                      $workflowsStore.builder.nodes[i - 1].functionName
-                    }${i - 1}.output}}`
-                  })
+      // Check for any error classes on fields
+      const errorId = document.querySelector('.input-error')?.id
+      const errorMessage = 'Invalid params'
+      if (errorId && !imageBitmap) {
+        addNotification(errorMessage, 'error')
+        throw new Error(errorMessage)
+      }
+
+      // Validate crop dimensions
+      if (imageBitmap) {
+        const cropTask = $workflowsStore.builder.nodes.find(
+          n => n.functionName === 'crop'
+        )
+        const invalidCropError =
+          cropTask &&
+          cropTask.params.filter((a, i) => {
+            // Crop x or width ex
+            if (
+              ((i === 0 || i === 2) && a > imageBitmap.width) ||
+              ((i === 1 || i === 3) && a > imageBitmap.height)
+            ) {
+              return true
             }
 
-            return generateFunction(options)
-          }
-        )
+            // Crop x + width or y + height exceed image width or height
+            if (
+              (i === 2 && cropTask.params[i - 2] + a > imageBitmap.width) ||
+              (i === 3 && cropTask.params[i - 2] + a > imageBitmap.height)
+            ) {
+              return true
+            }
+
+            return false
+          })?.length
+
+        if (
+          (errorId && CROP_PARAMS.find(p => p.name === errorId)) ||
+          invalidCropError
+        ) {
+          addNotification(
+            `Crop x + width must be less than ${imageBitmap.width} and crop y + height must be less than ${imageBitmap.height}`,
+            'error',
+            7000
+          )
+          throw new Error(errorMessage)
+        }
+
+        if (errorId) {
+          addNotification(errorMessage, 'error')
+          throw new Error(errorMessage)
+        }
       }
+
+      $workflowsStore.builder.payload = {
+        name: camelCase($workflowsStore.builder.name),
+        workflow: {
+          tasks: $workflowsStore.builder.nodes.map(
+            ({ functionName, params }, i) => {
+              const argKeys = Object.keys(DEFAULT_PARAMS[functionName])
+              const options = {
+                functionName,
+                label: `${functionName}${i}`,
+                args: params.reduce(
+                  (acc, param, k) => ({
+                    ...acc,
+                    [argKeys[k]]: Number(param)
+                  }),
+                  {}
+                ),
+                ...(i === 0
+                  ? {
+                      base64: true,
+                      data:
+                        $workflowsStore.builder.payload.workflow.tasks[0].run
+                          .input.args[0]
+                    }
+                  : {
+                      data: `{{needs.${
+                        $workflowsStore.builder.nodes[i - 1].functionName
+                      }${i - 1}.output}}`,
+                      needs: `${
+                        $workflowsStore.builder.nodes[i - 1].functionName
+                      }${i - 1}`
+                    })
+              }
+
+              return generateFunction(options)
+            }
+          )
+        }
+      }
+
+      $workflowsStore.workflows.push({
+        name: $workflowsStore.builder.name,
+        id: crypto.randomUUID(),
+        status: 'ready',
+        payload: $workflowsStore.builder.payload,
+        runs: [],
+        savedImage: $workflowsStore.builder.savedImage
+      })
+
+      saving = false
+
+      handleCloseBuilder()
+
+      addNotification('Workflow created', 'success')
+    } catch (error) {
+      saving = false
     }
-
-    $workflowsStore.workflows.push({
-      name: $workflowsStore.builder.name,
-      id: crypto.randomUUID(),
-      status: 'ready',
-      payload: $workflowsStore.builder.payload,
-      runs: [],
-      savedImage: $workflowsStore.builder.savedImage
-    })
-
-    console.log('$workflowsStore', $workflowsStore)
-
-    saving = false
   }
 
   // Add a new Function node to the graph
@@ -121,17 +188,11 @@
     ]
   }
 
-  // Listen for connections between nodes
-  const handleConnection = async e => {
-    const sourceNodeId = e.detail.sourceNode.id.split('-')[1]
-    const targetNodeId = e.detail.targetNode.id.split('-')[1]
-    const targetAnchorId = e.detail.targetAnchor.id
-      .replace('A-', '')
-      .split('/')[0]
-    $workflowsStore.builder.connections = [
-      ...$workflowsStore.builder.connections,
-      { sourceNodeId, targetNodeId, targetAnchorId }
-    ]
+  // Delete the image and close the modal
+  const handleDeleteImage = () => {
+    $workflowsStore.builder.payload.workflow.tasks[0].run.input.args[0] = null
+    imageBitmap = null
+    imageModalOpen = false
   }
 
   $: {
@@ -143,6 +204,10 @@
   }
 
   onMount(() => {
+    $workflowsStore.builder.name = `New Workflow #${
+      $workflowsStore.workflows.length + 1
+    }`
+
     // We need to set a brief timeout during the animate in to allow the svelvet canvas to render properly
     const timeout = setTimeout(() => {
       showGraph = true
@@ -161,6 +226,41 @@
 </script>
 
 <svelte:window on:resize={handleWindowResize} />
+
+<input
+  type="checkbox"
+  id="image-modal"
+  checked={imageModalOpen}
+  class="modal-toggle"
+/>
+
+{#if imageModalOpen}
+  <div class="modal !z-max">
+    <div
+      class="relative flex flex-col items-center justify-center gap-4 w-full max-w-[500px] pt-16 px-4 pb-4 bg-base-200 rounded-sm"
+    >
+      <button
+        on:click={() => (imageModalOpen = false)}
+        class="absolute top-4 right-4 btn btn-odd-gray-900 flex items-center justify-center gap-1 px-0 w-8 h-8 bg-odd-gray-700 text-odd-gray-100 text-body-sm"
+      >
+        <Close />
+      </button>
+
+      <img
+        src={$workflowsStore.builder.savedImage}
+        class="block w-full h-auto px-4 rounded-sm"
+        alt="uploaded workflow asset"
+      />
+
+      <button
+        on:click={handleDeleteImage}
+        class="self-end btn btn-error btn-odd-red-400 w-[85px] h-10 !text-label-l"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+{/if}
 
 <div
   in:fly={{ y: 500, duration: 300, opacity: 0, easing: expoInOut }}
@@ -232,11 +332,19 @@
           id="0"
           connections={['1']}
           position={{ x: 37, y: 26 }}
+          bind:imageBitmap
+          bind:imageModalOpen
           bind:uploadedImage={$workflowsStore.builder.payload.workflow.tasks[0]
             .run.input.args[0]}
         />
         {#each $workflowsStore.builder.nodes as { functionName, position, ...rest }, nodeIndex}
-          <Node bind:functionName bind:position {nodeIndex} {...rest} />
+          <Node
+            bind:functionName
+            bind:position
+            bind:imageBitmap
+            {nodeIndex}
+            {...rest}
+          />
         {/each}
       </Svelvet>
     {:else}
@@ -247,8 +355,5 @@
         <LoadingSpinner />
       </div>
     {/if}
-    <!-- <Node id="2" connections={['3']} position={{ x: 189, y: 26 }} /> -->
-    <!-- <Node id="3" position={{ x: 600, y: 26 }} /> -->
-    <!-- <Node id="3" position={{ x: 485, y: 26 }} /> -->
   </div>
 </div>

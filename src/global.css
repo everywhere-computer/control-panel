@@ -104,6 +104,11 @@ h1, h2, h3, h4, h5, h6 {
   border-style: ridge;
 }
 
+.btn-odd-red-400 {
+  @apply border-4 border-error rounded-sm text-error-content text-label-sm;
+  border-style: ridge;
+}
+
 /* Input default styles */
 .input-bordered {
   @apply text-base-content border-2 border-base-content;
@@ -127,7 +132,35 @@ h1, h2, h3, h4, h5, h6 {
   @apply text-body-sm;
 }
 
+/* Input styles */
+.input-error {
+  @apply !outline !outline-2 !outline-error;
+}
+
+/* Alert styles */
+.alert {
+  @apply border-4;
+  border-style: ridge;
+}
+.alert.alert-error {
+  @apply border-odd-red-300;
+}
+.alert.alert-success {
+  @apply border-odd-green-300;
+}
+.alert.alert-warning {
+  @apply border-odd-yellow-300;
+}
+.alert.alert-info {
+  @apply border-odd-blue-300;
+}
+
 /* Markdown styles */
 .markdown-body {
   @apply p-4 rounded;
+}
+
+/* Utils */
+.ridge {
+  border-style: ridge;
 }

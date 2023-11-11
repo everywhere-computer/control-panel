@@ -77,3 +77,37 @@ export const camelCase = (str: string): string =>
   str.replace(/(?:^\w|[A-Z]|\b\w)/g,
     (word, index) => index == 0 ? word.toLowerCase() : word.toUpperCase()
   ).replace(/\s+/g, '')
+
+/**
+ * Get the days/hours/minutes between a timestamp and now
+ */
+export const timeSinceNow = (timestamp: number): string => {
+  if (!timestamp) {
+    return null
+  }
+
+  const now = Date.now()
+  const diffMs = (now - timestamp) // milliseconds between now & Christmas
+  const diffDays = Math.floor(diffMs / 86400000) // days
+  const diffHrs = Math.floor((diffMs % 86400000) / 3600000) // hours
+  const diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000) // minutes
+  const diffSecs = Math.round((((diffMs % 86400000) % 3600000) % 60000) / 600) // seconds
+
+  if (diffDays > 0) {
+    return `${diffDays} day${diffDays === 1 ? '' : 's'} ago`
+  }
+
+  if (diffHrs > 0) {
+    return `${diffHrs} hour${diffHrs === 1 ? '' : 's'} ago`
+  }
+
+  if (diffMins > 0) {
+    return `${diffMins} min${diffMins === 1 ? '' : 's'} ago`
+  }
+
+  if (diffSecs > 0) {
+    return `${diffSecs} sec${diffSecs === 1 ? '' : 's'} ago`
+  }
+
+  return null
+}

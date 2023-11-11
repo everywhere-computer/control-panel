@@ -12,8 +12,9 @@
   import Trash from '$components/icons/Trash.svelte'
 
   export let id: string
-  export let nodeIndex: number
   export let connections: string[] = []
+  export let imageBitmap: { width: number; height: number }
+  export let nodeIndex: number
   export let position: { x: number; y: number } = {
     x: 50,
     y: 26
@@ -57,8 +58,67 @@
     $workflowsStore.builder.nodes = updatedNodes
   }
 
+  // Save the updated params to the unsavedRunStore to be referenced in Actions
+  const errorClass = 'input-error'
+  const handleParamChange = (
+    event,
+    param,
+    index: number,
+    nodei: number
+  ): void => {
+    const updatedArg = Number(event?.target?.value)
+    const invalid =
+      updatedArg < 0 ||
+      (param?.max && updatedArg > param.max) ||
+      (functionName === 'blur' && updatedArg < param?.min)
+
+    if (invalid) {
+      // addNotification(`Param must be less than ${param.max}`)
+      event.target.classList.add(errorClass)
+      return
+    }
+
+    // Validate crop params relative to image size
+    if (functionName === 'crop' && imageBitmap) {
+      const invalidCropWidth =
+        (param.name === 'x' || param.name === 'width') &&
+        updatedArg > imageBitmap.width
+      const invalidCropHeight =
+        (param.name === 'y' || param.name === 'height') &&
+        updatedArg > imageBitmap.height
+
+      if (invalidCropWidth || invalidCropHeight) {
+        event.target.classList.add(errorClass)
+        const paramName = `${param.name
+          .charAt(0)
+          .toUpperCase()}${param.name.slice(1)}`
+        if (invalidCropWidth) {
+          addNotification(
+            `${paramName} must be less than ${imageBitmap.width}`,
+            'error'
+          )
+        }
+        if (invalidCropHeight) {
+          addNotification(
+            `${paramName} must be less than ${imageBitmap.height}`,
+            'error'
+          )
+        }
+
+        return
+      }
+    }
+
+    // Remove the errorClass if it's still on, because we're good at this point
+    if (event.target.classList.contains(errorClass)) {
+      event.target.classList.remove(errorClass)
+    }
+
+    $workflowsStore.builder.nodes[nodeIndex].params[index] = updatedArg
+  }
+
   $: {
-    console.log('graph', graph.nodes.getAll())
+    // console.log('graph', graph.nodes.getAll())
   }
 </script>
 
@@ -150,11 +210,14 @@
                 {param.name}
               </label>
               <input
-                class="pl-3 py-0.5 h-8 border border-odd-gray-400 bg-transparent w-full text-input-m text-base-content placeholder:text-base-content rounded-sm transition duration-200 ease-in-out"
+                class="input pl-3 py-0.5 h-8 border border-odd-gray-400 bg-transparent w-full text-input-m text-base-content placeholder:text-base-content rounded-sm transition duration-200 ease-in-out"
                 id={param.name}
+                type={param.type}
                 placeholder="Enter a number..."
+                on:keyup={event =>
+                  handleParamChange(event, param, i, nodeIndex)}
+                value={$workflowsStore.builder.nodes[nodeIndex].params[i]}
                 min="0"
-                bind:value={$workflowsStore.builder.nodes[nodeIndex].params[i]}
                 required
               />
             </div>

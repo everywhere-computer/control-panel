@@ -1,10 +1,12 @@
 <script lang="ts">
   import { unsavedRunStore, workflowsStore } from '$lib/stores'
-  import { runWorkflow, type Workflow, type Run as RunType } from '$lib/workflows/index'
+  import { runWorkflow, type Workflow, type Run as RunType, type Payload } from '$lib/workflows/index'
+  import { CROP_PARAMS } from '$routes/workflows/lib/graph'
   import Duplicate from '$components/icons/Duplicate.svelte'
   import Edit from '$components/icons/Edit.svelte'
   import Run from '$components/icons/Run.svelte'
   import Hamburger from '$components/icons/Hamburger.svelte'
+  import { addNotification } from '$lib/notifications'
 
   export let selectedRun: RunType
   export let selectedRunIndex: number
@@ -17,10 +19,6 @@
   $: showDuplicateButton = workflow?.runs?.length > 0 && selectedRun?.status !== 'ready' && !editing
   $: showEditButton = (workflow?.runs?.length > 0 && selectedRun?.status === 'ready') && uploadedImage && !editing
   $: showRunButton = workflow?.runs?.length > 0 ? selectedRun?.status === 'ready' : !workflow?.runs?.length
-
-  $:{
-    console.log('$unsavedRunStore', $unsavedRunStore)
-  }
 
   // Duplicate the selectedRun
   const handleDuplicateRun = async () => {
@@ -86,7 +84,39 @@
   }
 
   // Save run
-  const handleSaveRun = (cancel: boolean = false) => {
+  const handleSaveRun = async (cancel: boolean = false): Promise<void> => {
+    if (uploadedImage) {
+      // @ts-ignore-next-line
+      const cropTask = ($unsavedRunStore?.payload as Payload)?.workflow?.tasks?.find(t => t?.run?.input?.func?.includes('crop'))
+      const blob = await (await fetch(uploadedImage)).blob()
+      const imageBitmap = await createImageBitmap(blob)
+      const errorId = document.querySelector('.input-error')?.id
+      const errorMessage = 'Invalid params'
+      const invalidCropError = cropTask && cropTask.run.input.args.filter((a, i) => {
+        // Crop x or width ex
+        if (((i === 1 || i === 3) && a > imageBitmap.width) || ((i === 2 || i === 4) && a > imageBitmap.height)) {
+          return true
+        }
+
+        // Crop x + width or y + height exceed image width or height
+        if (i === 3 && (cropTask.run.input.args[i - 2] + a ) > imageBitmap.width || i === 4 && (cropTask.run.input.args[i - 2] + a ) > imageBitmap.height) {
+          return true
+        }
+
+        return false
+      })?.length
+
+      if ((errorId && CROP_PARAMS.find(p => p.name === errorId)) || invalidCropError) {
+        addNotification(`Crop x + width must be less than ${imageBitmap.width} and crop y + height must be less than ${imageBitmap.height}`, 'error', 7000)
+        throw new Error(errorMessage)
+      }
+
+      if (errorId) {
+        addNotification(errorMessage, 'error')
+        throw new Error(errorMessage)
+      }
+    }
+
     workflowsStore.update((state) => ({
       ...state,
       // @ts-ignore-next-line
@@ -117,15 +147,19 @@
   // - if no runs have been created yet, pass in the default workflow payload
   // - if runs have been created, pass in the currently selected run payload
   const handleSaveAndInvokeRun = async (): Promise<void> => {
-    handleSaveRun()
+    try {
+      await handleSaveRun()
 
-    if ($unsavedRunStore?.payload) {
-      await runWorkflow(workflow?.id, uploadedImage, $unsavedRunStore?.payload, $unsavedRunStore?.status)
-    } else {
-      await runWorkflow(workflow?.id, uploadedImage)
+      if ($unsavedRunStore?.payload) {
+        await runWorkflow(workflow?.id, uploadedImage, $unsavedRunStore?.payload, $unsavedRunStore?.status)
+      } else {
+        await runWorkflow(workflow?.id, uploadedImage)
+      }
+
+      editing = false
+    } catch (error) {
+      console.error(error)
     }
-
-    editing = false
   }
 
   // Toggle the sidebar on mobile

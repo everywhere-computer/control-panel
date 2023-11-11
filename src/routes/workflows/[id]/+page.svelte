@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte'
   import { page } from '$app/stores'
 
   import { workflowsStore } from '$lib/stores'
+  import { timeSinceNow } from '$lib/utils'
   // import Logs from '$routes/workflows/components/Logs.svelte'
   // import Metrics from '$routes/workflows/components/Metrics.svelte'
   import RunsAndReceipts from '$routes/workflows/components/RunsAndReceipts.svelte'
@@ -14,12 +16,39 @@
   // const tabs = ['runs & receipts', 'metrics', 'triggers', 'logs']
   // let activeTab = 'runs & receipts'
 
+  $: timeSinceLastRun = timeSinceNow(workflow.lastRunTime)
+
   $: stats = [
-    { label: 'Custom Domains', value: workflow.customDomains },
-    { label: 'Routes', value: workflow.routes },
-    { label: 'Cron Triggers', value: workflow.cronTriggers },
-    { label: 'Connected Workflows', value: workflow.connectedWorkflows }
+    { label: 'Runs', value: workflow?.runs?.length },
+    {
+      label: 'Errors',
+      value: workflow?.runs?.length
+        ? workflow?.runs.filter(w => w.status === 'failed')?.length
+        : 0
+    },
+    {
+      label: 'Last Run',
+      value: timeSinceLastRun || 'None yet'
+    },
+    { label: 'Cron Triggers', value: 0 }
+    // { label: 'Custom Domains', value: workflow.customDomains },
+    // { label: 'Routes', value: workflow.routes },
+    // { label: 'Cron Triggers', value: workflow.cronTriggers },
+    // { label: 'Connected Workflows', value: workflow.connectedWorkflows }
   ]
+
+  // Check for the time since the last run
+  const interval = setInterval(() => {
+    timeSinceLastRun = timeSinceNow(workflow.lastRunTime)
+  }, 10000)
+
+  $: {
+    timeSinceLastRun = timeSinceNow(workflow.lastRunTime)
+  }
+
+  onDestroy(() => {
+    clearInterval(interval)
+  })
 </script>
 
 <div class="pt-2">

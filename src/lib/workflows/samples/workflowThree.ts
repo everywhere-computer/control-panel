@@ -4,25 +4,21 @@ export default {
   name: 'sampleWorkflowThree',
   workflow: {
     tasks: [
-      Workflow.cropBase64({
-        name: 'crop64',
+      Workflow.blurBase64({
+        name: 'blur64',
         resource: import.meta.env.VITE_WORKFLOW_RESOURCE,
         args: {
           // @ts-ignore-next-line
           data: '',
-          height: 100,
-          width: 100,
-          x: 100,
-          y: 100
+          sigma: 0.1
         }
       }),
-      Workflow.blur({
-        name: 'blur',
-        needs: 'crop64',
+      Workflow.rotate90({
+        name: 'rotate90',
+        needs: 'blur64',
         resource: import.meta.env.VITE_WORKFLOW_RESOURCE,
         args: {
-          data: '{{needs.crop64.output}}',
-          sigma: 0.1
+          data: '{{needs.blur64.output}}',
         }
       })
     ]

@@ -40,7 +40,6 @@ const generateBuilderTemplate = (store = null) => {
         ]
       }
     },
-    connections: [],
     savedImage: null
   }
 

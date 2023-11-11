@@ -11,10 +11,10 @@ export default {
         args: {
           // @ts-ignore-next-line
           data: '',
-          height: 100,
-          width: 100,
-          x: 100,
-          y: 100
+          height: 50,
+          width: 50,
+          x: 10,
+          y: 10
         }
       }),
       Workflow.blur({

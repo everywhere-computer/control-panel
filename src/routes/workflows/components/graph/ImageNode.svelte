@@ -7,6 +7,8 @@
 
   export let id: string
   export let connections: string[] = []
+  export let imageBitmap = null
+  export let imageModalOpen = false
   export let position: { x: number; y: number } = {
     x: 50,
     y: 50
@@ -15,9 +17,10 @@
 
   $: status = 'ready'
 
-  /**
-   * Handle uploads made by interacting with the file input directly
-   */
+  // Toggle the image modal state
+  const handleToggleModal = () => (imageModalOpen = !imageModalOpen)
+
+  // Handle uploads made by interacting with the file input directly
   const handleFileInput: (files: FileList) => Promise<void> = async files => {
     status = 'running'
 
@@ -28,8 +31,9 @@
     }
 
     const fr = new FileReader()
-    fr.onload = () => {
+    fr.onload = async () => {
       uploadedImage = fr.result
+      imageBitmap = await createImageBitmap(files[0])
     }
     fr.readAsDataURL(files[0])
 
@@ -75,8 +79,10 @@
       {#if uploadedImage}
         <img
           src={uploadedImage}
-          class="block w-full h-full object-cover border border-odd-gray-200 rounded-sm"
+          class="block w-full h-full object-cover border border-odd-gray-200 rounded-sm transition-opacity duration-200 ease-in-out hover:opacity-90 cursor-pointer"
           alt="uploaded workflow asset"
+          on:click={handleToggleModal}
+          on:keyup={handleToggleModal}
         />
       {:else}
         <label

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { timeSinceNow } from '$lib/utils'
   import type { Workflow } from '$lib/workflows'
   import Workflows from '$components/icons/Workflows.svelte'
 
@@ -15,31 +16,43 @@
       </h3>
 
       <div class="flex flex-col items-center text-body-sm w-full mt-auto">
-        <div class="flex flex-row items-center justify-between w-full">
-          <p class="text-label-m text-odd-gray-500">Runs</p>
+        <div
+          class="flex flex-row items-center justify-between md:justify-start w-full"
+        >
+          <p class="md:w-full md:max-w-[156px] text-label-m text-odd-gray-500">
+            Runs
+          </p>
           <p class="text-body-m">{workflow?.runs?.length}</p>
         </div>
-        <div class="flex flex-row items-center justify-between w-full">
-          <p class="text-label-m text-odd-gray-500">Errors</p>
+        <div
+          class="flex flex-row items-center justify-between md:justify-start w-full"
+        >
+          <p class="md:w-full md:max-w-[156px] text-label-m text-odd-gray-500">
+            Errors
+          </p>
           <p class="text-body-m">
             {workflow?.runs?.length
               ? workflow?.runs.filter(w => w.status === 'failed')?.length
               : 0}
           </p>
         </div>
-        <!-- <div class="flex flex-row items-center justify-between w-full">
-          <p class="text-label-m text-odd-gray-500">Median CPU Time</p>
+        <!-- <div class="flex flex-row items-center justify-between md:justify-start w-full">
+          <p class="md:w-full md:max-w-[156px] text-label-m text-odd-gray-500">Median CPU Time</p>
           <p class="text-body-m">{workflow?.medianCPUTime}</p>
         </div> -->
       </div>
     </div>
 
     <div
-      class="flex flex-row items-center gap-2 w-full px-4 py-3 bg-odd-gray-150 rounded-b-sm"
+      class="flex flex-row items-center gap-2 w-full px-4 py-3 bg-odd-gray-150 text-odd-gray-500 rounded-b-sm"
     >
       <Workflows />
       <p class="text-label-m">
-        Last run {workflow?.lastModifiedTime} ago
+        {#if timeSinceNow(workflow.lastRunTime)}
+          Last run: {timeSinceNow(workflow.lastRunTime)}
+        {:else}
+          Last run: none yet
+        {/if}
       </p>
     </div>
   </a>

@@ -3,6 +3,7 @@ import * as HSWorkflow from '@fission-codes/homestar/workflow'
 type GeneratorParams = {
   functionName: string
   label: string
+  needs?: string
   base64?: boolean
   data?: string
   args?: FunctionParams
@@ -25,13 +26,15 @@ const generateFunction = ({
   label,
   base64 = false,
   data = null,
-  args = null
+  args = null,
+  needs = null
 }: GeneratorParams): any => {
   const homestarFunctionName = `${functionName}${base64 ? 'Base64' : ''}`
 
   return HSWorkflow[homestarFunctionName]({
     name: label,
     resource: import.meta.env.VITE_WORKFLOW_RESOURCE,
+    ...(needs ? { needs } : {}),
     args: {
       data,
       ...(args ? args : DEFAULT_PARAMS[functionName])

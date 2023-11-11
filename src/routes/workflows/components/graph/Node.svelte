@@ -12,32 +12,74 @@
   import type { Run, Payload } from '$lib/workflows'
   import { addNotification } from '$lib/notifications'
 
-  export let id: string
+  export let args = []
   export let connections: string[] = []
   export let editing: boolean = false
+  export let id: string
   export let name: string
-  export let args = []
+  export let imageBitmap: { width: number; height: number }
   export let position: { x: number; y: number } = {
     x: 50,
     y: 50
   }
   export let previousNode = { status: 'ready' }
+  export let receipt: Receipt
   export let selectedRun: Run
   export let status: string
-  export let receipt: Receipt
+
+  let trimmedName = name.split('-')[0]
+
+  $: receiptImage = null
 
   // Save the updated params to the unsavedRunStore to be referenced in Actions
+  const errorClass = 'input-error'
   const handleParamChange = (event, param, index: number): void => {
     const updatedArg = Number(event?.target?.value)
+    const invalid =
+      updatedArg < 0 ||
+      (param?.max && updatedArg > param.max) ||
+      (trimmedName === 'blur' && updatedArg < param?.min)
 
-    if (param?.max && updatedArg > param.max) {
-      addNotification(`Param must be less than ${param.max}`)
+    if (invalid) {
+      // addNotification(`Param must be less than ${param.max}`)
+      event.target.classList.add(errorClass)
       return
     }
 
-    if (updatedArg < 0 || updatedArg === 0) {
-      addNotification('Param must be greater than 0', 'error')
-      return
+    // Validate crop params relative to image size
+    if (trimmedName === 'crop' && imageBitmap) {
+      const invalidCropWidth =
+        (param.name === 'x' || param.name === 'width') &&
+        updatedArg > imageBitmap.width
+      const invalidCropHeight =
+        (param.name === 'y' || param.name === 'height') &&
+        updatedArg > imageBitmap.height
+
+      if (invalidCropWidth || invalidCropHeight) {
+        event.target.classList.add(errorClass)
+        const paramName = `${param.name
+          .charAt(0)
+          .toUpperCase()}${param.name.slice(1)}`
+        if (invalidCropWidth) {
+          addNotification(
+            `${paramName} must be less than ${imageBitmap.width}`,
+            'error'
+          )
+        }
+        if (invalidCropHeight) {
+          addNotification(
+            `${paramName} must be less than ${imageBitmap.height}`,
+            'error'
+          )
+        }
+
+        return
+      }
+    }
+
+    // Remove the errorClass if it's still on, because we're good at this point
+    if (event.target.classList.contains(errorClass)) {
+      event.target.classList.remove(errorClass)
     }
 
     unsavedRunStore.update(state => {
@@ -80,9 +122,9 @@
     })
   }
 
-  $: uploadedImage = null
   $: {
-    uploadedImage = receipt?.out ? receipt.out[1] : null
+    // Set the uploaded image to
+    receiptImage = receipt?.out ? receipt.out[1] : null
   }
 </script>
 
@@ -99,7 +141,7 @@
         : ''}"
     >
       <Anchor id={`${id}_1`} edge={Edge} input locked direction="west">
-        <Edge slot="edge" {previousNode} {status} direction="west" />
+        <Edge slot="edge" {status} direction="west" />
       </Anchor>
     </div>
 
@@ -115,7 +157,7 @@
         direction="east"
         {connections}
       >
-        <Edge slot="edge" {previousNode} {status} direction="east" />
+        <Edge slot="edge" {status} direction="east" />
       </Anchor>
     </div>
 
@@ -139,11 +181,12 @@
       class="flex flex-row items-center justify-between py-2 border-b border-base-200"
     >
       <h4 class="text-label-m capitalize">
-        {name.split('-')[0]}{#if name.includes('blur')}<span
+        {trimmedName}
+        <!-- {#if name.includes('blur')}<span
             class="normal-case pl-1"
           >
             (may take a while)
-          </span>{/if}
+          </span>{/if} -->
       </h4>
     </div>
 
@@ -161,7 +204,7 @@
                 </span>{/if}
             </label>
             <input
-              class="pl-3 py-0.5 h-8 border border-odd-gray-400 {editing
+              class="input pl-3 py-0.5 h-8 border border-odd-gray-400 {editing
                 ? 'bg-transparent w-full'
                 : 'max-w-[191px] bg-base-200'} text-input-m text-base-content placeholder:text-base-content rounded-sm transition duration-200 ease-in-out"
               id={param.name}
@@ -180,13 +223,13 @@
       <!-- Don't show the image when editing -->
       {#if !editing}
         <div
-          class="flex items-center justify-center w-24 h-24 {uploadedImage
+          class="flex items-center justify-center w-24 h-24 {receiptImage
             ? ''
             : 'bg-odd-gray-50'} rounded-sm"
         >
-          {#if uploadedImage}
+          {#if receiptImage}
             <img
-              src={uploadedImage}
+              src={receiptImage}
               class="block w-full h-full object-cover border border-odd-gray-200 rounded-sm"
               alt="uploaded workflow asset"
             />

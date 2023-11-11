@@ -24,7 +24,7 @@ export type Workflow = {
   savedImage: string
   requests?: number
   errors?: number
-  lastModifiedTime?: string
+  lastRunTime?: number
   medianCPUTime?: string
   customDomains?: number
   routes?: number
@@ -103,12 +103,6 @@ export type WorkflowState = {
   failedPingCount: number
 }
 
-export type Connection = {
-  sourceNodeId: string
-  targetAnchorId: string
-  targetNodeId: string
-}
-
 type Node = {
   functionName: string
   params: number[]
@@ -124,7 +118,6 @@ export type Builder = {
   name: string
   payload: Payload
   nodes: Node[]
-  connections: Connection[]
   savedImage: string
 }
 
@@ -210,10 +203,11 @@ export const runWorkflow = async (workflowId: string, uploadedImage: string, run
       { ...payloadToRun, name: runName },
       async (data) => {
         if (data.error) {
+          // @ts-ignore-next-line
           throw new Error(data.error)
-
         }
 
+        // @ts-ignore-next-line
         await handleMessage(data.result)
       }
     )
@@ -308,7 +302,8 @@ export const handleMessage = async (message: Message): Promise<void> => {
             return {
               ...workflow,
               status,
-              runs: updatedRuns
+              runs: updatedRuns,
+              ...(['completed', 'failed', 'from cache'].includes(status) ? { lastRunTime: Date.now() } : {}),
             }
           } else {
             return workflow
