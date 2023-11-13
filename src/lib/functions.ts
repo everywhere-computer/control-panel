@@ -14,11 +14,11 @@ export type Func = {
   numberOfProjectsUsing: number
   lastModifiedTime: string
 
-  workflowId: string
-  operation: FunctionOperation
-  selected: boolean
-  status: FunctionStatus
-  message: string
+  workflowId?: string
+  operation?: FunctionOperation
+  selected?: boolean
+  status?: FunctionStatus
+  message?: string
   receipt?: Receipt
 }
 

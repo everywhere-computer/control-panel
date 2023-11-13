@@ -17,8 +17,10 @@
         }.svg`}
         alt="logo backgroud"
       />
-      <div
-        class="logo-mg absolute z-20 top-[11.8%] left-[11.8%] w-[76.4%] h-[76.4%] bg-center bg-cover bg-[url('./logo-mg.gif')]"
+      <img
+        class="logo-mg absolute z-20 top-[11.8%] left-[11.8%] w-[76.4%] h-[76.4%] object-cover"
+        src={`${window.location.origin}/logo-mg.gif`}
+        alt="logo spinning lines"
       />
       <img
         class="logo-fg absolute top-0 left-0 z-10 w-full"
