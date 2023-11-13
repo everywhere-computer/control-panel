@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte'
   import { fly } from 'svelte/transition'
 
   import { themeStore } from '$lib/stores'
@@ -8,6 +9,16 @@
 
   export let index: number
   export let workflow: Workflow
+
+  let timeSinceLastRun = timeSinceNow(workflow.lastRunTime)
+
+  const interval = setInterval(() => {
+    timeSinceLastRun = timeSinceNow(workflow.lastRunTime)
+  }, 5000)
+
+  onDestroy(() => {
+    clearInterval(interval)
+  })
 </script>
 
 <div
@@ -80,8 +91,8 @@
     >
       <Workflows />
       <p class="text-label-m">
-        {#if timeSinceNow(workflow.lastRunTime)}
-          Last run: {timeSinceNow(workflow.lastRunTime)}
+        {#if timeSinceLastRun}
+          Last run: {timeSinceLastRun}
         {:else}
           Last run: none yet
         {/if}

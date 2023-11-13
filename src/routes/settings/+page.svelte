@@ -10,7 +10,7 @@
 
 {#if $sessionStore.session}
   <div
-    class="flex flex-col items-start max-w-[690px] m-auto gap-10 pb-28 text-sm"
+    class="flex flex-col items-start max-w-[800px] m-auto gap-10 pb-28 text-sm"
   >
     <div class="flex flex-col items-start justify-center gap-6">
       <!-- <AvatarUpload /> -->

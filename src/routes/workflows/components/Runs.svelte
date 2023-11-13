@@ -108,7 +108,7 @@
       {@const runIndex = runs.length - i}
       <button
         on:click={() => handleRunClick(runIndex)}
-        class="flex flex-row items-center justify-between w-full p-4 text-code-m font-mono capitalize duration-200 transition-colors ease-in-out hover:bg-odd-teal-100 {selectedRunIndex ===
+        class="flex flex-row items-center justify-between w-full p-4 text-code-m font-mono capitalize duration-200 transition-colors ease-in-out hover:bg-odd-teal-100 dark:hover:bg-odd-teal-700 {selectedRunIndex ===
         runIndex
           ? activeColour
           : 'bg-transparent'}"
