@@ -79,7 +79,9 @@
   {:else}
     <div class="flex flex-col items-start gap-4">
       <button
-        class="btn btn-odd-gray-900 gap-2"
+        class="btn btn-odd-gray-900 text-label-l {loading
+          ? '!bg-odd-gray-800 !text-odd-gray-0 opacity-80'
+          : ''} gap-2"
         on:click={handleRegisterAccount}
         disabled={loading}
       >

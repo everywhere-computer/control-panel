@@ -94,7 +94,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-odd-gray-900 {
-  @apply border-4 border-odd-gray-800 rounded-sm hover:bg-odd-gray-800 hover:border-odd-gray-800;
+  @apply border-4 border-odd-gray-800 bg-odd-gray-900 text-odd-gray-0 rounded-sm hover:bg-odd-gray-800 hover:border-odd-gray-800;
   border-style: ridge;
 }
 
