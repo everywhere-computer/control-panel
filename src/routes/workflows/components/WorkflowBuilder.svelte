@@ -327,7 +327,7 @@
           bind:imageModalOpen
           bind:uploadedImage={$workflowsStore.builder.savedImage}
         />
-        {#each $workflowsStore.builder.nodes as { functionName, position, connections, ...rest }, nodeIndex}
+        {#each $workflowsStore.builder.nodes as { functionName, position, connections, params, ...rest }, nodeIndex}
           <Node
             bind:functionName
             bind:connections
