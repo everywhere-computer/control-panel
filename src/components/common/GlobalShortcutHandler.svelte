@@ -10,7 +10,16 @@
 
   // Map keys to actions
   const keyMap: KeyMap = {
-    n: () => ($workflowsStore.showBuilder = true),
+    Escape: () => {
+      if ($workflowsStore.showBuilder) {
+        $workflowsStore.showBuilder = false
+      }
+    },
+    n: () => {
+      if (!$workflowsStore.showBuilder) {
+        $workflowsStore.showBuilder = true
+      }
+    },
     Shift: () => (showShortcuts = true)
   }
 
