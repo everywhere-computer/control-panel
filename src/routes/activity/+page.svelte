@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onDestroy, onMount } from 'svelte'
 
   import { STATUS_COLOURS } from '$routes/workflows/lib/graph'
   import { requestMetrics } from '$lib/metrics'
@@ -10,14 +10,10 @@
   let metrics = null
   $: lightTheme = $themeStore.selectedTheme === 'light'
 
+  // Poll for metrics
   const interval = setInterval(async () => {
     metrics = await requestMetrics()
-    clearInterval(interval)
   }, 5000)
-
-  onMount(async () => {
-    metrics = await requestMetrics()
-  })
 
   const workflowRuns = $workflowsStore.workflows
     .filter(w => !!w.lastRunTime)
@@ -34,6 +30,14 @@
       ],
       []
     )
+
+  onMount(async () => {
+    metrics = await requestMetrics()
+  })
+
+  onDestroy(() => {
+    clearInterval(interval)
+  })
 </script>
 
 {#if metrics}
