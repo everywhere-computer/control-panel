@@ -16,11 +16,11 @@
   {#each Object.keys(shortcutMap) as key}
     <div class="flex gap-4 items-center justify-start">
       <kbd
-        class="px-2 py-1.5 text-xs font-semibold text-base-content bg-base-100 border border-gray-200 rounded-sm"
+        class="px-2 py-1.5 text-xs font-semibold text-base-content bg-base-100 border border-base-content rounded-sm"
       >
         {key}
       </kbd>
-      <span class="flex gap-4 text-gray-100 font-mono">
+      <span class="flex gap-4 text-base-content font-mono">
         -
         <p class="justify-self-end">{shortcutMap[key]}</p>
       </span>
