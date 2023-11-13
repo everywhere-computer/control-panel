@@ -186,7 +186,7 @@
         <a href="/workflows">Workflow Activity</a>
       </h3>
 
-      {#if workflowRuns}
+      {#if workflowRuns.length}
         <ul class="divide-y divide-base-300">
           {#each workflowRuns as run}
             <li>
@@ -210,6 +210,8 @@
             </li>
           {/each}
         </ul>
+      {:else}
+        <p class="text-code-m font-mono">No runs yet</p>
       {/if}
     </div>
   </div>
