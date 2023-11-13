@@ -25,7 +25,7 @@
   <div class="flex items-center gap-4">
     <Avatar />
 
-    <label for="upload-avatar" class="btn btn-outline">
+    <label for="upload-avatar" class="btn btn-primary btn-odd-purple-500">
       Upload a new avatar
     </label>
     <input

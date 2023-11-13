@@ -3,7 +3,7 @@
   import { Anchor, Node } from 'svelvet'
 
   import { addNotification } from '$lib/notifications'
-  import { workflowsStore } from '$lib/stores'
+  import { themeStore, workflowsStore } from '$lib/stores'
   import { clickOutside } from '$lib/utils'
   import { DEFAULT_PARAMS } from '$lib/workflows/builder/function-template'
   import { BORDER_COLOURS, FUNCTION_PARAMS } from '$routes/workflows/lib/graph'
@@ -179,7 +179,10 @@
             {#if dropdownOpen}
               <ul
                 tabindex="-1"
-                class="absolute top-full z-[60] menu p-2 shadow bg-base-100 rounded-box w-52"
+                class="absolute top-full z-[60] menu p-2 shadow {$themeStore.selectedTheme ===
+                'light'
+                  ? 'bg-base-100'
+                  : 'bg-base-200 text-base-content'} rounded-box w-52"
               >
                 {#each FUNCTION_NAMES as name}
                   <li>

@@ -14,7 +14,10 @@
     kit in a safe place, separate from those devices.
   </p>
 
-  <button class="btn btn-primary w-fit" on:click={handleToggleModal}>
+  <button
+    class="btn btn-odd-purple-500 btn-primary w-fit"
+    on:click={handleToggleModal}
+  >
     Create your recovery kit
   </button>
 </div>

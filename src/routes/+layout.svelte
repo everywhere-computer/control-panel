@@ -21,9 +21,9 @@
     $page.route.id === '/workflows/[id]' ||
     $page.route.id === '/workflows/build'
   $: isHome = $page.route.id === '/'
+  $: isActivity = $page.route.id === '/activity'
   let screenSize: number
-
-  sessionStore.subscribe(session => {
+  let backgroundColour = sessionStore.subscribe(session => {
     if (session.error) {
       const message = errorToMessage(session.error)
       addNotification(message, 'error')
@@ -72,8 +72,12 @@
 <div
   data-theme={$themeStore.selectedTheme}
   class="min-h-screen {isHome
-    ? 'bg-odd-gray-0'
-    : 'bg-odd-gray-50'} duration-200 ease-in-out transition-colors"
+    ? $themeStore.selectedTheme === 'light'
+      ? 'bg-odd-gray-0'
+      : 'bg-base-100'
+    : $themeStore.selectedTheme === 'light'
+    ? 'bg-odd-gray-50'
+    : 'bg-odd-gray-900'} duration-200 ease-in-out transition-colors"
 >
   <Notifications />
 
@@ -87,7 +91,7 @@
         <Nav {screenSize} />
       {/if}
 
-      <div class={isFullWidth ? 'pt-6' : 'p-6'}>
+      <div class={isActivity ? 'pb-6' : isFullWidth ? 'pt-6' : 'p-6'}>
         <slot />
       </div>
 

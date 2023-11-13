@@ -10,8 +10,7 @@ export type Theme = {
 export const DEFAULT_THEME_KEY = 'useDefaultTheme'
 export const THEME_KEY = 'theme'
 
-export const getSystemDefaultTheme = (): ThemeOptions => 'light'
-  // window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+export const getSystemDefaultTheme = (): ThemeOptions => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
 
 export const loadTheme = (): Theme => {
   if (browser) {

@@ -14,19 +14,14 @@
   <!-- use:clickOutside
 on:click_outside={handleClickOutside} -->
   <div
-    class="fixed right-4 bottom-24 z-50 p-4 max-w-[320px] pt-8 bg-odd-gray-0 border-odd-gray-400 border rounded-2xl text-body-sm"
+    class="fixed right-4 bottom-24 z-50 p-4 max-w-[320px] pt-8 bg-odd-gray-0 dark:bg-base-100 border-odd-gray-400 border rounded-2xl text-body-sm"
   >
     <button class="absolute top-4 right-4" on:click={handleOpenWidget}>
       <XIcon />
     </button>
-    <h4 class="mb-4 text-heading-sm">Here's an unstyled data widget 👋</h4>
+    <h4 class="mb-4 text-heading-sm">Here's a Data™ widget 👋</h4>
     <p class="mb-2 text-odd-gray-400">
       We'll eventually show some data related to running workflows here.
-    </p>
-    <p class="text-odd-gray-400">
-      I'm currently persisting this between route changes because I figured
-      users might want to keep it visible while navigating the app, but let me
-      know if that's the wrong assumption 👍
     </p>
   </div>
 {/if}

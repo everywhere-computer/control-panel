@@ -3,7 +3,7 @@
   import { expoInOut } from 'svelte/easing'
   import { fly } from 'svelte/transition'
 
-  import { workflowsStore } from '$lib/stores'
+  import { themeStore, workflowsStore } from '$lib/stores'
   import type { Run, Workflow } from '$lib/workflows/index'
   import { STATUS_COLOURS } from '$routes/workflows/lib/graph'
   import Close from '$components/icons/Close.svelte'
@@ -39,6 +39,8 @@
     windowWidth = window.innerWidth
   }
 
+  $: activeColour =
+    $themeStore.selectedTheme === 'light' ? 'bg-base-100' : 'bg-odd-teal-700'
   $: conditionalProps =
     windowWidth < 768
       ? {
@@ -72,7 +74,10 @@
 
 <div
   {...conditionalProps}
-  class="md:w-[272px] pt-4 bg-base-100 border-r border-odd-gray-200 {sidebarOpen
+  class="md:w-[272px] pt-4 bg-base-100 border-r {$themeStore.selectedTheme ===
+  'light'
+    ? 'border-odd-gray-200'
+    : 'border-base-200'} {sidebarOpen
     ? 'block fixed top-0 right-0 bottom-0 left-0 z-50 w-full'
     : 'hidden'} md:block"
 >
@@ -94,7 +99,10 @@
   </div>
 
   <div
-    class="w-full max-h-[calc(100vh-306px)] mt-3 overflow-y-auto divide-y divide-odd-gray-200"
+    class="w-full max-h-[calc(100vh-306px)] mt-3 overflow-y-auto divide-y {$themeStore.selectedTheme ===
+    'light'
+      ? 'divide-odd-gray-200'
+      : 'divide-base-200'}"
   >
     {#each runs as run, i}
       {@const runIndex = runs.length - i}
@@ -102,7 +110,7 @@
         on:click={() => handleRunClick(runIndex)}
         class="flex flex-row items-center justify-between w-full p-4 text-code-m font-mono capitalize duration-200 transition-colors ease-in-out hover:bg-odd-teal-100 {selectedRunIndex ===
         runIndex
-          ? 'bg-odd-teal-100'
+          ? activeColour
           : 'bg-transparent'}"
       >
         {run?.label}

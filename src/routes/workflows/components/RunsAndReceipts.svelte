@@ -4,6 +4,7 @@
 
   import '$routes/workflows/components/graph/graph.css'
   import { FUNCTION_NODE_SIZES } from '$routes/workflows/lib/graph'
+  import { themeStore } from '$lib/stores'
   import Actions from '$routes/workflows/components/graph/Actions.svelte'
   import Close from '$components/icons/Close.svelte'
   import ImageNode from '$routes/workflows/components/graph/ImageNode.svelte'
@@ -69,7 +70,12 @@
 <svelte:window on:resize={handleWindowResize} />
 
 <div class="flex flex-row w-full px-4 md:px-0 bg-base-200 md:bg-base-100">
-  <div class="w-[{columnWidth}px] md:border-r border-odd-gray-200">
+  <div
+    class="w-[{columnWidth}px] md:border-r {$themeStore.selectedTheme ===
+    'light'
+      ? 'border-odd-gray-200'
+      : 'border-base-200'}"
+  >
     <Runs
       bind:editing
       bind:runs
@@ -81,7 +87,10 @@
   </div>
 
   <div
-    class="w-full w-[calc(100vw-{columnWidth}px)] border-odd-gray-400 border md:border-0 rounded-sm md:rounded-none"
+    class="w-full w-[calc(100vw-{columnWidth}px)] {$themeStore.selectedTheme ===
+    'light'
+      ? 'border-odd-gray-400'
+      : 'border-base-200'} border md:border-0 rounded-sm md:rounded-none"
     bind:offsetWidth={graphWidth}
   >
     <Actions

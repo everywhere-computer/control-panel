@@ -2,7 +2,7 @@
   import { onDestroy } from 'svelte'
   import { page } from '$app/stores'
 
-  import { workflowsStore } from '$lib/stores'
+  import { themeStore, workflowsStore } from '$lib/stores'
   import { timeSinceNow } from '$lib/utils'
   // import Logs from '$routes/workflows/components/Logs.svelte'
   // import Metrics from '$routes/workflows/components/Metrics.svelte'
@@ -19,21 +19,26 @@
   $: timeSinceLastRun = timeSinceNow(workflow.lastRunTime)
 
   $: stats = [
-    { label: 'Runs', value: workflow?.runs?.length },
     {
-      label: 'Errors',
+      label: 'Completed Runs',
+      value: workflow?.runs?.length
+        ? workflow?.runs.filter(w => w.status === 'completed')?.length
+        : 0
+    },
+    {
+      label: 'Failed Runs',
       value: workflow?.runs?.length
         ? workflow?.runs.filter(w => w.status === 'failed')?.length
         : 0
     },
     {
-      label: 'From Cache',
+      label: 'From Cache Runs',
       value: workflow?.runs?.length
         ? workflow?.runs.filter(w => w.status === 'from cache')?.length
         : 0
     },
     {
-      label: 'Last Run',
+      label: 'Last Completed Run',
       value: timeSinceLastRun || 'None yet'
     }
     // { label: 'Custom Domains', value: workflow.customDomains },
@@ -66,18 +71,27 @@
       </div>
 
       <div
-        class="flex flex-col md:flex-row w-full divide-x divide-odd-gray-50 items-center w-full text-label-sm text-odd-gray-400"
+        class="flex flex-col md:flex-row w-full divide-x {$themeStore.selectedTheme ===
+        'light'
+          ? 'divide-odd-gray-50'
+          : 'divide-odd-gray-900'} items-center w-full text-label-sm text-odd-gray-400"
       >
         {#each stats as stat}
           <div
             class="flex flex-col items-center justify-center md:basis-1/4 w-full md:w-auto text-odd-gray-700"
           >
             <p
-              class="w-full py-2 bg-odd-gray-200 text-center border-b border-odd-gray-300"
+              class="w-full py-2 {$themeStore.selectedTheme === 'light'
+                ? 'bg-odd-gray-200 divide-odd-gray-300 border-odd-gray-300'
+                : 'bg-base-200 text-base-content divide-odd-gray-900 border-odd-gray-900'} text-center border-b"
             >
               {stat.label}
             </p>
-            <p class="w-full py-2 bg-base-200 text-body-lg text-center">
+            <p
+              class="w-full py-2 {$themeStore.selectedTheme === 'light'
+                ? 'bg-base-200'
+                : 'bg-base-100 text-base-content'} text-body-lg text-center"
+            >
               {stat.value}
             </p>
           </div>

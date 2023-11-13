@@ -1,12 +1,17 @@
 <script lang="ts">
   import { page } from '$app/stores'
 
+  import { themeStore } from '$lib/stores'
+
   export let inFooter: boolean = false
   export let navItems
 </script>
 
 <ul
-  class="flex md:flex-row w-full items-center md:divide-x divide-odd-gray-100 justify-start {inFooter
+  class="flex md:flex-row w-full items-center md:divide-x {$themeStore.selectedTheme ===
+  'light'
+    ? 'divide-odd-gray-100'
+    : 'divide-odd-gray-900'} justify-start {inFooter
     ? 'flex-col divide-y md:flex-row md:divide-x md:divide-y-0 w-full'
     : ''}"
 >

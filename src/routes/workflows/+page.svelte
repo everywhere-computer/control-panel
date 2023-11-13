@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { workflowsStore } from '$lib/stores'
+  import { themeStore, workflowsStore } from '$lib/stores'
   import Search from '$components/common/Search.svelte'
   import WorkflowBuilder from '$routes/workflows/components/WorkflowBuilder.svelte'
   import WorkflowCard from '$routes/workflows/components/WorkflowCard.svelte'
@@ -19,7 +19,11 @@
   <div
     class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 w-full"
   >
-    <p class="text-label-m text-odd-gray-700 w-auto">
+    <p
+      class="text-label-m {$themeStore.selectedTheme === 'light'
+        ? 'text-odd-gray-700'
+        : 'text-odd-gray-300'} w-auto"
+    >
       {workflows?.length} Workflow Template{workflows?.length === 1 ? '' : 's'}
     </p>
 

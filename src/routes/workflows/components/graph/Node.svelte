@@ -9,6 +9,7 @@
   } from '$routes/workflows/lib/graph'
   import Edge from '$routes/workflows/components/graph/Edge.svelte'
   import type { Receipt } from '$lib/functions'
+  import { themeStore } from '$lib/stores'
   import type { Run, Payload } from '$lib/workflows'
   import { addNotification } from '$lib/notifications'
 
@@ -178,7 +179,10 @@
 
     <!-- Header -->
     <div
-      class="flex flex-row items-center justify-between py-2 border-b border-base-200"
+      class="flex flex-row items-center justify-between py-2 border-b {$themeStore.selectedTheme ===
+      'light'
+        ? 'border-base-200'
+        : 'border-odd-gray-500'}"
     >
       <h4 class="text-label-m capitalize">
         {trimmedName}
@@ -225,7 +229,9 @@
         <div
           class="flex items-center justify-center w-24 h-24 {receiptImage
             ? ''
-            : 'bg-odd-gray-50'} rounded-sm"
+            : $themeStore.selectedTheme === 'light'
+            ? 'bg-odd-gray-50'
+            : 'bg-odd-gray-700'} rounded-sm"
         >
           {#if receiptImage}
             <img

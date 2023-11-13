@@ -13,15 +13,15 @@
     class="flex flex-col items-start max-w-[690px] m-auto gap-10 pb-28 text-sm"
   >
     <div class="flex flex-col items-start justify-center gap-6">
-      <AvatarUpload />
+      <!-- <AvatarUpload /> -->
 
       <Username />
 
-      <!-- <ThemePreferences /> -->
+      <ThemePreferences />
 
       <ConnectedDevices />
 
-      <RecoveryKit />
+      <!-- <RecoveryKit /> -->
     </div>
   </div>
 {:else}

@@ -2,7 +2,7 @@
   import { navigating, page } from '$app/stores'
   import { fade, fly } from 'svelte/transition'
 
-  import { sessionStore } from '$lib/stores'
+  import { sessionStore, themeStore } from '$lib/stores'
   import { clickOutside } from '$lib/utils'
   import Activity from '$components/icons/Activity.svelte'
   import Functions from '$components/icons/Functions.svelte'
@@ -65,7 +65,9 @@
     class="{inFooter ? 'hidden md:inline-block' : ''} {$page.url.pathname ===
     '/'
       ? 'text-odd-purple-500'
-      : 'text-odd-gray-700'} border-r border-odd-gray-100 hover:text-odd-purple-500 transition-colors ease-in-out duration-200"
+      : 'text-odd-gray-700'} border-r {$themeStore.selectedTheme === 'light'
+      ? 'border-odd-gray-100'
+      : 'border-odd-gray-900'} hover:text-odd-purple-500 transition-colors ease-in-out duration-200"
   >
     <HeaderLogo />
   </a>

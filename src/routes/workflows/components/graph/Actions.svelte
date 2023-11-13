@@ -17,7 +17,7 @@
 
   $: runDisabled = workflow?.status === 'running' || !uploadedImage
   $: showDuplicateButton = workflow?.runs?.length > 0 && selectedRun?.status !== 'ready' && !editing
-  $: showEditButton = (workflow?.runs?.length > 0 && selectedRun?.status === 'ready') && uploadedImage && !editing
+  $: showEditButton = selectedRun?.status === 'ready' && uploadedImage && !editing
   $: showRunButton = workflow?.runs?.length > 0 ? selectedRun?.status === 'ready' : !workflow?.runs?.length
 
   // Duplicate the selectedRun

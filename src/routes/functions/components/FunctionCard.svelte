@@ -2,7 +2,7 @@
   import { fly } from 'svelte/transition'
 
   import type { Func } from '$lib/functions'
-  import { workflowsStore } from '$lib/stores'
+  import { themeStore, workflowsStore } from '$lib/stores'
 
   export let func: Func
   export let index: number
@@ -30,12 +30,26 @@
 
       <div class="flex flex-col items-center text-body-sm w-full mt-auto">
         <div class="flex flex-row items-center justify-between w-full">
-          <p class="text-odd-gray-500 text-label-m">Version</p>
-          <p class="text-body-m">{func?.version}</p>
+          <p
+            class="{$themeStore.selectedTheme === 'light'
+              ? 'text-odd-gray-500'
+              : 'text-odd-gray-300'} text-label-m"
+          >
+            Version
+          </p>
+          <p class="text-body-m text-base-content">{func?.version}</p>
         </div>
         <div class="flex flex-row items-center justify-between w-full">
-          <p class="text-odd-gray-500 text-label-m">Used by</p>
-          <p class="text-body-m">{workflowsUsedBy} workflows</p>
+          <p
+            class="{$themeStore.selectedTheme === 'light'
+              ? 'text-odd-gray-500'
+              : 'text-odd-gray-300'} text-label-m"
+          >
+            Used by
+          </p>
+          <p class="text-body-m text-base-content">
+            {workflowsUsedBy} workflows
+          </p>
         </div>
         <!-- <div class="flex flex-row items-center justify-between w-full">
           <p class="text-odd-gray-500 text-label-m">Last published</p>

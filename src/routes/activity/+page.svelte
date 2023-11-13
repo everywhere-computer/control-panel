@@ -1,72 +1,216 @@
 <script lang="ts">
   import { onMount } from 'svelte'
 
-  import Filter from '$components/icons/Filter.svelte'
-  import Search from '$components/common/Search.svelte'
-  import Tabs from '$components/common/Tabs.svelte'
-  import VerticalDots from '$components/icons/VerticalDots.svelte'
-  import logs from '$routes/activity/lib/log-mocks'
+  import { STATUS_COLOURS } from '$routes/workflows/lib/graph'
   import { requestMetrics } from '$lib/metrics'
+  import { themeStore, workflowsStore } from '$lib/stores'
+  import LoadingSpinner from '$components/common/LoadingSpinner.svelte'
+  import ProgressBar from '$routes/activity/components/ProgressBar.svelte'
 
-  let searchTerm = ''
+  let metrics = null
+  $: lightTheme = $themeStore.selectedTheme === 'light'
 
-  const tabs = ['logs', 'metrics', 'workflow queue', 'peers', 'receipts']
-  let activeTab = 'logs'
-
-  $: activityLogs = searchTerm
-    ? logs.filter(log => log.toLowerCase().includes(searchTerm?.toLowerCase()))
-    : logs
+  const interval = setInterval(async () => {
+    metrics = await requestMetrics()
+    clearInterval(interval)
+  }, 5000)
 
   onMount(async () => {
-    const metrics = await requestMetrics()
+    metrics = await requestMetrics()
     console.log('metrics', metrics)
   })
+
+  const workflowRuns = $workflowsStore.workflows
+    .filter(w => !!w.lastRunTime)
+    .sort((a, b) => a.lastRunTime - b.lastRunTime)
+    .reduce((acc, w) => {
+      return [
+        ...acc,
+        {
+          id: w.id,
+          name: w.name,
+          label: w.runs[0].label,
+          status: w.runs[0].status
+        }
+      ]
+    }, [])
 </script>
 
-<Tabs {tabs} bind:activeTab />
+{#if metrics}
+  <div class="mb-10 p-2 bg-base-300 text-right">
+    <p
+      class="text-code-sm font-mono {lightTheme
+        ? 'text-odd-gray-500'
+        : 'text-base-content'}"
+    >
+      System up <span class={lightTheme ? 'text-black' : 'text-odd-gray-300'}>
+        {metrics.find(m => m?.metric_name === 'homestar_system_uptime_seconds')
+          ?.data[0]?.value}s
+      </span>
+      Process up
+      <span class={lightTheme ? 'text-black' : 'text-odd-gray-300'}>
+        {metrics.find(m => m?.metric_name === 'homestar_process_uptime_seconds')
+          ?.data[0]?.value}s
+      </span>
+    </p>
+  </div>
 
-<div
-  class="relative z-0 flex flex-col py-4 pb-10 bg-odd-gray-0 border-y-base-300 border-t"
->
-  {#if activeTab === tabs[0]}
-    <div class="">
-      <div class="flex flex-row items-center justify-end gap-2 px-4 mb-4">
-        <Search bind:searchTerm placeholder="Find in logs..." />
+  <div class="flex flex-col gap-4 max-w-[800px] m-auto px-4 text-base-content">
+    <div
+      class="flex flex-col gap-4 p-4 bg-base-100 border border-odd-gray-200 rounded-sm"
+    >
+      <div class="flex flex-row items-center justify-between">
+        <h3 class="text-heading-lg">Peers</h3>
 
-        <button
-          class="btn-odd-gray-900 flex flex-row items-center justify-center gap-1 px-3.5 h-[30px] bg-odd-gray-700 text-odd-gray-100 text-body-sm"
+        <a
+          href="/"
+          class="btn btn-primary btn-odd-purple-500 flex flex-row items-center justify-center gap-1 px-2 py-0 !h-[28px] !text-label-sm"
         >
-          <Filter /> Filter
-        </button>
-
-        <button
-          class="btn-odd-gray-100 flex flex-row items-center justify-center px-2 h-[30px] bg-odd-gray-100 text-odd-gray-700"
-        >
-          <VerticalDots />
-        </button>
+          View Logs
+        </a>
       </div>
 
-      <div class="px-4 pb-4 overflow-x-scroll">
-        {#each activityLogs as log}
-          <p class="text-code-m font-mono whitespace-nowrap">{@html log}</p>
-        {/each}
+      <div class="flex flex-row items-center justify-between w-full">
+        <p class="text-label-sm">Active connections</p>
+        <p class="text-input-sm">0</p>
+      </div>
+
+      <div class="flex flex-row items-center justify-between w-full">
+        <p class="text-label-sm">Receipts received</p>
+        <p class="text-input-sm">0</p>
+      </div>
+
+      <div class="flex flex-row items-center justify-between w-full">
+        <p class="text-label-sm">Receipts sent</p>
+        <p class="text-input-sm">0</p>
       </div>
     </div>
-  {/if}
 
-  {#if activeTab === tabs[1]}
-    <div class="px-4">metrics</div>
-  {/if}
+    <!-- <div class="flex flex-col md:flex-row items-center gap-4"> -->
+    <div
+      class="flex flex-col gap-4 md:min-h-[189px] p-4 bg-base-100 border border-odd-gray-200 rounded-sm"
+    >
+      <h3 class="text-heading-lg">CPU</h3>
 
-  {#if activeTab === tabs[2]}
-    <div class="px-4">workflow queue</div>
-  {/if}
+      <ProgressBar
+        label="Process CPU Usage"
+        used={metrics.find(
+          m => m?.metric_name === 'homestar_process_cpu_usage_percentage'
+        )?.data[0]?.value}
+        total={100}
+      />
 
-  {#if activeTab === tabs[3]}
-    <div class="px-4">peers</div>
-  {/if}
+      <ProgressBar
+        label="Total System Load"
+        used={metrics.find(
+          m => m?.metric_name === 'homestar_process_memory_bytes'
+        )?.data[0]?.value +
+          metrics.find(m => m?.metric_name === 'homestar_process_memory_bytes')
+            ?.data[0]?.value}
+        total={700}
+      />
+    </div>
+    <!-- <div
+        class="w-full md:min-h-[189px] p-4 bg-base-100 border border-odd-gray-200 rounded-sm"
+      >
+        <h3 class="text-heading-lg mb-4">Memory</h3>
+        <ProgressBar
+          buffer={metrics.find(
+            m => m?.metric_name === 'homestar_system_used_memory_bytes'
+          )?.data[0]?.value}
+          used={metrics.find(
+            m => m?.metric_name === 'homestar_process_memory_bytes'
+          )?.data[0]?.value}
+          total={metrics.find(
+            m => m?.metric_name === 'homestar_system_available_memory_bytes'
+          )?.data[0]?.value}
+        />
+      </div>
+    </div> -->
 
-  {#if activeTab === tabs[4]}
-    <div class="px-4">receipts</div>
-  {/if}
-</div>
+    <div class="flex flex-col md:flex-row items-center gap-4">
+      <div
+        class="w-full md:min-h-[138px] p-4 bg-base-100 border border-odd-gray-200 rounded-sm"
+      >
+        <h3 class="text-heading-lg mb-4">Storage</h3>
+
+        <!-- <div class="flex flex-row items-center justify-between w-full mb-2">
+          <p class="text-label-sm">Available disk space</p>
+          <p class="text-input-sm">
+            {metrics.find(
+              m =>
+                m?.metric_name === 'homestar_system_disk_available_space_bytes'
+            )?.data[0]?.value} Gb
+          </p>
+        </div> -->
+        <div class="flex flex-row items-center justify-between w-full mb-4">
+          <p class="text-label-sm">Total read</p>
+          <p class="text-input-sm">
+            {metrics.find(
+              m => m?.metric_name === 'homestar_process_disk_total_read_bytes'
+            )?.data[0]?.value || 0} bytes
+          </p>
+        </div>
+        <div class="flex flex-row items-center justify-between w-full">
+          <p class="text-label-sm">Total written</p>
+          <p class="text-input-sm">
+            {metrics.find(
+              m =>
+                m?.metric_name === 'homestar_process_disk_total_written_bytes'
+            )?.data[0]?.value || 0} bytes
+          </p>
+        </div>
+      </div>
+      <div
+        class="w-full md:min-h-[138px] p-4 bg-base-100 border border-odd-gray-200 rounded-sm"
+      >
+        <h3 class="text-heading-lg mb-4">Database</h3>
+
+        <div class="flex flex-row items-center justify-between w-full">
+          <p class="text-label-sm">Current size</p>
+          <p class="text-input-sm">
+            {metrics.find(
+              m => m?.metric_name === 'homestar_database_size_bytes'
+            )?.data[0]?.value} bytes
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-4 bg-base-100 border border-odd-gray-200 rounded-sm">
+      <h3 class="text-heading-lg mb-4">
+        <a href="/workflows">Workflow Activity</a>
+      </h3>
+
+      {#if workflowRuns}
+        <ul class="divide-y divide-base-300">
+          {#each workflowRuns as run}
+            <li>
+              <a
+                class="flex flex-row items-center justify-between p-4"
+                href="/workflows/{run.id}"
+              >
+                <div class="flex flex-col gap-2">
+                  <h4 class="text-input-m">{run.name}</h4>
+                  <h5 class="text-code-m font-mono capitalize">{run.label}</h5>
+                </div>
+
+                <span
+                  class="px-1 text-code-sm font-mono border {STATUS_COLOURS[
+                    run.status
+                  ]} rounded-sm capitalize"
+                >
+                  {run.status}{run.status === 'running' ? '...' : ''}
+                </span>
+              </a>
+            </li>
+          {/each}
+        </ul>
+      {/if}
+    </div>
+  </div>
+{:else}
+  <div class="flex items-center justify-center">
+    <LoadingSpinner />
+  </div>
+{/if}

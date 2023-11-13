@@ -1,5 +1,6 @@
 <script lang="ts">
   import Search from '$components/icons/Search.svelte'
+  import { themeStore } from '$lib/stores'
 
   export let searchTerm: string = ''
   export let placeholder: string = ''
@@ -14,7 +15,10 @@
   <input
     type="text"
     {placeholder}
-    class="input border border-odd-gray-200 focus:outline-[#50F1C9] bg-odd-gray-0 text-input-m text-odd-gray-500 placeholder-odd-gray-500 w-full h-8 pl-10 relative z-0 rounded-full"
+    class="input border focus:outline-[#50F1C9] bg-base-100 text-input-m {$themeStore.selectedTheme ===
+    'light'
+      ? 'text-odd-gray-500 placeholder-odd-gray-500 border-odd-gray-200'
+      : 'text-odd-gray-300 placeholder-odd-gray-300 border-base-300'} w-full h-8 pl-10 relative z-0 rounded-full"
     bind:value={searchTerm}
     on:keydown={event => {
       if (event.key === 'Escape') {

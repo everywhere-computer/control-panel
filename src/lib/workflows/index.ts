@@ -128,7 +128,6 @@ const prepareWorkflow = async (payload: any, dataUrl: string) => {
   payload.workflow.tasks[0].run.input.args[0] = dataUrl
 
   const builtWorkflow = await workflowBuilder(payload)
-  // console.log('build builtWorkflow', builtWorkflow)
 
   return builtWorkflow
 }
@@ -163,6 +162,7 @@ export const runWorkflow = async (workflowId: string, uploadedImage: string, run
             status: 'running',
             runs:
               runStatus === 'ready'
+                // If a run is ready, modify it in place
                 ? workflow.runs.map((r, i) => {
                     if (i === 0) {
                       return {
@@ -177,6 +177,7 @@ export const runWorkflow = async (workflowId: string, uploadedImage: string, run
                     }
                     return r
                   })
+                // If a run has already been executed, add it to the top of the list
                 : [
                     {
                       name: runName,
@@ -295,7 +296,8 @@ export const handleMessage = async (message: Message): Promise<void> => {
                   payload: {
                     ...matchingRun.payload
                   },
-                  receipts: updatedReceipts
+                  receipts: updatedReceipts,
+                  ...(['completed', 'from cache'].includes(status) ? { lastRunTime: Date.now() } : {}),
                 }
               }
 

@@ -30,10 +30,6 @@ html, body {
   @apply overflow-x-hidden;
 }
 
-body {
-  @apply bg-odd-gray-50;
-}
-
 body, input {
   @apply font-sans text-body-m;
   font-weight: 350;
@@ -92,6 +88,9 @@ h1, h2, h3, h4, h5, h6 {
 .btn-odd-gray-100 {
   @apply bg-base-200 border-4 border-odd-gray-100 rounded-sm text-base-content text-label-sm;
   border-style: ridge;
+}
+[data-theme="dark"] .btn-odd-gray-100 {
+  @apply border-base-200;
 }
 
 .btn-odd-gray-900 {

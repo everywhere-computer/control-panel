@@ -11,7 +11,10 @@
   {:else}
     <p>You have no other connected devices.</p>
   {/if}
-  <button class="btn btn-outline" on:click={() => goto('/delegate-account')}>
+  <button
+    class="btn btn-primary btn-odd-purple-500"
+    on:click={() => goto('/delegate-account')}
+  >
     Connect an additional device
   </button>
 </div>

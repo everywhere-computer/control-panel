@@ -4,6 +4,7 @@
   import { addNotification } from '$lib/notifications'
   import Edge from '$routes/workflows/components/graph/Edge.svelte'
   import UploadIcon from '$components/icons/Upload.svelte'
+  import { themeStore } from '$lib/stores'
 
   export let id: string
   export let connections: string[] = []
@@ -67,19 +68,27 @@
     </div>
 
     <div
-      class="flex flex-row items-center justify-between py-2 border-b border-base-200"
+      class="flex flex-row items-center justify-between py-2 border-b {$themeStore.selectedTheme ===
+      'light'
+        ? 'border-base-200'
+        : 'border-odd-gray-500'}"
     >
       <h4 class="text-label-sm">Image</h4>
     </div>
     <div
       class="flex items-center justify-center w-24 h-24 mt-2 {uploadedImage
         ? ''
-        : 'bg-odd-gray-50'} rounded-sm"
+        : $themeStore.selectedTheme === 'light'
+        ? 'bg-odd-gray-50'
+        : 'bg-odd-gray-900'} rounded-sm"
     >
       {#if uploadedImage}
         <img
           src={uploadedImage}
-          class="block w-full h-full object-cover border border-odd-gray-200 rounded-sm transition-opacity duration-200 ease-in-out hover:opacity-90 cursor-pointer"
+          class="block w-full h-full object-cover border {$themeStore.selectedTheme ===
+          'light'
+            ? 'border-base-200'
+            : 'border-odd-gray-500'} rounded-sm transition-opacity duration-200 ease-in-out hover:opacity-90 cursor-pointer"
           alt="uploaded workflow asset"
           on:click={handleToggleModal}
           on:keyup={handleToggleModal}

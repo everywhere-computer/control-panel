@@ -5,7 +5,7 @@
   import { Svelvet } from 'svelvet'
 
   import '$routes/workflows/components/graph/graph.css'
-  import { workflowsStore } from '$lib/stores'
+  import { themeStore, workflowsStore } from '$lib/stores'
   import { camelCase } from '$lib/utils'
   import { addNotification } from '$lib/notifications'
   import generateBuilderTemplate from '$lib/workflows/builder/builder-template'
@@ -108,40 +108,39 @@
         }
       }
 
+      // Filter out the deleted nodes
+      const activeNodes = $workflowsStore.builder.nodes.filter(n => !n.deleted)
+
       $workflowsStore.builder.payload = {
         name: camelCase($workflowsStore.builder.name),
         workflow: {
-          tasks: $workflowsStore.builder.nodes
-            .filter(n => !n.deleted)
-            .map(({ functionName, params }, i) => {
-              const argKeys = Object.keys(DEFAULT_PARAMS[functionName])
-              const options = {
-                functionName,
-                label: `${functionName}${i}`,
-                args: params.reduce(
-                  (acc, param, k) => ({
-                    ...acc,
-                    [argKeys[k]]: Number(param)
-                  }),
-                  {}
-                ),
-                ...(i === 0
-                  ? {
-                      base64: true,
-                      data: $workflowsStore.builder.savedImage
-                    }
-                  : {
-                      data: `{{needs.${
-                        $workflowsStore.builder.nodes[i - 1].functionName
-                      }${i - 1}.output}}`,
-                      needs: `${
-                        $workflowsStore.builder.nodes[i - 1].functionName
-                      }${i - 1}`
-                    })
-              }
+          tasks: activeNodes.map(({ functionName, params }, i) => {
+            const argKeys = Object.keys(DEFAULT_PARAMS[functionName])
+            const options = {
+              functionName,
+              label: `${functionName}${i}`,
+              args: params.reduce(
+                (acc, param, k) => ({
+                  ...acc,
+                  [argKeys[k]]: Number(param)
+                }),
+                {}
+              ),
+              ...(i === 0
+                ? {
+                    base64: true,
+                    data: $workflowsStore.builder.savedImage
+                  }
+                : {
+                    data: `{{needs.${activeNodes[i - 1].functionName}${
+                      i - 1
+                    }.output}}`,
+                    needs: `${activeNodes[i - 1].functionName}${i - 1}`
+                  })
+            }
 
-              return generateFunction(options)
-            })
+            return generateFunction(options)
+          })
         }
       }
 
@@ -262,7 +261,9 @@
   class="fixed top-0 right-0 bottom-0 left-0 z-10 w-screen h-screen"
 >
   <div
-    class="flex flex-col gap-4 w-full p-4 bg-odd-gray-50 border-b border-base-200"
+    class="flex flex-col gap-4 w-full p-4 {$themeStore.selectedTheme === 'light'
+      ? 'bg-odd-gray-50'
+      : 'bg-odd-gray-900'} border-b border-base-200"
   >
     <div class="flex flex-row items-center justify-between w-full">
       <h1 class="text-heading-lg">Workflow Builder</h1>

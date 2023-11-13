@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { functionsStore } from '$lib/stores'
+  import { functionsStore, themeStore } from '$lib/stores'
   import Search from '$components/common/Search.svelte'
   import FunctionCard from '$routes/functions/components/FunctionCard.svelte'
 
@@ -15,7 +15,11 @@
   <div
     class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 w-full"
   >
-    <p class="text-label-m text-odd-gray-700 w-auto">
+    <p
+      class="text-label-m {$themeStore.selectedTheme === 'light'
+        ? 'text-odd-gray-700'
+        : 'text-odd-gray-300'} w-auto"
+    >
       {functions?.length} Function{functions?.length === 1 ? '' : 's'}
     </p>
 
