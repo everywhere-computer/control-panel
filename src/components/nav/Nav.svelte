@@ -60,17 +60,19 @@
     ? 'h-auto md:h-10 mt-auto'
     : 'h-10'}"
 >
-  <a
-    href="/"
-    class="{inFooter ? 'hidden md:inline-block' : ''} {$page.url.pathname ===
-    '/'
-      ? 'text-odd-purple-500'
-      : 'text-odd-gray-700'} border-r {$themeStore.selectedTheme === 'light'
-      ? 'border-odd-gray-100'
-      : 'border-odd-gray-900'} hover:text-odd-purple-500 transition-colors ease-in-out duration-200"
-  >
-    <HeaderLogo />
-  </a>
+  {#if $sessionStore.session}
+    <a
+      href="/"
+      class="{inFooter ? 'hidden md:inline-block' : ''} {$page.url.pathname ===
+      '/'
+        ? 'text-odd-purple-500'
+        : 'text-odd-gray-700'} border-r {$themeStore.selectedTheme === 'light'
+        ? 'border-odd-gray-100'
+        : 'border-odd-gray-900'} hover:text-odd-purple-500 transition-colors ease-in-out duration-200"
+    >
+      <HeaderLogo />
+    </a>
+  {/if}
 
   {#if $sessionStore.session}
     {#if !inFooter && screenSize < 768}

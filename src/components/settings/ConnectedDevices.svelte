@@ -12,7 +12,7 @@
     <p>You have no other connected devices.</p>
   {/if}
   <button
-    class="btn btn-primary btn-odd-purple-500"
+    class="btn btn-primary btn-odd-purple-500 !text-label-l"
     on:click={() => goto('/delegate-account')}
   >
     Connect an additional device

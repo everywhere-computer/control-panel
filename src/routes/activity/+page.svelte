@@ -175,7 +175,7 @@
           <p class="text-input-sm">
             {metrics.find(
               m => m?.metric_name === 'homestar_database_size_bytes'
-            )?.data[0]?.value} bytes
+            )?.data[0]?.value || 0} bytes
           </p>
         </div>
       </div>
