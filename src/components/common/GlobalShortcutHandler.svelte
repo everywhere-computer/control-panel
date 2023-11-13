@@ -1,5 +1,6 @@
 <script lang="ts">
   import { workflowsStore } from '$lib/stores'
+  import GlobalShortcutView from '$components/common/GlobalShortcutView.svelte'
   import WorkflowBuilder from '$routes/workflows/components/WorkflowBuilder.svelte'
 
   type KeyMap = {
@@ -52,7 +53,7 @@
 <svelte:window on:keydown={handleKeyDown} on:keyup={handleKeyUp} />
 
 {#if showShortcuts}
-  <div class="bg-base-200 rounded-sm" />
+  <GlobalShortcutView />
 {/if}
 
 {#if $workflowsStore.showBuilder}
