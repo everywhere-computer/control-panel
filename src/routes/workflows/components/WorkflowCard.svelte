@@ -41,7 +41,11 @@
             Runs
           </p>
           <p class="min-w-[10px] text-center text-body-m text-base-content">
-            {workflow?.runs?.length}
+            {workflow?.runs?.length
+              ? workflow?.runs.filter(
+                  w => w.status === 'completed' || w.status === 'from cache'
+                )?.length
+              : 0}
           </p>
         </div>
         <div
