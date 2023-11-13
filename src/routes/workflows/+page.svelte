@@ -1,7 +1,6 @@
 <script lang="ts">
   import { themeStore, workflowsStore } from '$lib/stores'
   import Search from '$components/common/Search.svelte'
-  import WorkflowBuilder from '$routes/workflows/components/WorkflowBuilder.svelte'
   import WorkflowCard from '$routes/workflows/components/WorkflowCard.svelte'
 
   let searchTerm = ''
@@ -10,9 +9,8 @@
         workflow?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
       )
     : $workflowsStore?.workflows
-  $: showBuilder = false
 
-  const handleShowBuilder = () => (showBuilder = true)
+  const handleShowBuilder = () => ($workflowsStore.showBuilder = true)
 </script>
 
 <div class="w-full max-w-[800px] m-auto">
@@ -45,7 +43,3 @@
     {/each}
   </div>
 </div>
-
-{#if showBuilder}
-  <WorkflowBuilder bind:showBuilder />
-{/if}

@@ -6,7 +6,6 @@
   import '$routes/functions/styles/markdown-styles-light.css'
   import { functionsStore, workflowsStore } from '$lib/stores'
   import generateBuilderTemplate from '$lib/workflows/builder/builder-template'
-  import WorkflowBuilder from '$routes/workflows/components/WorkflowBuilder.svelte'
 
   $: func = $functionsStore?.functions?.find(f => f?.id === $page.params.id)
 
@@ -17,11 +16,9 @@
     )
   )?.length
 
-  $: showBuilder = false
-
   const handleShowBuilder = () => {
     $workflowsStore.builder = generateBuilderTemplate(workflowsStore, func.slug)
-    showBuilder = true
+    $workflowsStore.showBuilder = true
   }
 </script>
 
@@ -87,7 +84,3 @@
     </div>
   {/if}
 </div>
-
-{#if showBuilder}
-  <WorkflowBuilder bind:showBuilder />
-{/if}

@@ -49,6 +49,7 @@ export const functionsStore: Writable<FunctionsStore> = writable({
 export const workflowsStore: Writable<WorkflowsStore> = writable({
   loading: false,
   builder: generateBuilderTemplate(),
+  showBuilder: false,
   workflows
 })
 

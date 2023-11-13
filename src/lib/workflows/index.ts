@@ -12,6 +12,7 @@ import {
 export type WorkflowsStore = {
   loading: boolean
   builder: Builder
+  showBuilder: boolean
   workflows: Workflow[]
 }
 
