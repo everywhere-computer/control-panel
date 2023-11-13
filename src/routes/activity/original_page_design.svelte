@@ -19,7 +19,6 @@
 
   onMount(async () => {
     const metrics = await requestMetrics()
-    console.log('metrics', metrics)
   })
 </script>
 

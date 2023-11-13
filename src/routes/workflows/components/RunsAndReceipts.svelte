@@ -55,11 +55,6 @@
       )
     : workflow?.runs
 
-  $: {
-    // console.log('selectedRun', selectedRun)
-    console.log('workflow', workflow)
-  }
-
   onMount(() => {
     // Set the selected run to the most recent run on page load
     selectedRunIndex =

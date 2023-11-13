@@ -192,10 +192,6 @@
     imageModalOpen = false
   }
 
-  $: {
-    console.log('$workflowsStore.builder', $workflowsStore.builder)
-  }
-
   onMount(() => {
     $workflowsStore.builder.name = `New Workflow #${
       $workflowsStore.workflows.length + 1

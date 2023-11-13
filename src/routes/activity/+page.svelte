@@ -17,14 +17,13 @@
 
   onMount(async () => {
     metrics = await requestMetrics()
-    console.log('metrics', metrics)
   })
 
   const workflowRuns = $workflowsStore.workflows
     .filter(w => !!w.lastRunTime)
     .sort((a, b) => a.lastRunTime - b.lastRunTime)
-    .reduce((acc, w) => {
-      return [
+    .reduce(
+      (acc, w) => [
         ...acc,
         {
           id: w.id,
@@ -32,8 +31,9 @@
           label: w.runs[0].label,
           status: w.runs[0].status
         }
-      ]
-    }, [])
+      ],
+      []
+    )
 </script>
 
 {#if metrics}
