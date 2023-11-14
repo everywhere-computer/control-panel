@@ -122,11 +122,9 @@
       <ProgressBar
         label="Total System Load"
         used={metrics.find(
-          m => m?.metric_name === 'homestar_process_memory_bytes'
-        )?.data[0]?.value +
-          metrics.find(m => m?.metric_name === 'homestar_process_memory_bytes')
-            ?.data[0]?.value}
-        total={700}
+          m => m?.metric_name === 'homestar_system_load_average_percentage'
+        )?.data[0]?.value}
+        total={7.0}
       />
     </div>
     <!-- <div

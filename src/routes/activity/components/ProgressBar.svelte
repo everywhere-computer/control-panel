@@ -28,9 +28,8 @@
     class="relative w-full h-[22px] bg-base-100 border border-odd-gray-400 rounded-sm"
   >
     <div
-      class="absolute top-0 left-0 bottom-0 z-10 w-[{Math.round(
-        usedPercentage
-      )}%] {currentColour}"
+      class="absolute top-0 left-0 bottom-0 z-10 {currentColour}"
+      style="width: {Math.round(usedPercentage)}%"
     />
     {#if buffer}
       <div
