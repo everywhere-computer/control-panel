@@ -33,6 +33,8 @@
       const encodedUsername = await prepareUsername(fullUsername)
 
       await register(encodedUsername)
+
+      addNotification('Account created!', 'success')
     } catch (error) {
       console.error(error)
       addNotification('Failed to register account', 'error')
