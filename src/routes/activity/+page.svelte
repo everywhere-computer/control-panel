@@ -107,17 +107,18 @@
         delay: 20,
         opacity: 0
       }}
-      class="flex flex-col gap-4 md:min-h-[189px] p-4 bg-base-100 border border-odd-gray-200 rounded-sm"
+      class="flex flex-col gap-4 p-4 bg-base-100 border border-odd-gray-200 rounded-sm"
     >
+      <!-- md:min-h-[189px] -->
       <h3 class="text-heading-lg">CPU</h3>
 
-      <ProgressBar
+      <!-- <ProgressBar
         label="Process CPU Usage"
         used={metrics.find(
           m => m?.metric_name === 'homestar_process_cpu_usage_percentage'
         )?.data[0]?.value}
         total={100}
-      />
+      /> -->
 
       <ProgressBar
         label="Total System Load"

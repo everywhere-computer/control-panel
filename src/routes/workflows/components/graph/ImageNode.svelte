@@ -33,6 +33,12 @@
 
     const fr = new FileReader()
     fr.onload = async () => {
+      // const imgBuffer = Buffer.from(new Uint8Array(fr.result))
+      // const sig = Buffer.from('89504e47', 'hex')
+      // if (imgBuffer.compare(sig, undefined, undefined, 0, 4) === 0) {
+      //   console.log('checked')
+      // }
+
       uploadedImage = fr.result
       imageBitmap = await createImageBitmap(files[0])
     }

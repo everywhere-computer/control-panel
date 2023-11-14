@@ -56,7 +56,7 @@
     ]
   },
   "dependencies": {
-    "@fission-codes/homestar": "^0.5.1",
+    "@fission-codes/homestar": "^0.6.0",
     "@oddjs/odd": "0.37.0",
     "@types/three": "^0.156.0",
     "chart.js": "^4.4.0",
