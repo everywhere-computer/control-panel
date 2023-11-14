@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte'
+  import { fly } from 'svelte/transition'
 
   import { STATUS_COLOURS } from '$routes/workflows/lib/graph'
   import { requestMetrics } from '$lib/metrics'
@@ -59,7 +60,15 @@
     </p>
   </div>
 
-  <div class="flex flex-col gap-4 max-w-[800px] m-auto px-4 text-base-content">
+  <div
+    in:fly={{
+      y: 20,
+      duration: 200,
+      delay: 0,
+      opacity: 0
+    }}
+    class="flex flex-col gap-4 max-w-[800px] m-auto px-4 text-base-content"
+  >
     <div
       class="flex flex-col gap-4 p-4 bg-base-100 border border-odd-gray-200 rounded-sm"
     >
@@ -92,6 +101,12 @@
 
     <!-- <div class="flex flex-col md:flex-row items-center gap-4"> -->
     <div
+      in:fly={{
+        y: 20,
+        duration: 200,
+        delay: 20,
+        opacity: 0
+      }}
       class="flex flex-col gap-4 md:min-h-[189px] p-4 bg-base-100 border border-odd-gray-200 rounded-sm"
     >
       <h3 class="text-heading-lg">CPU</h3>
@@ -134,6 +149,12 @@
 
     <div class="flex flex-col md:flex-row items-center gap-4">
       <div
+        in:fly={{
+          y: 20,
+          duration: 200,
+          delay: 40,
+          opacity: 0
+        }}
         class="w-full md:min-h-[138px] p-4 bg-base-100 border border-odd-gray-200 rounded-sm"
       >
         <h3 class="text-heading-lg mb-4">Storage</h3>
@@ -165,7 +186,14 @@
           </p>
         </div>
       </div>
+
       <div
+        in:fly={{
+          y: 20,
+          duration: 200,
+          delay: 60,
+          opacity: 0
+        }}
         class="w-full md:min-h-[138px] p-4 bg-base-100 border border-odd-gray-200 rounded-sm"
       >
         <h3 class="text-heading-lg mb-4">Database</h3>
@@ -181,7 +209,15 @@
       </div>
     </div>
 
-    <div class="p-4 bg-base-100 border border-odd-gray-200 rounded-sm">
+    <div
+      in:fly={{
+        y: 20,
+        duration: 200,
+        delay: 80,
+        opacity: 0
+      }}
+      class="p-4 bg-base-100 border border-odd-gray-200 rounded-sm"
+    >
       <h3 class="text-heading-lg mb-4">
         <a href="/workflows">Workflow Activity</a>
       </h3>
