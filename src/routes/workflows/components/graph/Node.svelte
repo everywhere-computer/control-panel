@@ -35,7 +35,7 @@
   // Save the updated params to the unsavedRunStore to be referenced in Actions
   const errorClass = 'input-error'
   const handleParamChange = (event, param, index: number): void => {
-    const updatedArg = Number(event?.target?.value)
+    let updatedArg = Number(event?.target?.value)
     const invalid =
       updatedArg < 0 ||
       (param?.max && updatedArg > param.max) ||

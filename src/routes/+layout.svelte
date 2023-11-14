@@ -4,6 +4,7 @@
   import { onDestroy, onMount } from 'svelte'
 
   import '../global.css'
+  import subscribNetworkEvents from '$lib/network'
   import { addNotification } from '$lib/notifications'
   import { appDescription, appImageURL, appName, appURL } from '$lib/app-info'
   import { sessionStore, themeStore } from '$lib/stores'
@@ -47,6 +48,7 @@
 
   onMount(() => {
     subscribeRPC()
+    subscribNetworkEvents()
   })
 
   onDestroy(() => {

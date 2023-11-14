@@ -136,7 +136,7 @@ const prepareWorkflow = async (payload: any, dataUrl: string) => {
 /**
  * Run a workflow
  */
-export const runWorkflow = async (workflowId: string, uploadedImage: string, runPayload = null, runStatus = null): Promise<void> => {
+export const runWorkflow = async (workflowId: string, uploadedImage: string, runPayload = null, runStatus = null, originalPayload = null): Promise<void> => {
   try {
     const workflows = getStore(workflowsStore)
     const matchingWorkflow = workflows.workflows.find(
@@ -163,29 +163,33 @@ export const runWorkflow = async (workflowId: string, uploadedImage: string, run
             status: 'running',
             runs:
               runStatus === 'ready'
-                // If a run is ready, modify it in place
-                ? workflow.runs.map((r, i) => {
+                ? // If a run is ready, modify it in place
+                  workflow.runs.map((r, i) => {
                     if (i === 0) {
                       return {
                         ...r,
                         status: 'running',
                         payload: {
                           ...r.payload,
-                          ...rawPayloadToRun,
+                          ...(originalPayload
+                            ? { ...originalPayload }
+                            : { ...rawPayloadToRun }),
                           name: runName
                         }
                       }
                     }
                     return r
                   })
-                // If a run has already been executed, add it to the top of the list
-                : [
+                : // If a run has already been executed, add it to the top of the list
+                  [
                     {
                       name: runName,
                       label: `run ${runIndex}`,
                       status: 'running',
                       payload: {
-                        ...rawPayloadToRun,
+                        ...(originalPayload
+                          ? { ...originalPayload }
+                          : { ...rawPayloadToRun }),
                         name: runName
                       },
                       receipts: []

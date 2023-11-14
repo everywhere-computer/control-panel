@@ -76,8 +76,36 @@
 
   // Invoke run
   const handleInvokeRun = async (): Promise<void> => {
+    let payload = selectedRun?.payload
+    // @ts-ignore-next-line
+    const originalPayload = JSON.parse(JSON.stringify(selectedRun?.payload))
+
+    // Ensure blur params are always sent as float
+    // @ts-ignore-next-line
+    const blurTask = payload?.workflow?.tasks?.filter(t => t?.run?.input?.func?.includes('blur'))
+    if (blurTask) {
+      // @ts-ignore-next-line
+      payload.workflow.tasks = payload?.workflow?.tasks.map((t) => {
+        // @ts-ignore-next-line
+        if (t?.run?.input?.func?.includes('blur') && String(t?.run?.input?.args[1]).split('.')?.length === 1) {
+          return {
+            ...t,
+            run: {
+              ...t.run,
+              input: {
+                ...t.run.input,
+                args: [t.run.input.args[0], t.run.input.args[1] + 0.0001]
+              }
+            }
+          }
+        }
+
+        return t
+      })
+    }
+
     if (workflow?.runs?.length > 0) {
-      await runWorkflow(workflow?.id, uploadedImage, selectedRun?.payload, selectedRun?.status)
+      await runWorkflow(workflow?.id, uploadedImage, payload, selectedRun?.status, originalPayload)
     } else {
       await runWorkflow(workflow?.id, uploadedImage)
     }
@@ -150,8 +178,36 @@
     try {
       await handleSaveRun()
 
-      if ($unsavedRunStore?.payload) {
-        await runWorkflow(workflow?.id, uploadedImage, $unsavedRunStore?.payload, $unsavedRunStore?.status)
+      let payload = $unsavedRunStore?.payload
+      // @ts-ignore-next-line
+      const originalPayload = JSON.parse(JSON.stringify($unsavedRunStore?.payload))
+
+      // Ensure blur params are always sent as float
+      // @ts-ignore-next-line
+      const blurTask = payload?.workflow?.tasks?.filter(t => t?.run?.input?.func?.includes('blur'))
+      if (blurTask) {
+        // @ts-ignore-next-line
+        payload.workflow.tasks = payload?.workflow?.tasks.map((t) => {
+          // @ts-ignore-next-line
+          if (t?.run?.input?.func?.includes('blur') && String(t?.run?.input?.args[1]).split('.')?.length === 1) {
+            return {
+              ...t,
+              run: {
+                ...t.run,
+                input: {
+                  ...t.run.input,
+                  args: [t.run.input.args[0], t.run.input.args[1] + 0.0001]
+                }
+              }
+            }
+          }
+
+          return t
+        })
+      }
+
+      if (payload) {
+        await runWorkflow(workflow?.id, uploadedImage, payload, $unsavedRunStore?.status, originalPayload)
       } else {
         await runWorkflow(workflow?.id, uploadedImage)
       }

@@ -21,7 +21,7 @@ export const STATUS_COLOURS = {
 }
 
 export const BLUR_PARAMS = [
-  { name: 'sigma', type: 'number', min: 0.1, max: 0.99, note: 'float < 1', default: 0.1 }
+  { name: 'sigma', type: 'number', min: 0.1, max: 100, default: 0.1 }
 ]
 export const CROP_PARAMS = [
   { name: 'x', type: 'number', default: 50 },
