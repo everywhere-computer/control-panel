@@ -40,7 +40,9 @@
   }
 
   $: activeColour =
-    $themeStore.selectedTheme === 'light' ? 'bg-base-100' : 'bg-odd-teal-700'
+    $themeStore.selectedTheme === 'light'
+      ? 'bg-odd-teal-100'
+      : 'bg-odd-teal-700'
   $: conditionalProps =
     windowWidth < 768
       ? {
