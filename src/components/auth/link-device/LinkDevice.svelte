@@ -30,6 +30,7 @@
         {#if pin}
           <span
             on:click={copyCode}
+            on:keypress={copyCode}
             class="btn text-base-100 hover:text-base-100 bg-base-content hover:bg-base-content border-0 btn-lg rounded-full text-deviceCode tracking-[.18em] w-3/4 cursor-pointer font-mono font-light"
           >
             {pin}

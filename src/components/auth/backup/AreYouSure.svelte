@@ -36,6 +36,7 @@
       <span
         class="text-error underline block mt-4 text-sm text-red-600 cursor-pointer"
         on:click={skipBackup}
+        on:keypress={skipBackup}
       >
         YOLO&mdash;I'll risk just one device for now
       </span>
