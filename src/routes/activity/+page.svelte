@@ -223,7 +223,7 @@
       </h3>
 
       {#if workflowRuns.length}
-        <ul class="divide-y divide-base-300">
+        <ul class="border-t border-b border-base-300 divide-y divide-base-300">
           {#each workflowRuns as run}
             <li>
               <a
