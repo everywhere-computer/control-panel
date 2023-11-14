@@ -5,6 +5,7 @@
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
+    "start": "vite build && vite preview",
     "test": "ava src/**/*.test.ts",
     "test:e2e": "playwright test",
     "report:e2e": "playwright show-report",
