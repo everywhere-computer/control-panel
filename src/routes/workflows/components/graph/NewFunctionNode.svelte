@@ -201,7 +201,7 @@
           <!-- Only allow nodes other than the first to be deleted -->
           <button
             on:click={() => handleDelete(node)}
-            class="btn btn-ghost w-auto h-auto p-1 dark:text-base-content hover:bg-transparent hover:scale-105"
+            class="btn btn-ghost w-auto h-auto p-1 dark:text-base-content dark:disabled:opacity-50 hover:bg-transparent hover:scale-105"
             disabled={id === '1'}
           >
             <Trash />
