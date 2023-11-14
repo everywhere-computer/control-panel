@@ -192,6 +192,24 @@
     imageModalOpen = false
   }
 
+  // Handle keyboard shortcuts for workflow builder
+  const handleKeyUp = (event: KeyboardEvent): void => {
+    const tagName = (event?.target as HTMLElement).tagName.toLowerCase()
+    const key = event.key
+
+    if (!['input', 'select', 'textarea'].includes(tagName)) {
+      // Add new function when a is pressed
+      if (key === 'a') {
+        handleAddFunction()
+      }
+
+      // Add new function when s is pressed
+      if (key === 's') {
+        handleSaveWorkflow()
+      }
+    }
+  }
+
   onMount(() => {
     $workflowsStore.builder.name = `New Workflow #${
       $workflowsStore.workflows.length + 1
@@ -214,7 +232,7 @@
   })
 </script>
 
-<svelte:window on:resize={handleWindowResize} />
+<svelte:window on:keyup={handleKeyUp} on:resize={handleWindowResize} />
 
 <input
   type="checkbox"

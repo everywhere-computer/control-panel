@@ -158,7 +158,7 @@
 {#if imageModalOpen}
   <div class="modal !z-max">
     <div
-      class="relative flex flex-col items-center justify-center gap-4 w-full max-w-[500px] pt-16 px-4 pb-4 bg-base-200 rounded-sm"
+      class="relative flex flex-col items-center justify-center gap-4 w-full max-w-[500px] pt-16 px-4 pb-4 bg-base-200/80 rounded-sm"
     >
       <button
         on:click={() => (imageModalOpen = false)}
