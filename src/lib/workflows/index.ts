@@ -1,3 +1,4 @@
+import * as odd from '@oddjs/odd'
 import { workflow as workflowBuilder } from '@fission-codes/homestar/workflow'
 import { base64 } from 'iso-base/rfc4648'
 import { get as getStore } from 'svelte/store'
@@ -5,9 +6,7 @@ import { get as getStore } from 'svelte/store'
 import type { Receipt, FunctionOperation, Meta } from '$lib/functions'
 import { addNotification } from '$lib/notifications'
 import { homestar } from '$lib/rpc'
-import {
-  workflowsStore,
-} from '$lib/stores'
+import { workflowsStore } from '$lib/stores'
 
 export type WorkflowsStore = {
   loading: boolean
@@ -60,7 +59,6 @@ export type Payload = {
     tasks: Task[]
   }
 }
-
 
 type Task = {
   cause: null
@@ -125,6 +123,8 @@ export type Builder = {
   savedImage: string
 }
 
+export const WORKFLOWS_DIR = odd.path.directory('private', 'workflows')
+
 const prepareWorkflow = async (payload: any, dataUrl: string) => {
   payload.workflow.tasks[0].run.input.args[0] = dataUrl
 
@@ -136,7 +136,13 @@ const prepareWorkflow = async (payload: any, dataUrl: string) => {
 /**
  * Run a workflow
  */
-export const runWorkflow = async (workflowId: string, uploadedImage: string, runPayload = null, runStatus = null, originalPayload = null): Promise<void> => {
+export const runWorkflow = async (
+  workflowId: string,
+  uploadedImage: string,
+  runPayload = null,
+  runStatus = null,
+  originalPayload = null
+): Promise<void> => {
   try {
     const workflows = getStore(workflowsStore)
     const matchingWorkflow = workflows.workflows.find(
@@ -147,7 +153,6 @@ export const runWorkflow = async (workflowId: string, uploadedImage: string, run
     const runIndex = matchingWorkflow?.runs[0]?.status
       ? matchingWorkflow.runs.length
       : matchingWorkflow.runs.length + 1
-
 
     // Increment number in payload name to track the associated `run`
     const runName = payloadToRun?.name?.split('_')[1]
@@ -210,7 +215,7 @@ export const runWorkflow = async (workflowId: string, uploadedImage: string, run
 
     await homestar.runWorkflow(
       { ...payloadToRun, name: runName },
-      async (data) => {
+      async data => {
         if (data.error) {
           // @ts-ignore-next-line
           throw new Error(data.error)
@@ -234,7 +239,7 @@ export const runWorkflow = async (workflowId: string, uploadedImage: string, run
               if (i === 0) {
                 return {
                   ...run,
-                  status: 'failed',
+                  status: 'failed'
                 }
               }
               return run
@@ -302,7 +307,9 @@ export const handleMessage = async (message: Message): Promise<void> => {
                     ...matchingRun.payload
                   },
                   receipts: updatedReceipts,
-                  ...(['completed', 'from cache'].includes(status) ? { lastRunTime: Date.now() } : {}),
+                  ...(['completed', 'from cache'].includes(status)
+                    ? { lastRunTime: Date.now() }
+                    : {})
                 }
               }
 
@@ -313,7 +320,9 @@ export const handleMessage = async (message: Message): Promise<void> => {
               ...workflow,
               status,
               runs: updatedRuns,
-              ...(['completed', 'failed', 'from cache'].includes(status) ? { lastRunTime: Date.now() } : {}),
+              ...(['completed', 'failed', 'from cache'].includes(status)
+                ? { lastRunTime: Date.now() }
+                : {})
             }
           } else {
             return workflow
@@ -337,8 +346,8 @@ export const handleMessage = async (message: Message): Promise<void> => {
 const parseReceipt = (raw: RawReceipt, cidImage = false): Receipt => {
   const outputImage = cidImage
     ? raw.out[1]['/'].bytes
-    // @ts-ignore-next-line
-    : `data:image/png;base64,${base64.encode(raw.out[1])}`
+    : // @ts-ignore-next-line
+      `data:image/png;base64,${base64.encode(raw.out[1])}`
 
   return {
     iss: raw.iss,

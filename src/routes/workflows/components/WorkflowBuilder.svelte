@@ -1,13 +1,16 @@
 <script lang="ts">
+  import * as odd from '@oddjs/odd'
   import { onDestroy, onMount } from 'svelte'
   import { expoInOut } from 'svelte/easing'
   import { fly } from 'svelte/transition'
   import { Svelvet } from 'svelvet'
 
   import '$routes/workflows/components/graph/graph.css'
-  import { themeStore, workflowsStore } from '$lib/stores'
-  import { camelCase } from '$lib/utils'
+  import { oddNamespace } from '$lib/app-info'
   import { addNotification } from '$lib/notifications'
+  import { filesystemStore, themeStore, workflowsStore } from '$lib/stores'
+  import { camelCase } from '$lib/utils'
+  import { WORKFLOWS_DIR } from '$lib/workflows'
   import generateBuilderTemplate from '$lib/workflows/builder/builder-template'
   import generateFunction, {
     DEFAULT_PARAMS
@@ -38,8 +41,18 @@
   // Close the builder and navigate to the workflows page
   const handleCloseBuilder = () => (showBuilder = false)
 
+  // Save all workflows to the user's WNFS
+  const pushWorkflowsToWNFS = async () => {
+    await $filesystemStore.write(
+      odd.path.combine(WORKFLOWS_DIR, odd.path.file('workflows.json')),
+      new TextEncoder().encode(JSON.stringify($workflowsStore.workflows))
+    )
+
+    await $filesystemStore.publish()
+  }
+
   // Add a workflow to the workflowsStore
-  const handleSaveWorkflow = () => {
+  const handleSaveWorkflow = async () => {
     saving = true
 
     try {
@@ -153,6 +166,8 @@
         savedImage: $workflowsStore.builder.savedImage
       })
 
+      await pushWorkflowsToWNFS()
+
       saving = false
 
       handleCloseBuilder()
@@ -193,7 +208,7 @@
   }
 
   // Handle keyboard shortcuts for workflow builder
-  const handleKeyUp = (event: KeyboardEvent): void => {
+  const handleKeyUp = async (event: KeyboardEvent): void => {
     const tagName = (event?.target as HTMLElement).tagName.toLowerCase()
     const key = event.key
 
@@ -205,7 +220,7 @@
 
       // Add new function when s is pressed
       if (key === 's') {
-        handleSaveWorkflow()
+        await handleSaveWorkflow()
       }
     }
   }

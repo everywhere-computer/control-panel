@@ -6,10 +6,11 @@ import type { Crypto } from '@oddjs/odd'
 import type FileSystem from '@oddjs/odd/fs/index'
 import { get as getStore } from 'svelte/store'
 
-import { asyncDebounce } from '$lib/utils'
-import { filesystemStore, sessionStore } from '../stores'
-import { getBackupStatus } from '$lib/auth/backup'
 import { ACCOUNT_SETTINGS_DIR } from '$lib/account-settings'
+import { getBackupStatus } from '$lib/auth/backup'
+import { filesystemStore, sessionStore } from '$lib/stores'
+import { asyncDebounce } from '$lib/utils'
+import { WORKFLOWS_DIR } from '$lib/workflows'
 
 export const USERNAME_STORAGE_KEY = 'fullUsername'
 
@@ -95,7 +96,6 @@ export const register = async (hashedUsername: string): Promise<boolean> => {
  * @param fs FileSystem
  */
 const initializeFilesystem = async (fs: FileSystem): Promise<void> => {
-  const WORKFLOWS_DIR = odd.path.directory('private', 'workflows')
   await fs.mkdir(WORKFLOWS_DIR)
   await fs.mkdir(ACCOUNT_SETTINGS_DIR)
 }
