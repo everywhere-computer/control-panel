@@ -1,6 +1,7 @@
 import * as uint8arrays from 'uint8arrays'
 import { sha256 } from '@oddjs/odd/components/crypto/implementation/browser'
 import { publicKeyToDid } from '@oddjs/odd/did/transformers'
+import * as odd from '@oddjs/odd'
 import type { Crypto } from '@oddjs/odd'
 import type FileSystem from '@oddjs/odd/fs/index'
 import { get as getStore } from 'svelte/store'
@@ -94,6 +95,8 @@ export const register = async (hashedUsername: string): Promise<boolean> => {
  * @param fs FileSystem
  */
 const initializeFilesystem = async (fs: FileSystem): Promise<void> => {
+  const WORKFLOWS_DIR = odd.path.directory('private', 'workflows')
+  await fs.mkdir(WORKFLOWS_DIR)
   await fs.mkdir(ACCOUNT_SETTINGS_DIR)
 }
 
