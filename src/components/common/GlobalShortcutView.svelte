@@ -6,7 +6,9 @@
   const shortcutMap: ShortcupMap = {
     esc: 'Hide workflow builder',
     n: 'Show workflow builder',
-    shift: 'View keyboard shortcuts menu'
+    shift: 'View keyboard shortcuts menu',
+    'alt/option + ->': 'Navigate to next page',
+    'alt/option + <-': 'Navigate to previous page'
   }
 </script>
 
@@ -16,7 +18,7 @@
   {#each Object.keys(shortcutMap) as key}
     <div class="flex gap-4 items-center justify-start">
       <kbd
-        class="px-2 py-1.5 text-xs font-semibold text-base-content bg-base-100 border border-base-content rounded-sm"
+        class="min-w-fit px-2 py-1.5 text-xs font-semibold text-base-content bg-base-100 border border-base-content rounded-sm"
       >
         {key}
       </kbd>

@@ -1,4 +1,7 @@
 <script lang="ts">
+  import { goto } from '$app/navigation'
+  import { page } from '$app/stores'
+
   import { workflowsStore } from '$lib/stores'
   import GlobalShortcutView from '$components/common/GlobalShortcutView.svelte'
   import WorkflowBuilder from '$routes/workflows/components/WorkflowBuilder.svelte'
@@ -8,6 +11,10 @@
   }
 
   let showShortcuts = false
+  let altKeyCurrentlyPressed = false
+
+  // Order of pages to move through when pressing Alt + Left/Right
+  const pages = ['', 'activity', 'workflows', 'functions', 'settings']
 
   // Map keys to actions
   const keyMap: KeyMap = {
@@ -35,6 +42,22 @@
     const tagName = (event?.target as HTMLElement).tagName.toLowerCase()
     const key = event.key
 
+    if (key === 'Alt') {
+      altKeyCurrentlyPressed = true
+    }
+
+    // Navigate to the next top-level page
+    if (altKeyCurrentlyPressed && key === 'ArrowRight') {
+      const pageIndex = pages.indexOf($page.route.id.split('/')[1]) + 1
+      goto(`/${pageIndex > pages.length - 1 ? pages[0] : pages[pageIndex]}`)
+    }
+
+    // Navigate to the previous top-level page
+    if (altKeyCurrentlyPressed && key === 'ArrowLeft') {
+      const pageIndex = pages.indexOf($page.route.id.split('/')[1]) - 1
+      goto(`/${pageIndex < 0 ? pages[pages.length - 1] : pages[pageIndex]}`)
+    }
+
     if (!formElements.includes(tagName) && allowedKeys.includes(key)) {
       keyMap[key]()
     }
@@ -43,6 +66,10 @@
   const handleKeyUp = (event: KeyboardEvent): void => {
     const tagName = (event?.target as HTMLElement).tagName.toLowerCase()
     const key = event.key
+
+    if (key === 'Alt') {
+      altKeyCurrentlyPressed = false
+    }
 
     if (!formElements.includes(tagName) && key === 'Shift') {
       showShortcuts = false
