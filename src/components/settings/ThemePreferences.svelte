@@ -47,7 +47,7 @@
 </script>
 
 <div class="flex flex-col gap-4">
-  <h3 class="text-lg">Theme preference</h3>
+  <h3 class="text-heading-lg">Theme preference</h3>
 
   <p>
     Your theme preference is saved per device. Any newly connected device will

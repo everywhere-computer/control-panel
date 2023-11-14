@@ -13,7 +13,7 @@
 </script>
 
 <div>
-  <h3 class="text-lg mb-4">Username</h3>
+  <h3 class="text-heading-lg mb-4">Username</h3>
   <div class="flex items-center">
     <p>
       <TruncatedUsername />

@@ -15,9 +15,9 @@ type Data = {
   value: string
 }
 
-export const requestMetrics = async (): Promise<Metric> => {
+export const requestHealth = async (): Promise<Metric> => {
   try {
-    const { error, result } = await homestar.metrics()
+    const { error, result } = await homestar.health()
     if (error) {
       throw new Error(error)
     }

@@ -15,7 +15,7 @@
 </script>
 
 <div
-  class="hidden md:flex flex-col justify-center gap-4 absolute z-[60] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-20 rounded-sm bg-base-200/80"
+  class="hidden md:flex flex-col justify-center gap-4 absolute z-[60] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 p-4 rounded-sm bg-base-200/80"
 >
   {#each Object.keys(globalShortcutMap) as key}
     <div class="flex gap-4 items-center justify-start">
