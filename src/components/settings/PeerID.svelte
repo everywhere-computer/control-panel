@@ -9,7 +9,7 @@
   let health = null
 
   const handleCopyPeerID = async (): Promise<void> => {
-    await clipboardCopy(health)
+    await clipboardCopy(health?.nodeInfo?.peer_id)
     addNotification('Copied to clipboard', 'success')
   }
 
