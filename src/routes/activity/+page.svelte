@@ -13,7 +13,8 @@
 
   // Poll for metrics
   const interval = setInterval(async () => {
-    metrics = await requestMetrics()
+    const updatedMetrics = await requestMetrics()
+    metrics = updatedMetrics
   }, 5000)
 
   const workflowRuns = $workflowsStore.workflows
