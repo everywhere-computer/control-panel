@@ -280,7 +280,7 @@
 
       {#if receipt?.receiptCID}
         <p
-          class="text-input-xs font-mono text-base-content self-start whitespace-nowrap"
+          class="text-input-sm font-sans text-base-content self-start whitespace-nowrap"
         >
           Receipt CID: {receipt?.receiptCID?.toString()}
         </p>
