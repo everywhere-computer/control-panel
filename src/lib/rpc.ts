@@ -2,10 +2,26 @@ import { Homestar } from '@fission-codes/homestar'
 import { WebsocketTransport } from '@fission-codes/homestar/transports/ws.js'
 import { WebSocket } from 'unws'
 
+import {
+  RequestManager,
+  Client,
+  WebSocketTransport as OpenRPCWebSocketTransport
+} from '@open-rpc/client-js'
+
+const openRPCTransport = new OpenRPCWebSocketTransport(
+  import.meta.env.VITE_WEBSOCKET_ENDPOINT
+)
+const requestManager = new RequestManager([openRPCTransport])
+export const rpcClient = new Client(requestManager)
+
+const transport = new WebsocketTransport(
+  import.meta.env.VITE_WEBSOCKET_ENDPOINT,
+  {
+    ws: WebSocket
+  }
+) // WS
 export const homestar = new Homestar({
-  transport: new WebsocketTransport(import.meta.env.VITE_WEBSOCKET_ENDPOINT, {
-    ws: WebSocket,
-  }),
+  transport,
 })
 
 /**

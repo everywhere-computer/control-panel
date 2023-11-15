@@ -1,12 +1,20 @@
 // import type { InferError } from '@fission-codes/homestar/types'
 
-import { homestar } from '$lib/rpc'
+import {
+  // homestar,
+  rpcClient
+} from '$lib/rpc'
 
-type Metric = {
-  data: Data[]
-  help: string
-  metric_name: string
-  metric_type: string
+type Health = {
+  healthy: boolean
+  nodeInfo: {
+    dynamic: {
+      listeners: string[]
+    }
+    static: {
+      peer_id: string
+    }
+  }
 }
 
 type Data = {
@@ -15,13 +23,13 @@ type Data = {
   value: string
 }
 
-export const requestHealth = async (): Promise<Metric> => {
+export const requestHealth = async (): Promise<Health> => {
   try {
-    const { error, result } = await homestar.health()
-    if (error) {
-      throw new Error(error)
-    }
-
+    const result = await rpcClient.request({ method: 'health' })
+    // const { error, result } = await homestar.health()
+    // if (error) {
+    //   throw new Error(error)
+    // }
     return result
   } catch (error) {
     console.error(error)

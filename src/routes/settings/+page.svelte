@@ -5,7 +5,7 @@
   import { sessionStore } from '$lib/stores'
   // import AvatarUpload from '$components/settings/AvatarUpload.svelte'
   import ConnectedDevices from '$components/settings/ConnectedDevices.svelte'
-  import PeerID from '$components/settings/PeerID.svelte'
+  import NodeInfo from '$components/settings/NodeInfo.svelte'
   // import RecoveryKit from '$components/settings/RecoveryKit.svelte'
   import ThemePreferences from '$components/settings/ThemePreferences.svelte'
   import Username from '$components/settings/Username.svelte'
@@ -23,7 +23,7 @@
     <div class="flex flex-col items-start justify-center gap-6">
       <!-- <AvatarUpload /> -->
 
-      <PeerID />
+      <NodeInfo />
 
       <Username />
 

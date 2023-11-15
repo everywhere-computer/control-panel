@@ -12,6 +12,7 @@ import type { ProjectsStore } from '$lib/projects'
 import projects from '$routes/projects/lib/project-mocks'
 import type { FunctionsStore } from '$lib/functions'
 import functions from '$routes/functions/lib/function-mocks'
+import type { NetworkStore } from '$lib/network'
 import type { Run, WorkflowsStore } from '$lib/workflows'
 import generateBuilderTemplate from '$lib/workflows/builder/builder-template'
 import workflows from '$routes/workflows/lib/workflow-mocks'
@@ -51,6 +52,13 @@ export const workflowsStore: Writable<WorkflowsStore> = writable({
   builder: generateBuilderTemplate(),
   showBuilder: false,
   workflows
+})
+
+export const networkStore: Writable<NetworkStore> = writable({
+  loading: false,
+  activeConnections: [],
+  receiptsSent: 0,
+  receiptsReceived: 0,
 })
 
 export const unsavedRunStore: Writable<Maybe<Run | Record<string, unknown>>> = writable({})

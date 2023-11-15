@@ -4,7 +4,7 @@
 
   import { STATUS_COLOURS } from '$routes/workflows/lib/graph'
   import { requestMetrics } from '$lib/metrics'
-  import { themeStore, workflowsStore } from '$lib/stores'
+  import { networkStore, themeStore, workflowsStore } from '$lib/stores'
   import LoadingSpinner from '$components/common/LoadingSpinner.svelte'
   import ProgressBar from '$routes/activity/components/ProgressBar.svelte'
 
@@ -86,17 +86,17 @@
 
       <div class="flex flex-row items-center justify-between w-full">
         <p class="text-label-sm">Active connections</p>
-        <p class="text-input-sm">0</p>
+        <p class="text-input-sm">{$networkStore.activeConnections?.length}</p>
       </div>
 
       <div class="flex flex-row items-center justify-between w-full">
         <p class="text-label-sm">Receipts received</p>
-        <p class="text-input-sm">0</p>
+        <p class="text-input-sm">{$networkStore.receiptsReceived}</p>
       </div>
 
       <div class="flex flex-row items-center justify-between w-full">
         <p class="text-label-sm">Receipts sent</p>
-        <p class="text-input-sm">0</p>
+        <p class="text-input-sm">{$networkStore.receiptsSent}</p>
       </div>
     </div>
 

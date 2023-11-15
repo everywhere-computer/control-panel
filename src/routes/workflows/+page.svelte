@@ -36,6 +36,7 @@
       </button>
     </div>
   </div>
+
   <!-- Workflow list -->
   <div class="flex flex-col gap-4">
     {#each workflows as workflow, i}
