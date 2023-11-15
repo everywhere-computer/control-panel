@@ -6,6 +6,8 @@
   import { addNotification } from '$lib/notifications'
   import ClipboardIcon from '$components/icons/ClipboardIcon.svelte'
 
+  export let compressedView = false
+
   let health = null
   let interval
 
@@ -34,36 +36,62 @@
 </script>
 
 {#if health}
-  <div>
-    <h3 class="text-heading-lg mb-4">Peer ID</h3>
-    <div class="flex items-center">
-      <p>
-        {health?.nodeInfo?.static?.peer_id}
-      </p>
+  {#if compressedView}
+    <div class="flex flex-row items-center justify-between gap-10 w-full">
+      <p class="text-label-sm whitespace-nowrap">Peer ID</p>
       <button
-        class="pl-2 hover:text-neutral-500 transition-colors"
+        class="text-input-sm truncate transition-opacity duration-200 ease-in-out hover:opacity-80"
         on:click={() => handleCopyToClipboard(health.nodeInfo.static.peer_id)}
       >
-        <ClipboardIcon />
+        {health?.nodeInfo?.static?.peer_id}
       </button>
     </div>
-  </div>
 
-  <div>
-    <h3 class="text-heading-lg mb-4">Listener Addresses</h3>
-
-    {#each health?.nodeInfo?.dynamic?.listeners as listener}
+    <div class="flex flex-row items-center justify-between gap-4 w-full">
+      <p class="text-label-sm">Listener Addresses</p>
+      <div class="flex flex-col items-end">
+        {#each health?.nodeInfo?.dynamic?.listeners as listener}
+          <button
+            class="text-input-sm transition-opacity duration-200 ease-in-out hover:opacity-80"
+            on:click={() => handleCopyToClipboard(listener)}
+          >
+            {listener}
+          </button>
+        {/each}
+      </div>
+    </div>
+  {:else}
+    <div>
+      <h3 class="text-heading-lg mb-4">Peer ID</h3>
       <div class="flex items-center">
         <p>
-          {listener}
+          {health?.nodeInfo?.static?.peer_id}
         </p>
         <button
           class="pl-2 hover:text-neutral-500 transition-colors"
-          on:click={() => handleCopyToClipboard(listener)}
+          on:click={() => handleCopyToClipboard(health.nodeInfo.static.peer_id)}
         >
           <ClipboardIcon />
         </button>
       </div>
-    {/each}
-  </div>
+    </div>
+
+    <div>
+      <h3 class="text-heading-lg mb-4">Listener Addresses</h3>
+
+      {#each health?.nodeInfo?.dynamic?.listeners as listener}
+        <div class="flex items-center">
+          <p>
+            {listener}
+          </p>
+          <button
+            class="pl-2 hover:text-neutral-500 transition-colors"
+            on:click={() => handleCopyToClipboard(listener)}
+          >
+            <ClipboardIcon />
+          </button>
+        </div>
+      {/each}
+    </div>
+  {/if}
 {/if}
