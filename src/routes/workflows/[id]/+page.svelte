@@ -32,7 +32,7 @@
         : 0
     },
     {
-      label: 'From Cache Runs',
+      label: 'Cached Runs',
       value: workflow?.runs?.length
         ? workflow?.runs.filter(w => w.status === 'from cache')?.length
         : 0

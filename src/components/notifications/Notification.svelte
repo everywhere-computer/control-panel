@@ -46,14 +46,8 @@
   aria-atomic="true"
 >
   <div
-    class="alert alert-{notification.type} max-w-[272px] text-sm mb-3 peer-last:mb-0"
+    class="alert alert-{notification.type} flex items-center max-w-[272px] w-fit text-label-m mb-3 peer-last:mb-0"
   >
-    <div class="flex flex-row items-center justify-between gap-4">
-      <!-- <svelte:component
-        this={iconMap[notification.type].component}
-        {...iconMap[notification.type].props}
-      /> -->
-      <span class="pl-1">{@html notification.msg}</span>
-    </div>
+    <p>{notification.msg}</p>
   </div>
 </div>
