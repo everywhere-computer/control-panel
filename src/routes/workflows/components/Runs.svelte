@@ -50,9 +50,6 @@
           'out:fly': { y: 500, duration: 300, opacity: 0, easing: expoInOut }
         }
       : {}
-  $: {
-    // console.log('conditionalProps', conditionalProps)
-  }
 
   onMount(() => {
     // Inject an initial run into the list if there aren't any yet

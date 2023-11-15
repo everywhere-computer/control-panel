@@ -7,6 +7,8 @@
   import { filesystemStore, themeStore, workflowsStore } from '$lib/stores'
   import { WORKFLOWS_DIR } from '$lib/workflows'
 
+  $workflowsStore.loading = true
+
   // Load saved workflows from WNFS
   onMount(async () => {
     const workflowsFilePath = odd.path.combine(
@@ -22,7 +24,10 @@
       )
       $workflowsStore.workflows = parsedWorkflows
     }
+    $workflowsStore.loading = false
   })
 </script>
 
-<slot />
+{#if !$workflowsStore.loading}
+  <slot />
+{/if}
