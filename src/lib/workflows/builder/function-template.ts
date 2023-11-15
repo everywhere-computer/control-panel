@@ -12,7 +12,7 @@ type GeneratorParams = {
 type FunctionParams = { sigma: number } | { x: number; y: number; width: number; height: number } | Record<string, never>
 
 export const DEFAULT_PARAMS: { [functionName: string]: FunctionParams } = {
-  blur: { sigma: 0.1 },
+  blur: { sigma: 20 },
   crop: { x: 50, y: 50, width: 100, height: 100 },
   grayscale: {},
   rotate90: {}

@@ -22,7 +22,10 @@
         // @ts-ignore-next-line
         uint8arrays.toString(workflowsFromWNFS.content)
       )
-      $workflowsStore.workflows = parsedWorkflows
+      $workflowsStore.workflows = [
+        ...$workflowsStore.workflows,
+        ...parsedWorkflows.filter(w => !w.id.includes('sampleWorkflow'))
+      ]
     }
     $workflowsStore.loading = false
   })

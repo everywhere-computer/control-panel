@@ -43,9 +43,13 @@
 
   // Save all workflows to the user's WNFS
   const pushWorkflowsToWNFS = async () => {
+    const clonedWorkflows = JSON.parse(
+      JSON.stringify($workflowsStore.workflows)
+    )
+
     await $filesystemStore.write(
       odd.path.combine(WORKFLOWS_DIR, odd.path.file('workflows.json')),
-      new TextEncoder().encode(JSON.stringify($workflowsStore.workflows))
+      new TextEncoder().encode(JSON.stringify(clonedWorkflows.splice(3)))
     )
 
     await $filesystemStore.publish()
