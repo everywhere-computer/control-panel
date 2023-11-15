@@ -10,7 +10,7 @@ export default {
         args: {
           // @ts-ignore-next-line
           data: '',
-          sigma: 0.1
+          sigma: 20
         }
       }),
       Workflow.rotate90({

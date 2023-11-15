@@ -24,7 +24,7 @@ export default {
           import.meta.env.VITE_WORKFLOW_RESOURCE,
         args: {
           data: '{{needs.crop64.output}}',
-          sigma: 0.1
+          sigma: 20
         }
       })
     ]
