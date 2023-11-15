@@ -38,7 +38,7 @@
     <h3 class="text-heading-lg mb-4">Peer ID</h3>
     <div class="flex items-center">
       <p>
-        {health.nodeInfo.static.peer_id}
+        {health?.nodeInfo?.static?.peer_id}
       </p>
       <button
         class="pl-2 hover:text-neutral-500 transition-colors"
@@ -52,7 +52,7 @@
   <div>
     <h3 class="text-heading-lg mb-4">Listener Addresses</h3>
 
-    {#each health.nodeInfo.dynamic.listeners as listener}
+    {#each health?.nodeInfo?.dynamic?.listeners as listener}
       <div class="flex items-center">
         <p>
           {listener}
