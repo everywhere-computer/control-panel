@@ -13,6 +13,7 @@ Homestar is also available via Homebrew: `brew install fission-codes/fission/hom
 ## Development
 
 ```shell
+git checkout git@github.com:fission-codes/everywhere-computer-control-panel.git
 cd everywhere-computer-control-panel
 npm i
 npm run dev
