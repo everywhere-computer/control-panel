@@ -11,3 +11,9 @@ Follow the instructions for installing a local [homestar](https://github.com/ipv
 Homestar is also available via Homebrew: `brew install fission-codes/fission/homestar`
 
 ## Development
+
+```shell
+cd everywhere-computer-control-panel
+npm i
+npm run dev
+```
