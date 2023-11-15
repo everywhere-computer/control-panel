@@ -1,6 +1,5 @@
 // import { Homestar } from '@fission-codes/homestar'
 // import { WebsocketTransport } from '@fission-codes/homestar/transports/ws.js'
-// import { get as getStore } from 'svelte/store'
 // import { WebSocket } from 'unws'
 
 import { networkStore } from '$lib/stores'
@@ -8,14 +7,17 @@ import { homestar } from '$lib/rpc'
 
 export type NetworkStore = {
   loading: boolean
+  allEvents: Connection[]
   activeConnections: Connection[]
   receiptsSent: number
   receiptsReceived: number
 }
 
 type Connection = {
-  address: string
-  peerId: string
+  address?: string
+  cid?: string
+  peerId?: string
+  ran?: string
   type: string
   timestamp: number
 }
@@ -38,54 +40,96 @@ export const subscribNetworkEvents = async (): Promise<void> => {
       console.error(res.error)
     }
 
-    // Handle connection established
-    if (res?.result?.type === CONN_ESTABLISHED) {
-      networkStore.update(state => ({
-        ...state,
-        activeConnections: state.activeConnections.find(
-          con => con?.peerId === res?.result?.data?.peerId
-        )
-          ? state.activeConnections
-          : [
+    switch (res?.result?.type) {
+      // Handle connection established
+      case CONN_ESTABLISHED:
+        networkStore.update(state => {
+          const eventAlreadyTracked = state.activeConnections.find(
+            con => con?.peerId === res?.result?.data?.peerId
+          )
+          const event = {
+            address: res?.result?.data?.address,
+            peerId: res?.result?.data?.peerId,
+            type: res?.result?.type,
+            timestamp: res?.result?.timestamp
+          }
+
+          return {
+            ...state,
+            activeConnections: eventAlreadyTracked
+              ? state.activeConnections
+              : [
+                  event,
+                  ...state.activeConnections
+                ],
+            allEvents: [
+              event,
+              ...state.allEvents
+            ]
+          }
+        })
+        break
+
+      // Handle connection closed
+      case CONN_CLOSED:
+        networkStore.update(state => ({
+            ...state,
+            activeConnections: state.activeConnections.find(
+              con => con?.peerId === res?.result?.data?.peerId
+            )
+              ? state.activeConnections.filter(
+                  con => con?.peerId !== res?.result?.data?.peerId
+                )
+              : state.activeConnections,
+            allEvents: [
               {
                 address: res?.result?.data?.address,
                 peerId: res?.result?.data?.peerId,
                 type: res?.result?.type,
                 timestamp: res?.result?.timestamp
               },
-              ...state.activeConnections
+              ...state.allEvents
             ]
-      }))
-    }
+        }))
+        break
 
-    // Handle connection closed
-    if (res?.result?.type === CONN_CLOSED) {
-      networkStore.update(state => ({
-        ...state,
-        activeConnections: state.activeConnections.find(
-          con => con?.peerId === res?.result?.data?.peerId
-        )
-          ? state.activeConnections.filter(
-              con => con?.peerId !== res?.result?.data?.peerId
-            )
-          : state.activeConnections
-      }))
-    }
+      // Handle receipt sent
+      case RECEIPT_SENT:
+        networkStore.update(state => ({
+          ...state,
+          receiptsSent: state.receiptsSent + 1,
+          allEvents: [
+            {
+              cid: res?.result?.data?.cid,
+              ran: res?.result?.data?.ran,
+              type: res?.result?.type,
+              timestamp: res?.result?.timestamp
+            },
+            ...state.allEvents
+          ]
+        }))
+        break
 
-    // Handle receipt sent
-    if (res?.result?.type === RECEIPT_SENT) {
-      networkStore.update(state => ({
-        ...state,
-        receiptsSent: state.receiptsSent + 1
-      }))
-    }
+      // Handle receipt received
+      case RECEIPT_RECEIVED:
+        networkStore.update(state => ({
+          ...state,
+          receiptsReceived: state.receiptsReceived + 1,
+          allEvents: [
+            {
+              cid: res?.result?.data?.cid,
+              peerId: res?.result?.data?.peerId,
+              ran: res?.result?.data?.ran,
+              type: res?.result?.type,
+              timestamp: res?.result?.timestamp
+            },
+            ...state.allEvents
+          ]
+        }))
+        break
 
-    // Handle receipt received
-    if (res?.result?.type === RECEIPT_RECEIVED) {
-      networkStore.update(state => ({
-        ...state,
-        receiptsReceived: state.receiptsReceived + 1
-      }))
+      default:
+        break
     }
   })
 

@@ -25,7 +25,8 @@
   $: isHome = $page.route.id === '/'
   $: isActivity = $page.route.id === '/activity'
   let screenSize: number
-  let backgroundColour = sessionStore.subscribe(session => {
+
+  const unsubscribeSessionStore = sessionStore.subscribe(session => {
     if (session.error) {
       const message = errorToMessage(session.error)
       addNotification(message, 'error')
@@ -53,6 +54,7 @@
 
   onDestroy(() => {
     unsubscribeRPC()
+    unsubscribeSessionStore()
   })
 </script>
 
@@ -94,7 +96,15 @@
         <Nav {screenSize} />
       {/if}
 
-      <div class={isActivity ? 'pb-6' : isFullWidth ? 'pt-6' : 'p-6'}>
+      <div
+        class={isHome
+          ? 'p-4'
+          : isActivity
+          ? 'pb-6'
+          : isFullWidth
+          ? 'pt-6'
+          : 'p-6'}
+      >
         <slot />
       </div>
 

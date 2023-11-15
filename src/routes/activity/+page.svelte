@@ -227,7 +227,7 @@
           {#each workflowRuns as run}
             <li>
               <a
-                class="flex flex-row items-center justify-between p-4"
+                class="flex flex-row items-center justify-between p-4 duration-200 transition-colors ease-in-out hover:bg-odd-teal-100 dark:hover:bg-odd-teal-700"
                 href="/workflows/{run.id}"
               >
                 <div class="flex flex-col gap-2">

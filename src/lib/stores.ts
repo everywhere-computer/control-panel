@@ -56,6 +56,7 @@ export const workflowsStore: Writable<WorkflowsStore> = writable({
 
 export const networkStore: Writable<NetworkStore> = writable({
   loading: false,
+  allEvents: [],
   activeConnections: [],
   receiptsSent: 0,
   receiptsReceived: 0,
