@@ -263,7 +263,7 @@
 {#if imageModalOpen}
   <div class="modal !z-max">
     <div
-      class="relative flex flex-col items-center justify-center gap-4 w-full max-w-[600px] pt-16 px-4 pb-4 bg-base-200/80 rounded-sm"
+      class="relative flex flex-col items-center justify-center gap-4 w-full w-auto pt-16 px-4 pb-4 bg-base-200/80 rounded-sm"
     >
       <button
         on:click={() => (imageModalOpen = false)}
@@ -282,10 +282,7 @@
         <p
           class="text-input-xs font-mono text-base-content self-start whitespace-nowrap"
         >
-          Receipt CID: {uint8arrays.toString(
-            receipt?.receiptCID?.bytes,
-            'base64'
-          )}
+          Receipt CID: {receipt?.receiptCID?.toString()}
         </p>
       {/if}
     </div>
