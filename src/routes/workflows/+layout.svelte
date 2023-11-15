@@ -14,7 +14,7 @@
       odd.path.file('workflows.json')
     )
     const workflowsDirExists = await $filesystemStore.exists(workflowsFilePath)
-    if (workflowsDirExists) {
+    if (workflowsDirExists && $workflowsStore.workflows.length === 3) {
       const workflowsFromWNFS = await $filesystemStore.get(workflowsFilePath)
       const parsedWorkflows = JSON.parse(
         // @ts-ignore-next-line
