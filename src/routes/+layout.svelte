@@ -89,7 +89,7 @@
   {#if $sessionStore.loading}
     <FullScreenLoadingSpinner />
   {:else}
-    <div class="flex flex-col min-h-screen">
+    <div class="flex flex-col min-h-screen md:pt-10">
       {#if isHome && screenSize >= 768}
         <Nav {screenSize} />
       {:else if !isHome}

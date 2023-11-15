@@ -290,7 +290,8 @@
   class="fixed top-0 right-0 bottom-0 left-0 z-10 w-screen h-screen"
 >
   <div
-    class="flex flex-col gap-4 w-full p-4 {$themeStore.selectedTheme === 'light'
+    class="flex flex-col gap-4 w-full pt-14 px-4 pb-4 {$themeStore.selectedTheme ===
+    'light'
       ? 'bg-odd-gray-50'
       : 'bg-odd-gray-900'} border-b border-base-200"
   >

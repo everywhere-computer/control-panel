@@ -58,7 +58,7 @@
 <navbar
   class="relative flex flex-row p-0 w-full {inFooter
     ? 'h-auto md:h-10 mt-auto'
-    : 'h-10'}"
+    : 'h-10 md:fixed md:top-0 md:right-0 md:left-0 z-30'}"
 >
   {#if $sessionStore.session}
     <a
