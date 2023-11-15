@@ -288,7 +288,8 @@ export const handleMessage = async (message: Message): Promise<void> => {
                   {
                     ...receipt,
                     replayed: message.metadata.replayed,
-                    status: message.metadata.replayed ? 'from cache' : 'success'
+                    status: message.metadata.replayed ? 'from cache' : 'success',
+                    receiptCID: message.receipt_cid
                   }
                 ]
 

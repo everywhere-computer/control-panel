@@ -29,6 +29,7 @@ export type Receipt = {
   prf: string[]
   ran: string
   replayed?: boolean
+  receiptCID?: string
 }
 
 export type Meta = {

@@ -278,13 +278,16 @@
         alt="uploaded workflow asset"
       />
 
-      <!-- {#if receipt?.ran}
+      {#if receipt?.receiptCID}
         <p
           class="text-input-xs font-mono text-base-content self-start whitespace-nowrap"
         >
-          Receipt CID: {uint8arrays.toString(receipt?.ran, 'base64')}
+          Receipt CID: {uint8arrays.toString(
+            receipt?.receiptCID?.bytes,
+            'base64'
+          )}
         </p>
-      {/if} -->
+      {/if}
     </div>
   </div>
 {/if}
