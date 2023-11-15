@@ -39,19 +39,19 @@
           <span class="text-odd-pink-400">[{event?.type?.split(':')[1]}]</span>
 
           {#if event.peerId}
-            <span>peerId: {event.peerId},</span>
+            <span>peerId:{event.peerId}</span>
           {/if}
 
           {#if event.address}
-            <span>address: {event.address},</span>
+            <span>address:{event.address}</span>
           {/if}
 
           {#if event.cid}
-            <span>CID: {event.cid},</span>
+            <span>CID:{event.cid}</span>
           {/if}
 
           {#if event.ran}
-            <span>ran: {event.ran}</span>
+            <span>ran:{event.ran}</span>
           {/if}
         </p>
       {/each}
