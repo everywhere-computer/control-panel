@@ -47,7 +47,7 @@
       </button>
     </div>
 
-    <div class="flex flex-row items-center justify-between gap-4 w-full">
+    <div class="flex flex-row items-start justify-between gap-4 w-full">
       <p class="text-label-sm">Listener Addresses</p>
       <div class="flex flex-col items-end">
         {#each health?.nodeInfo?.dynamic?.listeners as listener}

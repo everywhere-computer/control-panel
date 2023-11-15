@@ -6,6 +6,7 @@
   import { requestMetrics } from '$lib/metrics'
   import { networkStore, themeStore, workflowsStore } from '$lib/stores'
   import LoadingSpinner from '$components/common/LoadingSpinner.svelte'
+  import NodeInfo from '$components/settings/NodeInfo.svelte'
   import ProgressBar from '$routes/activity/components/ProgressBar.svelte'
 
   let metrics = null
@@ -98,6 +99,8 @@
         <p class="text-label-sm">Receipts sent</p>
         <p class="text-input-sm">{$networkStore.receiptsSent}</p>
       </div>
+
+      <NodeInfo compressedView />
     </div>
 
     <!-- <div class="flex flex-col md:flex-row items-center gap-4"> -->
