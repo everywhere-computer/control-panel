@@ -55,12 +55,12 @@
       alt="logo backgroud"
     />
     <img
-      class="logo-mg absolute z-20 top-[11.8%] left-[11.8%] w-[76.4%] h-[76.4%] object-cover"
+      class="logo-mg absolute z-10 top-[12.8%] left-[12.4%] w-[75.4%] object-cover"
       src={`${window.location.origin}/logo-mg.gif`}
       alt="logo spinning lines"
     />
     <img
-      class="logo-fg absolute top-0 left-0 z-10 w-full"
+      class="logo-fg absolute top-0 left-0 z-20 w-full"
       src={`${window.location.origin}/logo-fg.svg`}
       alt="logo foreground"
     />
