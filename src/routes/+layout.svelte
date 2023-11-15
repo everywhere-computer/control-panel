@@ -6,7 +6,6 @@
   import '../global.css'
   import subscribNetworkEvents from '$lib/network'
   import { addNotification } from '$lib/notifications'
-  import { appDescription, appImageURL, appName, appURL } from '$lib/app-info'
   import { sessionStore, themeStore } from '$lib/stores'
   import { subscribeRPC, unsubscribeRPC } from '$lib/rpc'
   import { errorToMessage } from '$lib/session'
@@ -57,20 +56,6 @@
     unsubscribeSessionStore()
   })
 </script>
-
-<svelte:head>
-  <title>{appName}</title>
-
-  <meta name="description" content={appDescription} />
-  <meta property="og:title" content={appName} />
-  <meta property="og:description" content={appDescription} />
-  <meta property="og:url" content={appURL} />
-  <meta property="og:image" content={appImageURL} />
-  <meta name="twitter:title" content={appName} />
-  <meta name="twitter:description" content={appDescription} />
-  <meta name="twitter:image" content={appImageURL} />
-  <meta name="twitter:image:alt" content={appName} />
-</svelte:head>
 
 <svelte:window bind:innerWidth={screenSize} />
 
