@@ -5,7 +5,7 @@ import { get as getStore } from 'svelte/store'
 
 import type { Receipt, FunctionOperation, Meta } from '$lib/functions'
 import { addNotification } from '$lib/notifications'
-import { homestar } from '$lib/rpc'
+import { getHomestarClient } from '$lib/rpc'
 import { workflowsStore } from '$lib/stores'
 
 export type WorkflowsStore = {
@@ -212,6 +212,8 @@ export const runWorkflow = async (
         workflows: updatedWorkflows
       }
     })
+
+    const homestar = getHomestarClient()
 
     await homestar.runWorkflow(
       { ...payloadToRun, name: runName },

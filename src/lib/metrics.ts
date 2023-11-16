@@ -1,6 +1,6 @@
 // import type { InferError } from '@fission-codes/homestar/types'
 
-import { homestar } from '$lib/rpc'
+import { getHomestarClient } from '$lib/rpc'
 
 type Metric = {
   data: Data[]
@@ -17,6 +17,7 @@ type Data = {
 
 export const requestMetrics = async (): Promise<Metric> => {
   try {
+    const homestar = getHomestarClient()
     const { error, result } = await homestar.metrics()
     if (error) {
       throw new Error(error)

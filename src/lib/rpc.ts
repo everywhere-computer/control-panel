@@ -7,6 +7,7 @@ import {
   Client,
   WebSocketTransport as OpenRPCWebSocketTransport
 } from '@open-rpc/client-js'
+import { addNotification } from './notifications'
 
 const openRPCTransport = new OpenRPCWebSocketTransport(
   import.meta.env.VITE_WEBSOCKET_ENDPOINT
@@ -14,15 +15,27 @@ const openRPCTransport = new OpenRPCWebSocketTransport(
 const requestManager = new RequestManager([openRPCTransport])
 export const rpcClient = new Client(requestManager)
 
-const transport = new WebsocketTransport(
-  import.meta.env.VITE_WEBSOCKET_ENDPOINT,
-  {
-    ws: WebSocket
+let homestar
+export const getHomestarClient = () => {
+  try {
+    if (!homestar) {
+      const transport = new WebsocketTransport(
+        import.meta.env.VITE_WEBSOCKET_ENDPOINT,
+        {
+          ws: WebSocket
+        }
+      ) // WS
+      homestar = new Homestar({
+        transport
+      })
+    }
+
+    return homestar
+  } catch (error) {
+    console.error(error)
+    addNotification(error, 'error')
   }
-) // WS
-export const homestar = new Homestar({
-  transport,
-})
+}
 
 /**
  * Subscribe to WS messages and pass the data to the appropriate handler

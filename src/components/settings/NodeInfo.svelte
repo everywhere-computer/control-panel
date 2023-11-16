@@ -2,8 +2,8 @@
   import clipboardCopy from 'clipboard-copy'
   import { onDestroy, onMount } from 'svelte'
 
-  import { requestHealth } from '$lib/health'
   import { addNotification } from '$lib/notifications'
+  import { getHomestarClient } from '$lib/rpc'
   import ClipboardIcon from '$components/icons/ClipboardIcon.svelte'
 
   export let compressedView = false
@@ -17,12 +17,13 @@
   }
 
   onMount(async () => {
-    health = await requestHealth()
+    const homestar = getHomestarClient()
+    health = (await homestar.health()).result
 
     // Poll until listener addresses are returned
     if (!health?.nodeInfo?.dynamic?.listeners?.length) {
       interval = setInterval(async () => {
-        health = await requestHealth()
+        health = (await homestar.health()).result
         if (health?.nodeInfo?.dynamic?.listeners?.length) {
           clearInterval(interval)
         }

@@ -3,7 +3,7 @@
 // import { WebSocket } from 'unws'
 
 import { networkStore } from '$lib/stores'
-import { homestar } from '$lib/rpc'
+import { getHomestarClient } from '$lib/rpc'
 
 export type NetworkStore = {
   loading: boolean
@@ -34,6 +34,8 @@ const RECEIPT_SENT = 'network:publishedReceiptPubsub'
 // })
 
 export const subscribNetworkEvents = async (): Promise<void> => {
+  const homestar = getHomestarClient()
+
   await homestar.networkEvents(res => {
     // console.log('node1 res', res)
     if (res.error) {
