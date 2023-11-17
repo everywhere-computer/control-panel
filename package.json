@@ -57,7 +57,7 @@
     ]
   },
   "dependencies": {
-    "@fission-codes/homestar": "^0.6.1",
+    "@fission-codes/homestar": "^0.6.2",
     "@oddjs/odd": "0.37.0",
     "@open-rpc/client-js": "^1.8.1",
     "@types/three": "^0.156.0",
