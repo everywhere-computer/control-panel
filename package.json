@@ -59,8 +59,6 @@
   "dependencies": {
     "@fission-codes/homestar": "^0.6.2",
     "@oddjs/odd": "0.37.0",
-    "@open-rpc/client-js": "^1.8.1",
-    "@types/three": "^0.156.0",
     "chart.js": "^4.4.0",
     "clipboard-copy": "^4.0.1",
     "iso-base": "^2.0.1",
@@ -69,9 +67,6 @@
     "qrcode-svg": "^1.1.0",
     "sanitize-html": "^2.11.0",
     "svelvet": "npm:meetspur-svelvet@^8.1.1",
-    "three": "^0.156.1",
-    "three-globe": "^2.29.3",
-    "three-trackballcontrols": "^0.9.0",
     "uint8arrays": "^4.0.2",
     "unws": "^0.2.4"
   },

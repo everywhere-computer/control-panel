@@ -7,7 +7,7 @@
   import subscribNetworkEvents from '$lib/network'
   import { addNotification } from '$lib/notifications'
   import { sessionStore, themeStore } from '$lib/stores'
-  import { subscribeRPC, unsubscribeRPC } from '$lib/rpc'
+  import { unsubscribeRPC } from '$lib/rpc'
   import { errorToMessage } from '$lib/session'
   import { initialize } from '$lib/init'
   import DataWidget from '$components/common/DataWidget.svelte'
@@ -47,7 +47,6 @@
   init()
 
   onMount(() => {
-    subscribeRPC()
     subscribNetworkEvents()
   })
 
