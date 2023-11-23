@@ -1,6 +1,6 @@
 import * as odd from '@oddjs/odd'
 import type { MaybeResult } from '@fission-codes/homestar/codecs/types'
-import { workflow as workflowBuilder, type BlurInvocation, type CropInvocation, type GrayscaleInvocation, type Rotate90Invocation } from '@fission-codes/homestar/workflow'
+import { workflow as workflowBuilder, type BlurInvocation, type CropInvocation, type GrayscaleInvocation, type Rotate90Invocation, type TemplateWorkflow } from '@fission-codes/homestar/workflow'
 import { base64 } from 'iso-base/rfc4648'
 import type { CID } from 'multiformats'
 import { get as getStore } from 'svelte/store'
@@ -98,7 +98,7 @@ export type Builder = {
 
 export const WORKFLOWS_DIR = odd.path.directory('private', 'workflows')
 
-const prepareWorkflow = async (payload: any, dataUrl: string) => {
+const prepareWorkflow = async (payload: TemplateWorkflow, dataUrl: string) => {
   payload.workflow.tasks[0].run.input.args[0] = dataUrl
 
   const builtWorkflow = await workflowBuilder(payload)
