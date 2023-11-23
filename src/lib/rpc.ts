@@ -1,11 +1,12 @@
+import type { Homestar as Client } from '@fission-codes/homestar'
 import { Homestar } from '@fission-codes/homestar'
 import { WebsocketTransport } from '@fission-codes/homestar/transports/ws.js'
 import { WebSocket } from 'unws'
 
 import { addNotification } from './notifications'
 
-let homestar
-export const getHomestarClient = () => {
+let homestar: Client
+export const getHomestarClient = (): Client => {
   try {
     if (!homestar) {
       const transport = new WebsocketTransport(
