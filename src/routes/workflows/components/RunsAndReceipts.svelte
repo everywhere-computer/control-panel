@@ -3,14 +3,12 @@
   import { Svelvet } from 'svelvet'
 
   import '$routes/workflows/components/graph/graph.css'
-  import { FUNCTION_NODE_SIZES } from '$routes/workflows/lib/graph'
   import { themeStore } from '$lib/stores'
   import Actions from '$routes/workflows/components/graph/Actions.svelte'
-  import Close from '$components/icons/Close.svelte'
   import ImageNode from '$routes/workflows/components/graph/ImageNode.svelte'
   import Node from '$routes/workflows/components/graph/Node.svelte'
   import Runs from '$routes/workflows/components/Runs.svelte'
-  import ImageModal from './graph/ImageModal.svelte'
+  import ImageModal from '$routes/workflows/components/graph/ImageModal.svelte'
 
   export let workflow
 
