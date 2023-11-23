@@ -10,6 +10,7 @@
   import ImageNode from '$routes/workflows/components/graph/ImageNode.svelte'
   import Node from '$routes/workflows/components/graph/Node.svelte'
   import Runs from '$routes/workflows/components/Runs.svelte'
+  import ImageModal from './graph/ImageModal.svelte'
 
   export let workflow
 
@@ -156,29 +157,9 @@
 />
 
 {#if imageModalOpen}
-  <div class="modal !z-max">
-    <div
-      class="relative flex flex-col items-center justify-center gap-4 w-full max-w-[500px] pt-16 px-4 pb-4 bg-base-200/80 rounded-sm"
-    >
-      <button
-        on:click={() => (imageModalOpen = false)}
-        class="absolute top-4 right-4 btn btn-odd-gray-900 flex items-center justify-center gap-1 px-0 w-8 h-8 bg-odd-gray-700 text-odd-gray-100 text-body-sm"
-      >
-        <Close />
-      </button>
-
-      <img
-        src={workflow.savedImage}
-        class="block w-full h-auto px-4 rounded-sm"
-        alt="uploaded workflow asset"
-      />
-
-      <button
-        on:click={handleDeleteImage}
-        class="self-end btn btn-error btn-odd-red-400 w-[85px] h-10 !text-label-l"
-      >
-        Delete
-      </button>
-    </div>
-  </div>
+  <ImageModal
+    bind:imageModalOpen
+    imageSrc={workflow.savedImage}
+    {handleDeleteImage}
+  />
 {/if}

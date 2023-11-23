@@ -1,3 +1,5 @@
+import type { CID } from 'multiformats'
+
 export type FunctionsStore = {
   loading: boolean
   functions: Func[]
@@ -29,7 +31,7 @@ export type Receipt = {
   prf: string[]
   ran: string
   replayed?: boolean
-  receiptCID?: string
+  receiptCID?: CID
 }
 
 export type Meta = {
