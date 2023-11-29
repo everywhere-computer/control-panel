@@ -17,7 +17,7 @@
   "devDependencies": {
     "@playwright/test": "^1.29.2",
     "@sveltejs/adapter-static": "^1.0.0",
-    "@sveltejs/kit": "^1.0.1",
+    "@sveltejs/kit": "^1.27.6",
     "@tailwindcss/typography": "^0.5.2",
     "@types/qrcode-svg": "^1.1.1",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
@@ -57,7 +57,7 @@
     ]
   },
   "dependencies": {
-    "@fission-codes/homestar": "^0.6.2",
+    "@fission-codes/homestar": "^1.0.0",
     "@oddjs/odd": "0.37.0",
     "chart.js": "^4.4.0",
     "clipboard-copy": "^4.0.1",
