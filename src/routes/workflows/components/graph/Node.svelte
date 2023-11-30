@@ -1,6 +1,5 @@
 <script lang="ts">
   import { Anchor, Node } from 'svelvet'
-  import * as uint8arrays from 'uint8arrays/to-string'
 
   import { unsavedRunStore } from '$lib/stores'
   import {
@@ -10,6 +9,7 @@
   } from '$routes/workflows/lib/graph'
   import Close from '$components/icons/Close.svelte'
   import Edge from '$routes/workflows/components/graph/Edge.svelte'
+  import ImageModal from '$routes/workflows/components/graph/ImageModal.svelte'
   import type { Receipt } from '$lib/functions'
   import { themeStore } from '$lib/stores'
   import type { Run, Payload } from '$lib/workflows'
@@ -261,30 +261,9 @@
 />
 
 {#if imageModalOpen}
-  <div class="modal !z-max">
-    <div
-      class="relative flex flex-col items-center justify-center gap-4 w-full w-auto pt-16 px-4 pb-4 bg-base-200/80 rounded-sm"
-    >
-      <button
-        on:click={() => (imageModalOpen = false)}
-        class="absolute top-4 right-4 btn btn-odd-gray-900 flex items-center justify-center gap-1 px-0 w-8 h-8 bg-odd-gray-700 text-odd-gray-100 text-body-sm"
-      >
-        <Close />
-      </button>
-
-      <img
-        src={receiptImage}
-        class="block w-full h-auto px-4 rounded-sm"
-        alt="uploaded workflow asset"
-      />
-
-      {#if receipt?.receiptCID}
-        <p
-          class="text-input-sm font-sans text-base-content self-start whitespace-nowrap"
-        >
-          Receipt CID: {receipt?.receiptCID?.toString()}
-        </p>
-      {/if}
-    </div>
-  </div>
+  <ImageModal
+    bind:imageModalOpen
+    imageSrc={receiptImage}
+    receiptCID={receipt?.receiptCID}
+  />
 {/if}

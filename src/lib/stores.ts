@@ -8,8 +8,6 @@ import type { AccountSettings } from '$lib/account-settings'
 import type { Notification } from '$lib/notifications'
 import type { Session } from '$lib/session'
 import type { Theme } from '$lib/theme'
-import type { ProjectsStore } from '$lib/projects'
-import projects from '$routes/projects/lib/project-mocks'
 import type { FunctionsStore } from '$lib/functions'
 import functions from '$routes/functions/lib/function-mocks'
 import type { NetworkStore } from '$lib/network'
@@ -35,11 +33,6 @@ export const notificationStore: Writable<Notification[]> = writable([])
 export const accountSettingsStore: Writable<AccountSettings> = writable({
   avatar: null,
   loading: true,
-})
-
-export const projectsStore: Writable<ProjectsStore> = writable({
-  loading: false,
-  projects
 })
 
 export const functionsStore: Writable<FunctionsStore> = writable({

@@ -1,6 +1,8 @@
 import * as odd from '@oddjs/odd'
-import { workflow as workflowBuilder } from '@fission-codes/homestar/workflow'
+import type { MaybeResult } from '@fission-codes/homestar/codecs/types'
+import { workflow as workflowBuilder, type BlurInvocation, type CropInvocation, type GrayscaleInvocation, type Rotate90Invocation, type TemplateWorkflow } from '@fission-codes/homestar/workflow'
 import { base64 } from 'iso-base/rfc4648'
+import type { CID } from 'multiformats'
 import { get as getStore } from 'svelte/store'
 
 import type { Receipt, FunctionOperation, Meta } from '$lib/functions'
@@ -41,39 +43,10 @@ export type Run = {
   receipts: Receipt[]
 }
 
-// export type SimplePayload = {
-//   name: string
-//   workflow: {
-//     tasks: SimpleTask[]
-//   }
-// }
-// type SimpleTask = {
-//   name: string
-//   data: string
-//   args: number[]
-// }
-
 export type Payload = {
   name: string
   workflow: {
-    tasks: Task[]
-  }
-}
-
-type Task = {
-  cause: null
-  meta: {
-    memory: number
-    time: number
-  }
-  prf: []
-  run: {
-    input: {
-      args: any
-    }
-    nnc: string
-    op: string
-    rsc: string
+    tasks: (BlurInvocation | CropInvocation | GrayscaleInvocation | Rotate90Invocation)[]
   }
 }
 
@@ -81,10 +54,10 @@ export type Message = {
   metadata: {
     name: string
     replayed: boolean
-    workflow: Record<'/', string>
+    workflow: CID
   }
   receipt: RawReceipt
-  receipt_cid: Record<'/', string>
+  receipt_cid: CID
 }
 
 type RawReceipt = {
@@ -125,7 +98,7 @@ export type Builder = {
 
 export const WORKFLOWS_DIR = odd.path.directory('private', 'workflows')
 
-const prepareWorkflow = async (payload: any, dataUrl: string) => {
+const prepareWorkflow = async (payload: TemplateWorkflow, dataUrl: string) => {
   payload.workflow.tasks[0].run.input.args[0] = dataUrl
 
   const builtWorkflow = await workflowBuilder(payload)
@@ -217,14 +190,13 @@ export const runWorkflow = async (
 
     await homestar.runWorkflow(
       { ...payloadToRun, name: runName },
-      async data => {
+      async (data: MaybeResult) => {
         if (data.error) {
-          // @ts-ignore-next-line
+          // @ts-expect-error received WorkflowNotificationError from Homestar node
           throw new Error(data.error)
         }
 
-        // @ts-ignore-next-line
-        await handleMessage(data.result)
+        await handleMessage(data.result as Message)
       }
     )
   } catch (error) {
@@ -269,9 +241,6 @@ export const handleMessage = async (message: Message): Promise<void> => {
 
     if (message.receipt !== undefined && message.receipt.meta !== undefined) {
       const receipt = parseReceipt(message.receipt)
-
-      // // Log receipt
-      // console.table(receipt)
 
       // Update runs in `workflows` store
       workflowsStore.update(state => {
