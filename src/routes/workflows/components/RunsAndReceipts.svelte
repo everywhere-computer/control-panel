@@ -5,10 +5,11 @@
   import '$routes/workflows/components/graph/graph.css'
   import { themeStore } from '$lib/stores'
   import Actions from '$routes/workflows/components/graph/Actions.svelte'
+  import ImageModal from '$routes/workflows/components/graph/ImageModal.svelte'
   import ImageNode from '$routes/workflows/components/graph/ImageNode.svelte'
   import Node from '$routes/workflows/components/graph/Node.svelte'
   import Runs from '$routes/workflows/components/Runs.svelte'
-  import ImageModal from '$routes/workflows/components/graph/ImageModal.svelte'
+  import WorkflowDetail from '$routes/workflows/components/WorkflowDetail.svelte'
 
   export let workflow
 
@@ -62,6 +63,8 @@
 </script>
 
 <svelte:window on:resize={handleWindowResize} />
+
+<!-- <WorkflowDetail workflowRun={selectedRun} uploadedImage={workflow.savedImage} /> -->
 
 <div class="flex flex-row w-full px-4 md:px-0 bg-base-200 md:bg-base-100">
   <div

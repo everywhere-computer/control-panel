@@ -98,7 +98,7 @@ export type Builder = {
 
 export const WORKFLOWS_DIR = odd.path.directory('private', 'workflows')
 
-const prepareWorkflow = async (payload: TemplateWorkflow, dataUrl: string) => {
+export const prepareWorkflow = async (payload: TemplateWorkflow, dataUrl: string) => {
   payload.workflow.tasks[0].run.input.args[0] = dataUrl
 
   const builtWorkflow = await workflowBuilder(payload)
