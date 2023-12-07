@@ -16,6 +16,7 @@
       const formEl = event.target as HTMLFormElement
       const data = new FormData(formEl)
 
+      // @ts-ignore-next-line
       console.log('data', Object.fromEntries(data))
 
       // await register(encodedUsername)
