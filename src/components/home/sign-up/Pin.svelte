@@ -1,8 +1,13 @@
 <script lang="ts">
+  import Plausible from 'plausible-tracker'
   import { createEventDispatcher } from 'svelte'
 
   import { addNotification } from '$lib/notifications'
   import Input from '$components/form/Input.svelte'
+
+  const { trackEvent } = Plausible({
+    trackLocalhost: false
+  })
 
   const dispatch = createEventDispatcher()
 
@@ -17,6 +22,14 @@
       const pin = data.get('pin')
 
       // await register(encodedUsername)
+
+      trackEvent('Account created', {
+        // callback: () => console.log('done'),
+        props: {
+          email: '' // enter user account email
+        }
+      })
+
       dispatch('nextStep')
 
       // addNotification('Account created!', 'success')

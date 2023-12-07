@@ -1,9 +1,20 @@
 <script lang="ts">
+  import Plausible from 'plausible-tracker'
   import { createEventDispatcher } from 'svelte'
+
+  const { trackEvent } = Plausible({
+    trackLocalhost: false
+  })
 
   const dispatch = createEventDispatcher()
 
   const handleJoin = () => {
+    trackEvent('Click "beta intake" button', {
+      // callback: () => console.log('done'),
+      props: {
+        email: '' // enter user account email
+      }
+    })
     dispatch('nextStep')
   }
 </script>
