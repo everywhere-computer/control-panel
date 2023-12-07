@@ -1,94 +1,62 @@
 <script lang="ts">
-  import {
-    createDID,
-    prepareUsername,
-    register,
-    USERNAME_STORAGE_KEY
-  } from '$lib/auth/account'
-  import { addNotification } from '$lib/notifications'
-  import { sessionStore, themeStore } from '$lib/stores'
-  import Alert from '$components/icons/Alert.svelte'
-  import Connect from '$components/icons/Connect.svelte'
+  import { themeStore } from '$lib/stores'
+  import Details from '$components/home/sign-up/Details.svelte'
+  import Email from '$components/home/sign-up/Email.svelte'
+  import Join from '$components/home/sign-up/Join.svelte'
+  import Pin from '$components/home/sign-up/Pin.svelte'
+  import Username from '$components/home/sign-up/Username.svelte'
 
-  let loading = false
+  const steps = {
+    1: 'join',
+    2: 'email',
+    3: 'new',
+    4: 'details',
+    5: 'pin'
+  }
 
-  // Automatically generate a username and register an account
-  const handleRegisterAccount = async () => {
-    loading = true
-    try {
-      const {
-        program: {
-          components: { crypto, storage }
-        }
-      } = $sessionStore
+  let currentStep = 1
 
-      /**
-       * Create a new DID for the user, which will be appended to their username, concatenated
-       * via a `#`, hashed and encoded to ensure uniqueness
-       */
-      const did = await createDID(crypto)
-      const fullUsername = `ec-anon#${did}`
-      await storage.setItem(USERNAME_STORAGE_KEY, fullUsername)
-
-      const encodedUsername = await prepareUsername(fullUsername)
-
-      await register(encodedUsername)
-
-      addNotification('Account created!', 'success')
-    } catch (error) {
-      console.error(error)
-      addNotification('Failed to register account', 'error')
+  const onNextStep = () => {
+    if (currentStep < 5) {
+      currentStep = currentStep + 1
     }
-    loading = false
   }
 </script>
 
 <div
   class="flex flex-col items-center justify-center gap-4 min-h-[calc(100vh-248px)] md:min-h-[calc(100vh-160px)] w-full"
 >
-  <div class="logo relative max-w-[60vmin] max-h-[60vmin]">
-    <img
-      class="logo-bg w-full animate-rotateAnimation"
-      src={`${window.location.origin}/logo-bg${
-        $themeStore.selectedTheme === 'dark' ? '-dark' : ''
-      }.svg`}
-      alt="logo backgroud"
-    />
-    <img
-      class="logo-mg absolute z-10 top-[12.8%] left-[12.4%] w-[75.4%] object-cover"
-      src={`${window.location.origin}/logo-mg.gif`}
-      alt="logo spinning lines"
-    />
-    <img
-      class="logo-fg absolute top-0 left-0 z-20 w-full"
-      src={`${window.location.origin}/logo-fg.svg`}
-      alt="logo foreground"
-    />
-  </div>
+  {#if currentStep !== 4}
+    <div class="logo relative max-w-[60vmin] max-h-[60vmin] mt-auto">
+      <img
+        class="logo-bg w-full animate-rotateAnimation"
+        src={`${window.location.origin}/logo-bg${
+          $themeStore.selectedTheme === 'dark' ? '-dark' : ''
+        }.svg`}
+        alt="logo backgroud"
+      />
+      <img
+        class="logo-mg absolute z-10 top-[12.8%] left-[12.4%] w-[75.4%] object-cover"
+        src={`${window.location.origin}/logo-mg.gif`}
+        alt="logo spinning lines"
+      />
+      <img
+        class="logo-fg absolute top-0 left-0 z-20 w-full"
+        src={`${window.location.origin}/logo-fg.svg`}
+        alt="logo foreground"
+      />
+    </div>
+  {/if}
 
-  {#if $sessionStore.error === 'Unsupported Browser'}
-    <div class="p-4 rounded-lg bg-base-content text-base-100">
-      <h3 class="flex items-center gap-2 text-base">
-        <span class="-translate-y-[2px]"><Alert /></span>
-        Unsupported device
-      </h3>
-      <p>
-        It appears this device isn’t supported. ODD requires IndexedDB in order
-        to function. This browser doesn’t appear to implement this API. Are you
-        in a Firefox private window?
-      </p>
-    </div>
-  {:else}
-    <div class="flex flex-col items-start gap-4">
-      <button
-        class="btn btn-odd-gray-900 text-label-l {loading
-          ? '!bg-odd-gray-800 !text-odd-gray-0 opacity-80'
-          : ''} gap-2"
-        on:click={handleRegisterAccount}
-        disabled={loading}
-      >
-        <Connect /> Connect this device
-      </button>
-    </div>
+  {#if currentStep === 1}
+    <Join on:nextStep={onNextStep} />
+  {:else if currentStep === 2}
+    <Email on:nextStep={onNextStep} />
+  {:else if currentStep === 3}
+    <Username on:nextStep={onNextStep} />
+  {:else if currentStep === 4}
+    <Details on:nextStep={onNextStep} />
+  {:else if currentStep === 5}
+    <Pin on:nextStep={onNextStep} />
   {/if}
 </div>
