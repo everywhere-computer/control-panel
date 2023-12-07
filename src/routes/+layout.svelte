@@ -56,6 +56,16 @@
   })
 </script>
 
+<svelte:head>
+  {#if window?.location?.href?.includes('control')}
+    <script
+      defer
+      data-domain="control.everywhere.computer"
+      src="https://plausible.io/js/script.js"
+    ></script>
+  {/if}
+</svelte:head>
+
 <svelte:window bind:innerWidth={screenSize} />
 
 <div
