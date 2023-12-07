@@ -6,7 +6,7 @@
   export let validationMessage: string = null
 </script>
 
-<label class="form-control {maxWidth ? `w-[${maxWidth}]` : ''}">
+<label class="form-control w-full {maxWidth ? `w-[${maxWidth}]` : ''}">
   {#if label}
     <div class="label">
       <span class="label-text text-label-sm">{label}</span>
