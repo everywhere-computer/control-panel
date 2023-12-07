@@ -8,6 +8,11 @@
   const dispatch = createEventDispatcher()
 
   let loading = false
+  let whatsInterestingAboutIPVM = []
+  let whereWouldYouRunIt = []
+
+  // $: console.log('whatsInterestingAboutIPVM', whatsInterestingAboutIPVM)
+  // $: console.log('whereWouldYouRunIt', whereWouldYouRunIt)
 
   // Submit username to Fission server to register the account
   const handleSubmitDetails = async (event: Event) => {
@@ -74,6 +79,7 @@
           class="checkbox"
           type="checkbox"
           value="aws"
+          bind:group={whereWouldYouRunIt}
         />
         AWS
       </label>
@@ -83,6 +89,7 @@
           class="checkbox"
           type="checkbox"
           value="railway"
+          bind:group={whereWouldYouRunIt}
         />
         Railway
       </label>
@@ -92,6 +99,7 @@
           class="checkbox"
           type="checkbox"
           value="fly.io"
+          bind:group={whereWouldYouRunIt}
         />
         Fly.io
       </label>
@@ -101,6 +109,7 @@
           class="checkbox"
           type="checkbox"
           value="google_cloud_platform"
+          bind:group={whereWouldYouRunIt}
         />
         Google Cloud Platform
       </label>
@@ -110,6 +119,7 @@
           class="checkbox"
           type="checkbox"
           value="microsoft_azure"
+          bind:group={whereWouldYouRunIt}
         />
         Microsoft Azure
       </label>
@@ -119,6 +129,7 @@
           class="checkbox"
           type="checkbox"
           value="digital_ocean"
+          bind:group={whereWouldYouRunIt}
         />
         Digital Ocean
       </label>
@@ -128,6 +139,7 @@
           class="checkbox"
           type="checkbox"
           value="not_interested"
+          bind:group={whereWouldYouRunIt}
         />
         Not interested in cloud hosting, I'll run it myself at home / on my own server
       </label>
@@ -150,6 +162,7 @@
           class="checkbox"
           type="checkbox"
           value="portable_computation"
+          bind:group={whatsInterestingAboutIPVM}
         />
         Portable computation: serverless not tied to one provider
       </label>
@@ -159,6 +172,7 @@
           class="checkbox"
           type="checkbox"
           value="offchain_compute"
+          bind:group={whatsInterestingAboutIPVM}
         />
         Offchain compute: IPVM used with blockchain networks
       </label>
@@ -168,6 +182,7 @@
           class="checkbox"
           type="checkbox"
           value="local_first_functions"
+          bind:group={whatsInterestingAboutIPVM}
         />
         Local-first functions: running a Wasm function in local browsers or mobile,
         AND the same function on a server
@@ -178,6 +193,7 @@
           class="checkbox"
           type="checkbox"
           value="dweb_p2p_experiments"
+          bind:group={whatsInterestingAboutIPVM}
         />
         I like being involved in dweb p2p experiments like this
       </label>
@@ -187,6 +203,7 @@
           class="checkbox"
           type="checkbox"
           value="rust_is_cool"
+          bind:group={whatsInterestingAboutIPVM}
         />
         Rust is cool
       </label>
@@ -196,6 +213,7 @@
           class="checkbox"
           type="checkbox"
           value="other"
+          bind:group={whatsInterestingAboutIPVM}
         />
         Other
       </label>
