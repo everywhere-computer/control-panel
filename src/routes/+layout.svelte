@@ -91,18 +91,14 @@
       {/if}
 
       <div
-        class={isHome
-          ? 'p-4'
-          : isActivity
-          ? 'pb-6'
-          : isFullWidth
-          ? 'pt-6'
-          : 'p-6'}
+        class={isHome ? '' : isActivity ? 'pb-6' : isFullWidth ? 'pt-6' : 'p-6'}
       >
         <slot />
       </div>
 
-      <Footer {screenSize} />
+      {#if isHome && $sessionStore.session}
+        <Footer {screenSize} />
+      {/if}
 
       {#if $sessionStore.session}
         <DataWidget />

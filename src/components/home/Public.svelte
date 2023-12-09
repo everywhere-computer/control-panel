@@ -4,27 +4,38 @@
 
   import { themeStore } from '$lib/stores'
   import Details from '$components/home/sign-up/Details.svelte'
+  import Discord from '$components/home/sign-up/Discord.svelte'
   import Email from '$components/home/sign-up/Email.svelte'
   import Join from '$components/home/sign-up/Join.svelte'
+  import Nav from '$components/home/sign-up/Nav.svelte'
   import Pin from '$components/home/sign-up/Pin.svelte'
   import Username from '$components/home/sign-up/Username.svelte'
+  import Welcome from '$components/home/sign-up/Welcome.svelte'
 
   const { trackEvent } = Plausible({
     trackLocalhost: false
   })
 
   const steps = {
-    1: 'join',
-    2: 'email',
-    3: 'new',
-    4: 'details',
-    5: 'pin'
+    1: Join,
+    2: Email,
+    3: Pin,
+    4: Username,
+    5: Welcome,
+    6: Details,
+    7: Discord,
+    8: Nav
   }
 
   let currentStep = 1
+  $: showGlobe =
+    currentStep === 1 ||
+    currentStep === 2 ||
+    currentStep === 3 ||
+    currentStep === 4
 
   const onNextStep = () => {
-    if (currentStep < 5) {
+    if (currentStep < 8) {
       currentStep = currentStep + 1
     }
   }
@@ -35,10 +46,20 @@
 </script>
 
 <div
-  class="flex flex-col items-center justify-center gap-4 min-h-[calc(100vh-248px)] md:min-h-[calc(100vh-160px)] w-full"
+  class="flex flex-col items-center gap-4 w-full min-h-screen md:min-h-[calc(100vh-160px)]"
 >
-  {#if currentStep !== 4}
-    <div class="logo relative max-w-[60vmin] max-h-[60vmin] mt-auto">
+  {#if currentStep === 2 || currentStep === 3 || currentStep === 4}
+    <h1 class="mb-[89px] pt-[88px] md:pt-0 text-heading-2xl">
+      Beta Access Procedure
+    </h1>
+  {/if}
+
+  {#if showGlobe}
+    <div
+      class="logo relative max-w-[60vmin] max-h-[60vmin] {currentStep === 1
+        ? 'mt-[205px]'
+        : ''}"
+    >
       <img
         class="logo-bg w-full animate-rotateAnimation"
         src={`${window.location.origin}/logo-bg${
@@ -59,15 +80,5 @@
     </div>
   {/if}
 
-  {#if currentStep === 1}
-    <Join on:nextStep={onNextStep} />
-  {:else if currentStep === 2}
-    <Email on:nextStep={onNextStep} />
-  {:else if currentStep === 3}
-    <Username on:nextStep={onNextStep} />
-  {:else if currentStep === 4}
-    <Details on:nextStep={onNextStep} />
-  {:else if currentStep === 5}
-    <Pin on:nextStep={onNextStep} />
-  {/if}
+  <svelte:component this={steps[currentStep]} on:nextStep={onNextStep} />
 </div>
