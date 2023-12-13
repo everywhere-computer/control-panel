@@ -27,13 +27,11 @@
 </script>
 
 <div
-  class="flex flex-row items-center justify-center gap-2 w-full max-w-[316px] m-auto p-4 box-content bg-base-content text-center rounded-[88px]"
+  class="flex flex-row items-center justify-center gap-2 w-full max-w-[316px] m-auto p-4 box-content bg-base-200 text-center rounded-[88px]"
 >
   <StarSmall />
   <StarSmall />
-  <p class="max-w-[120px] mx-6 text-input-sm text-odd-gray-50">
-    Fresh applicant detected
-  </p>
+  <p class="mx-6 text-input-sm text-primary">Fresh applicant detected</p>
   <StarSmall />
   <StarSmall />
 </div>

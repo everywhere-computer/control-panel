@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte'
 
+  import StarMedium from '$components/icons/StarMedium.svelte'
   import StarSmall from '$components/icons/StarSmall.svelte'
 
   const dispatch = createEventDispatcher()
@@ -17,12 +18,12 @@
 <div class="pt-12 px-9">
   <div class="flex flex-row items-center mb-8">
     <div
-      class="flex flex-row items-center justify-center gap-1 py-3 px-4 rounded-[88px] bg-base-content"
+      class="flex flex-row items-center justify-center gap-1 py-3 px-4 rounded-[88px] bg-base-200"
     >
-      <StarSmall colour="#E8E8F4" />
-      <StarSmall colour="#E8E8F4" />
-      <StarSmall colour="#8D74F7" />
-      <StarSmall />
+      <StarSmall colour="#32334A" />
+      <StarSmall colour="#32334A" />
+      <StarMedium />
+      <StarSmall colour="#CCCCE3" />
     </div>
   </div>
 

@@ -3,6 +3,7 @@
 
   import { addNotification } from '$lib/notifications'
   import Input from '$components/form/Input.svelte'
+  import StarMedium from '$components/icons/StarMedium.svelte'
   import StarSmall from '$components/icons/StarSmall.svelte'
   import TextArea from '$components/form/TextArea.svelte'
 
@@ -42,12 +43,12 @@
 <div class="py-12 px-8">
   <div class="flex flex-row items-center mb-8">
     <div
-      class="flex flex-row items-center justify-center gap-1 py-3 px-4 rounded-[88px] bg-base-content"
+      class="flex flex-row items-center justify-center gap-1 py-3 px-4 rounded-[88px] bg-base-200"
     >
-      <StarSmall colour="#E8E8F4" />
-      <StarSmall colour="#8D74F7" />
-      <StarSmall />
-      <StarSmall />
+      <StarSmall colour="#32334A" />
+      <StarMedium />
+      <StarSmall colour="#CCCCE3" />
+      <StarSmall colour="#CCCCE3" />
     </div>
   </div>
 

@@ -3,6 +3,7 @@
 
   import StarNav from '$components/icons/StarNav.svelte'
   import StarSmall from '$components/icons/StarSmall.svelte'
+  import StarMedium from '$components/icons/StarMedium.svelte'
 
   const dispatch = createEventDispatcher()
 
@@ -14,12 +15,12 @@
 <div class="pt-12 px-9">
   <div class="flex flex-row items-center mb-8">
     <div
-      class="flex flex-row items-center justify-center gap-1 py-3 px-4 rounded-[88px] bg-base-content"
+      class="flex flex-row items-center justify-center gap-1 py-3 px-4 rounded-[88px] bg-base-200"
     >
-      <StarSmall colour="#E8E8F4" />
-      <StarSmall colour="#E8E8F4" />
-      <StarSmall colour="#E8E8F4" />
-      <StarSmall colour="#8D74F7" />
+      <StarSmall colour="#32334A" />
+      <StarSmall colour="#32334A" />
+      <StarSmall colour="#32334A" />
+      <StarMedium />
     </div>
   </div>
 
@@ -27,8 +28,11 @@
     <h1 class="font-bold text-heading-2xl">One last thing: Meet Nav</h1>
 
     <p>
-      Mistakes are sure to be made.Confusion is bound to occur.Fits of
-      inspiration are guaranteed!
+      Mistakes are sure to be made.
+      <br />
+      Confusion is bound to occur.
+      <br />
+      Fits of inspiration are guaranteed!
     </p>
     <p>
       Whatever it is that has disrupted your flow, Nav will be be available in
