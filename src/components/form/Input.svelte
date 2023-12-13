@@ -3,6 +3,7 @@
   export let maxWidth: string = null
   export let name: string
   export let label: string = null
+  export let required: boolean = false
   export let type: string = 'text'
   export let validationMessage: string = null
   export let value: string = null
@@ -23,6 +24,7 @@
         ? 'pr-24'
         : ''}"
       {name}
+      {required}
       {type}
       {...valueProp}
     />

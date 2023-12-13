@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte'
+  import { createEventDispatcher, onMount } from 'svelte'
 
   import { addNotification } from '$lib/notifications'
   import Input from '$components/form/Input.svelte'
@@ -10,8 +10,8 @@
   const dispatch = createEventDispatcher()
 
   let loading = false
-  let whatsInterestingAboutIPVM = []
-  let whereWouldYouDeployIt = []
+  let whatsInterestingAboutIPVM: string[] = []
+  let whereWouldYouDeployIt: string = ''
 
   // Submit username to Fission server to register the account
   const handleSubmitDetails = async (event: Event) => {
@@ -20,7 +20,15 @@
       const formEl = event.target as HTMLFormElement
       const data = new FormData(formEl)
 
-      const formEntries = {
+      // @ts-ignore-next-line
+      const formEntries: {
+        name: string
+        orgOrProject: string
+        doYouRunAnyNodes: string | null
+        whatProblemsAreYouTackling: string | null
+        whereWouldYouDeployIt: string
+        whatsInterestingAboutIPVM: string[]
+      } = {
         // @ts-ignore-next-line
         ...Object.fromEntries(data),
         whatsInterestingAboutIPVM,
@@ -28,7 +36,39 @@
       }
       console.log('formEntries', formEntries)
 
-      // await register(encodedUsername)
+      const entriesToQuery = {
+        'entry.1008061897': formEntries.name,
+        'entry.797898644': 'andy@fission.codes',
+        'entry.1857510537': formEntries.orgOrProject,
+        'entry.1995046092': formEntries.doYouRunAnyNodes,
+        'entry.357312378': formEntries.whatProblemsAreYouTackling,
+        'entry.662111001': formEntries.whereWouldYouDeployIt
+      }
+      let encodedQueryString = Object.entries(entriesToQuery)
+        .map(([key, val]) =>
+          !!val ? `${key}=${encodeURIComponent(val)}` : null
+        )
+        .join('&')
+
+      formEntries.whatsInterestingAboutIPVM?.forEach(val => {
+        if (!!val) {
+          encodedQueryString = `${encodedQueryString}&entry.2071542748=${val}`
+        }
+      })
+
+      const res = await fetch(
+        `https://docs.google.com/forms/d/e/${
+          import.meta.env.VITE_GOOGLE_FORM_ID
+        }/formResponse?${encodedQueryString}&submit=Submit`,
+        {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        }
+      )
+
       dispatch('nextStep')
 
       // addNotification('Account created!', 'success')
@@ -65,13 +105,20 @@
       help us tailor the platform and documentation to our beta members.
     </p>
 
-    <Input maxWidth="372px" name="name" label="Your name" type="text" />
+    <Input
+      maxWidth="372px"
+      name="name"
+      label="Your name"
+      type="text"
+      required
+    />
 
     <Input
       maxWidth="372px"
       name="orgOrProject"
       label="Your organization / project"
       type="text"
+      required
     />
 
     <TextArea
@@ -97,9 +144,9 @@
         <label class="flex flex-row items-center gap-2">
           <input
             name="whereWouldYouDeployIt"
-            class="checkbox"
-            type="checkbox"
-            value="aws"
+            class="radio"
+            type="radio"
+            value="AWS"
             bind:group={whereWouldYouDeployIt}
           />
           AWS
@@ -107,9 +154,9 @@
         <label class="flex flex-row items-center gap-2">
           <input
             name="whereWouldYouDeployIt"
-            class="checkbox"
-            type="checkbox"
-            value="railway"
+            class="radio"
+            type="radio"
+            value="Railway"
             bind:group={whereWouldYouDeployIt}
           />
           Railway
@@ -117,9 +164,9 @@
         <label class="flex flex-row items-center gap-2">
           <input
             name="whereWouldYouDeployIt"
-            class="checkbox"
-            type="checkbox"
-            value="fly.io"
+            class="radio"
+            type="radio"
+            value="Fly.io"
             bind:group={whereWouldYouDeployIt}
           />
           Fly.io
@@ -127,9 +174,9 @@
         <label class="flex flex-row items-center gap-2">
           <input
             name="whereWouldYouDeployIt"
-            class="checkbox"
-            type="checkbox"
-            value="google_cloud_platform"
+            class="radio"
+            type="radio"
+            value="Google Cloud Platform"
             bind:group={whereWouldYouDeployIt}
           />
           Google Cloud Platform
@@ -137,9 +184,9 @@
         <label class="flex flex-row items-center gap-2">
           <input
             name="whereWouldYouDeployIt"
-            class="checkbox"
-            type="checkbox"
-            value="microsoft_azure"
+            class="radio"
+            type="radio"
+            value="Microsoft Azure"
             bind:group={whereWouldYouDeployIt}
           />
           Microsoft Azure
@@ -147,9 +194,9 @@
         <label class="flex flex-row items-center gap-2">
           <input
             name="whereWouldYouDeployIt"
-            class="checkbox"
-            type="checkbox"
-            value="digital_ocean"
+            class="radio"
+            type="radio"
+            value="Digital Ocean"
             bind:group={whereWouldYouDeployIt}
           />
           Digital Ocean
@@ -157,9 +204,9 @@
         <label class="flex flex-row items-center gap-2">
           <input
             name="whereWouldYouDeployIt"
-            class="checkbox"
-            type="checkbox"
-            value="not_interested"
+            class="radio"
+            type="radio"
+            value="Not interested in cloud hosting, I'll run it myself at home / on my own server"
             bind:group={whereWouldYouDeployIt}
           />
           No cloud! I prefer to run things myself at home / on my own server
@@ -170,7 +217,7 @@
     <div class="form-control">
       <div class="label">
         <span class="label-text !text-label-sm">
-          What's interests you the most?
+          What interests you the most?
         </span>
       </div>
 
@@ -182,7 +229,7 @@
             name="whatsInterestingAboutIPVM"
             class="checkbox"
             type="checkbox"
-            value="portable_computation"
+            value="Portable computation: serverless not tied to one provider"
             bind:group={whatsInterestingAboutIPVM}
           />
           <div>
@@ -195,7 +242,7 @@
             name="whatsInterestingAboutIPVM"
             class="checkbox"
             type="checkbox"
-            value="offchain_compute"
+            value="Offchain compute: IPVM used with blockchain networks"
             bind:group={whatsInterestingAboutIPVM}
           />
           <div>
@@ -208,7 +255,7 @@
             name="whatsInterestingAboutIPVM"
             class="checkbox"
             type="checkbox"
-            value="local_first_functions"
+            value="Local first functions: running a Wasm function in local browsers or mobile, AND the same function on a server"
             bind:group={whatsInterestingAboutIPVM}
           />
           <div>
@@ -222,7 +269,7 @@
             name="whatsInterestingAboutIPVM"
             class="checkbox"
             type="checkbox"
-            value="dweb_p2p_experiments"
+            value="I like being involved in dweb p2p experiments like this"
             bind:group={whatsInterestingAboutIPVM}
           />
           <div>
@@ -235,7 +282,7 @@
             name="whatsInterestingAboutIPVM"
             class="checkbox"
             type="checkbox"
-            value="rust_is_cool"
+            value="Rust is cool"
             bind:group={whatsInterestingAboutIPVM}
           />
           <div>
