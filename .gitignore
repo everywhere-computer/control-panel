@@ -13,3 +13,6 @@ build/
 /playwright-report/
 /playwright/.cache/
 .direnv
+
+# .env
+.env
