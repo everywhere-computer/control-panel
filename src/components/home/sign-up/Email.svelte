@@ -50,6 +50,7 @@
     name="email"
     label="Provide your email"
     type="email"
+    required
   />
 
   <button

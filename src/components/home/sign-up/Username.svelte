@@ -46,6 +46,7 @@
     label="Choose your username"
     textToAppend=".e9c7.name"
     type="text"
+    required
   />
 
   <button

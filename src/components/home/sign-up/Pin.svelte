@@ -68,6 +68,7 @@
     name="pin"
     label="Enter the one-time code"
     type="text"
+    required
   />
 
   <button
