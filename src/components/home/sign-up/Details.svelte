@@ -10,6 +10,7 @@
   const dispatch = createEventDispatcher()
 
   let loading = false
+  let otherOptionResponse = null
   let whatsInterestingAboutIPVM: string[] = []
   let whereWouldYouDeployIt: string = ''
 
@@ -34,7 +35,6 @@
         whatsInterestingAboutIPVM,
         whereWouldYouDeployIt
       }
-      console.log('formEntries', formEntries)
 
       const entriesToQuery = {
         'entry.1008061897': formEntries.name,
@@ -50,13 +50,22 @@
         )
         .join('&')
 
+      // Handle whatsInterestingAboutIPVM checkbox group(each query param for this requires the same key)
       formEntries.whatsInterestingAboutIPVM?.forEach(val => {
         if (!!val) {
           encodedQueryString = `${encodedQueryString}&entry.2071542748=${val}`
         }
       })
 
-      const res = await fetch(
+      // Handle `other` option response
+      if (
+        formEntries.whatsInterestingAboutIPVM?.includes('__other_option__') &&
+        otherOptionResponse
+      ) {
+        encodedQueryString = `${encodedQueryString}&entry.2071542748.other_option_response=${otherOptionResponse}`
+      }
+
+      await fetch(
         `https://docs.google.com/forms/d/e/${
           import.meta.env.VITE_GOOGLE_FORM_ID
         }/formResponse?${encodedQueryString}&submit=Submit`,
@@ -71,7 +80,7 @@
 
       dispatch('nextStep')
 
-      // addNotification('Account created!', 'success')
+      addNotification('Thanks for the info!', 'success')
     } catch (error) {
       console.error(error)
       addNotification('Failed to register account', 'error')
@@ -295,11 +304,19 @@
             name="whatsInterestingAboutIPVM"
             class="checkbox"
             type="checkbox"
-            value="other"
+            value="__other_option__"
             bind:group={whatsInterestingAboutIPVM}
           />
           Other
         </label>
+        {#if whatsInterestingAboutIPVM?.includes('__other_option__')}
+          <input
+            class="input input-bordered relative z-0 w-full h-10 !border !border-odd-gray-400 !dark:border-neutral rounded-sm"
+            name="other"
+            type="text"
+            bind:value={otherOptionResponse}
+          />
+        {/if}
       </div>
     </div>
 
