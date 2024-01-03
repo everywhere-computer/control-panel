@@ -1,14 +1,16 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte'
+  // import { createEventDispatcher } from 'svelte'
 
-  import StarNav from '$components/icons/StarNav.svelte'
+  import { sessionStore } from '$lib/stores'
+  // import StarNav from '$components/icons/StarNav.svelte'
   import StarSmall from '$components/icons/StarSmall.svelte'
   import StarMedium from '$components/icons/StarMedium.svelte'
 
-  const dispatch = createEventDispatcher()
+  // const dispatch = createEventDispatcher()
 
   const handleJoinDiscord = async () => {
-    dispatch('nextStep')
+    // dispatch('nextStep')
+    $sessionStore.session = true
   }
 </script>
 
