@@ -47,7 +47,25 @@
   init()
 
   onMount(() => {
-    subscribNetworkEvents()
+    // Check if Homestar node is connected
+    let homestarError = false
+    const ws = new WebSocket(import.meta.env.VITE_WEBSOCKET_ENDPOINT)
+    ws.addEventListener('error', () => {
+      // Connection closed
+      if (ws.readyState === 3) {
+        homestarError = true
+        console.error(`Error: couldn't connect to WebSocket`)
+        addNotification(
+          'Failed to connect to Homestar. Please check the WebSocket endpoint in your .env and ensure Homestar is running.',
+          'error',
+          15000
+        )
+      }
+    })
+
+    if (!homestarError) {
+      subscribNetworkEvents()
+    }
   })
 
   onDestroy(() => {
