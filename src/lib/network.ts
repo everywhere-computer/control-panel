@@ -139,7 +139,7 @@ export const subscribNetworkEvents = async (): Promise<void> => {
     })
   } catch (error) {
     console.error(error)
-    addNotification('Failed to subscribe to network events', 'error')
+    addNotification({ msg: 'Failed to subscribe to network events', type: 'error' })
   }
 
   // await homestar2.networkEvents(result => {

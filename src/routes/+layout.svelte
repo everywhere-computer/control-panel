@@ -5,6 +5,10 @@
 
   import '../global.css'
   import { instantiatePostHog } from '$lib/analytics'
+  import {
+    checkHomestarConnection,
+    checkIPFSConnection
+  } from '$lib/connections'
   import subscribNetworkEvents from '$lib/network'
   import { addNotification } from '$lib/notifications'
   import { sessionStore, themeStore } from '$lib/stores'
@@ -29,7 +33,7 @@
   const unsubscribeSessionStore = sessionStore.subscribe(session => {
     if (session.error) {
       const message = errorToMessage(session.error)
-      addNotification(message, 'error')
+      addNotification({ msg: message, type: 'error' })
     }
   })
 
@@ -48,41 +52,14 @@
   init()
 
   onMount(async () => {
-    // Check if Homestar node is connected
-    let homestarError = false
-    const ws = new WebSocket(import.meta.env.VITE_WEBSOCKET_ENDPOINT)
-    ws.addEventListener('error', () => {
-      // Connection closed
-      if (ws.readyState === 3) {
-        homestarError = true
-        console.error(`Error: couldn't connect to WebSocket`)
-        addNotification(
-          'Failed to connect to Homestar. Please check the WebSocket endpoint in your .env and ensure Homestar is running.',
-          'error',
-          15000
-        )
-      }
-    })
+    // Check for a Homestar WebSocket connection
+    checkHomestarConnection()
 
-    // Check if IPFS daemon is running
-    try {
-      await fetch('http://localhost:5001/debug/vars', {
-        method: 'GET',
-        mode: 'no-cors'
-      })
-    } catch (error) {
-      homestarError = true
-      console.error(`Error: IPFS daemon isn't running`)
-      addNotification(
-        "Your IPFS daemon isn't running. Please run 'ipfs daemon' in your terminal.",
-        'error',
-        15000
-      )
-    }
+    // Check if the IPFS daemon is running
+    await checkIPFSConnection()
 
-    if (!homestarError) {
-      subscribNetworkEvents()
-    }
+    // Subscribe to Homestar network events
+    subscribNetworkEvents()
 
     // Instantiate PostHog Analytics
     instantiatePostHog()

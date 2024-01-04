@@ -26,7 +26,7 @@
     status = 'running'
 
     if (files[0]?.type !== 'image/png') {
-      addNotification('Image must be a PNG', 'error')
+      addNotification({ msg: 'Image must be a PNG', type: 'error' })
       status = 'ready'
       return
     }

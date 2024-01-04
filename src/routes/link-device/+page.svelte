@@ -38,17 +38,23 @@
         await waitForDataRoot(hashedUsername)
         await loadAccount(hashedUsername, fullUsername)
 
-        addNotification("You're now connected!", 'success')
+        addNotification({ msg: "You're now connected!", type: 'success' })
         goto('/')
       } else {
-        addNotification('The connection attempt was cancelled', 'info')
+        addNotification({
+          msg: 'The connection attempt was cancelled',
+          type: 'info'
+        })
         goto('/')
       }
     })
   }
 
   const cancelConnection = async () => {
-    addNotification('The connection attempt was cancelled', 'info')
+    addNotification({
+      msg: 'The connection attempt was cancelled',
+      type: 'info'
+    })
 
     await accountLinkingConsumer?.cancel()
     goto('/')

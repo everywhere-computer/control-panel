@@ -82,7 +82,7 @@
       (functionName === 'blur' && updatedArg < param?.min)
 
     if (invalid) {
-      // addNotification(`Param must be less than ${param.max}`)
+      // addNotification({ msg: `Param must be less than ${param.max}` })
       event.target.classList.add(errorClass)
       return
     }
@@ -102,16 +102,16 @@
           .charAt(0)
           .toUpperCase()}${param.name.slice(1)}`
         if (invalidCropWidth) {
-          addNotification(
-            `${paramName} must be less than ${imageBitmap.width}`,
-            'error'
-          )
+          addNotification({
+            msg: `${paramName} must be less than ${imageBitmap.width}`,
+            type: 'error'
+          })
         }
         if (invalidCropHeight) {
-          addNotification(
-            `${paramName} must be less than ${imageBitmap.height}`,
-            'error'
-          )
+          addNotification({
+            msg: `${paramName} must be less than ${imageBitmap.height}`,
+            type: 'error'
+          })
         }
 
         return

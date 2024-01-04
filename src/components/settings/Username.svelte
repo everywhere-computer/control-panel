@@ -8,7 +8,7 @@
 
   const handleCopyUsername = async (): Promise<void> => {
     await clipboardCopy($sessionStore.username.full)
-    addNotification('Copied to clipboard', 'success')
+    addNotification({ msg: 'Copied to clipboard', type: 'success' })
   }
 </script>
 
