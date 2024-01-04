@@ -46,7 +46,7 @@
 
   init()
 
-  onMount(() => {
+  onMount(async () => {
     // Check if Homestar node is connected
     let homestarError = false
     const ws = new WebSocket(import.meta.env.VITE_WEBSOCKET_ENDPOINT)
@@ -62,6 +62,22 @@
         )
       }
     })
+
+    // Check if IPFS daemon is running
+    try {
+      await fetch('http://localhost:5001/debug/vars', {
+        method: 'GET',
+        mode: 'no-cors'
+      })
+    } catch (error) {
+      homestarError = true
+      console.error(`Error: IPFS daemon isn't running`)
+      addNotification(
+        "Your IPFS daemon isn't running. Please run 'ipfs daemon' in your terminal.",
+        'error',
+        15000
+      )
+    }
 
     if (!homestarError) {
       subscribNetworkEvents()
