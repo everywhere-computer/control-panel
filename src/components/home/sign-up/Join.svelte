@@ -55,7 +55,7 @@
       </li>
       <li>
         ✵ Rustaceans & JS devs*: try your hand at writing IPVM functions. They
-        compile to Wasm and can be run by anyone in the network.  *We'll add
+        compile to Wasm and can be run by anyone in the network. *We'll add
         support for Python, and other languages that compile well to Wasm over
         time
       </li>

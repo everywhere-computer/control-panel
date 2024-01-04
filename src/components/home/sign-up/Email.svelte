@@ -30,6 +30,17 @@
         }
       })
 
+      const response = await fetch('http://localhost:3000/api/v0/auth/email/verify', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: email.toString() })
+      })
+
+      console.log("Response", await response.text())
+
       dispatch('nextStep')
 
       // addNotification('Account created!', 'success')
