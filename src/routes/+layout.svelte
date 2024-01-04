@@ -4,6 +4,7 @@
   import { onDestroy, onMount } from 'svelte'
 
   import '../global.css'
+  import { instantiatePostHog } from '$lib/analytics'
   import subscribNetworkEvents from '$lib/network'
   import { addNotification } from '$lib/notifications'
   import { sessionStore, themeStore } from '$lib/stores'
@@ -82,6 +83,9 @@
     if (!homestarError) {
       subscribNetworkEvents()
     }
+
+    // Instantiate PostHog Analytics
+    instantiatePostHog()
   })
 
   onDestroy(() => {
