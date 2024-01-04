@@ -94,7 +94,6 @@ export const checkIPFSConnection = async (): Promise<void> => {
           await attemptConnection()
         }, INTERVAL)
       }
-
     }
   }
 
