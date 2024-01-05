@@ -46,7 +46,7 @@
     </p>
     <p>
       To help us improve the product experience, we collect basic analytics
-      using a simple, privacy preserving, cookie-free tool called Plausible.
+      using a simple, privacy preserving, cookie-free tool called PostHog.
     </p>
     <p>
       It does <strong class="font-bold">not</strong>

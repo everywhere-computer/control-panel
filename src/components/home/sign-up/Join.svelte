@@ -1,20 +1,12 @@
 <script lang="ts">
-  import Plausible from 'plausible-tracker'
+  import posthog from 'posthog-js'
   import { createEventDispatcher } from 'svelte'
-
-  const { trackEvent } = Plausible({
-    trackLocalhost: false
-  })
 
   const dispatch = createEventDispatcher()
 
   const handleJoin = () => {
-    trackEvent('Click "beta intake" button', {
-      // callback: () => console.log('done'),
-      props: {
-        email: '' // enter user account email
-      }
-    })
+    posthog.capture('Click "beta intake" button')
+
     dispatch('nextStep')
   }
 </script>
@@ -55,7 +47,7 @@
       </li>
       <li>
         ✵ Rustaceans & JS devs*: try your hand at writing IPVM functions. They
-        compile to Wasm and can be run by anyone in the network.  *We'll add
+        compile to Wasm and can be run by anyone in the network. *We'll add
         support for Python, and other languages that compile well to Wasm over
         time
       </li>
