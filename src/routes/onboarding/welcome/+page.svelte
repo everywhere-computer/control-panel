@@ -1,20 +1,18 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte'
+  import { goto } from '$app/navigation'
 
+  import { sessionStore } from '$lib/stores'
   import StarMedium from '$components/icons/StarMedium.svelte'
   import StarSmall from '$components/icons/StarSmall.svelte'
 
-  const dispatch = createEventDispatcher()
-
-  let username = 'depatchedmode'
   let analyticsPolicy = false
 
   const handleContinue = async () => {
-    dispatch('nextStep')
+    goto('/onboarding/details')
   }
 </script>
 
-<div class="py-12 px-9">
+<div class="">
   <div class="flex flex-row items-center md:mr-auto mb-8">
     <div
       class="flex flex-row items-center justify-center gap-1 py-3 px-4 rounded-[88px] bg-base-200"
@@ -31,7 +29,7 @@
       Welcome to the Everywhere Computer, <span
         class="whitespace-nowrap text-primary-focus"
       >
-        {username}
+        {$sessionStore.username}
         <span class="text-base-content">!</span>
       </span>
     </h1>

@@ -1,11 +1,9 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte'
-
   import { addNotification } from '$lib/notifications'
   import Input from '$components/form/Input.svelte'
   import StarSmall from '$components/icons/StarSmall.svelte'
-
-  const dispatch = createEventDispatcher()
+  import { goto } from '$app/navigation'
+  import { sessionStore } from '$lib/stores'
 
   let loading = false
 
@@ -21,9 +19,9 @@
       const data = new FormData(formEl)
       const username = data.get('username')
 
-      dispatch('nextStep', { username })
-
-      // addNotification({ msg: 'Account created!', type: 'success' })
+      // @ts-ignore-next-line
+      $sessionStore.username = username
+      goto('/onboarding/welcome')
     } catch (error) {
       console.error(error)
       addNotification({ msg: 'Failed to register account', type: 'error' })

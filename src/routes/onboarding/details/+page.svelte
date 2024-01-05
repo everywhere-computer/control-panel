@@ -1,13 +1,11 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount } from 'svelte'
+  import { goto } from '$app/navigation'
 
   import { addNotification } from '$lib/notifications'
   import Input from '$components/form/Input.svelte'
   import StarMedium from '$components/icons/StarMedium.svelte'
   import StarSmall from '$components/icons/StarSmall.svelte'
   import TextArea from '$components/form/TextArea.svelte'
-
-  const dispatch = createEventDispatcher()
 
   let loading = false
   let otherOptionResponse = null
@@ -78,7 +76,7 @@
         }
       )
 
-      dispatch('nextStep')
+      goto('/onboarding/discord')
 
       addNotification({ msg: 'Thanks for the info!', type: 'success' })
     } catch (error) {
@@ -89,7 +87,7 @@
   }
 </script>
 
-<div class="py-12 px-8">
+<div class="">
   <div class="flex flex-row items-center mb-8">
     <div
       class="flex flex-row items-center justify-center gap-1 py-3 px-4 rounded-[88px] bg-base-200"

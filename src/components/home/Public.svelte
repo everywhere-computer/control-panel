@@ -1,23 +1,15 @@
 <script lang="ts">
   import { themeStore } from '$lib/stores'
-  import Details from '$components/home/sign-up/Details.svelte'
-  import Discord from '$components/home/sign-up/Discord.svelte'
   import Email from '$components/home/sign-up/Email.svelte'
   import Join from '$components/home/sign-up/Join.svelte'
-  import Nav from '$components/home/sign-up/Nav.svelte'
   import Pin from '$components/home/sign-up/Pin.svelte'
   import Username from '$components/home/sign-up/Username.svelte'
-  import Welcome from '$components/home/sign-up/Welcome.svelte'
 
   const steps = {
     1: Join,
     2: Email,
     3: Pin,
-    4: Username,
-    5: Welcome,
-    6: Details,
-    7: Discord,
-    8: Nav
+    4: Username
   }
 
   let currentStep = 1
@@ -39,7 +31,7 @@
       }
     }
 
-    if (currentStep < 8) {
+    if (currentStep < 4) {
       currentStep = currentStep + 1
     }
   }

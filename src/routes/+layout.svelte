@@ -40,10 +40,10 @@
   const init = async () => {
     await initialize()
 
-    // Rediret to home if not logged in
+    // Redirect to home if not logged in
     if (
-      window.location.href !== window.location.origin &&
-      !$sessionStore.session
+      window.location.href !== window.location.origin ||
+      (!window.location.href.includes('onboarding') && !$sessionStore.session)
     ) {
       goto('/')
     }
