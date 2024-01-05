@@ -23,7 +23,7 @@ export const getHomestarClient = (): Client => {
     return homestar
   } catch (error) {
     console.error(error)
-    addNotification(error, 'error')
+    addNotification({ msg: error, type: 'error' })
   }
 }
 

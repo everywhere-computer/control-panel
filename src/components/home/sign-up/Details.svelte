@@ -80,10 +80,10 @@
 
       dispatch('nextStep')
 
-      addNotification('Thanks for the info!', 'success')
+      addNotification({ msg: 'Thanks for the info!', type: 'success' })
     } catch (error) {
       console.error(error)
-      addNotification('Failed to register account', 'error')
+      addNotification({ msg: 'Failed to register account', type: 'error' })
     }
     loading = false
   }

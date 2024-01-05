@@ -174,9 +174,9 @@ export const uploadAvatarToWNFS = async (image: File): Promise<void> => {
     // Announce the changes to the server
     await fs.publish()
 
-    addNotification(`Your avatar has been updated!`, 'success')
+    addNotification({ msg: `Your avatar has been updated!`, type: 'success' })
   } catch (error) {
-    addNotification(error.message, 'error')
+    addNotification({ msg: error.message, type: 'error' })
     console.error(error)
   }
 }

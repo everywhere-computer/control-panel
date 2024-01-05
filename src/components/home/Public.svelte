@@ -1,7 +1,4 @@
 <script lang="ts">
-  import Plausible from 'plausible-tracker'
-  import { onMount } from 'svelte'
-
   import { themeStore } from '$lib/stores'
   import Details from '$components/home/sign-up/Details.svelte'
   import Discord from '$components/home/sign-up/Discord.svelte'
@@ -11,10 +8,6 @@
   import Pin from '$components/home/sign-up/Pin.svelte'
   import Username from '$components/home/sign-up/Username.svelte'
   import Welcome from '$components/home/sign-up/Welcome.svelte'
-
-  const { trackEvent } = Plausible({
-    trackLocalhost: false
-  })
 
   const steps = {
     1: Join,
@@ -39,10 +32,6 @@
       currentStep = currentStep + 1
     }
   }
-
-  onMount(() => {
-    trackEvent('Landing page visit')
-  })
 </script>
 
 <div

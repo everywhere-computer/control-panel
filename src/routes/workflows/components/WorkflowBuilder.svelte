@@ -60,7 +60,7 @@
             w.name.toLowerCase() === $workflowsStore.builder.name.toLowerCase()
         )
       ) {
-        addNotification('Workflow name must be unique', 'error')
+        addNotification({ msg: 'Workflow name must be unique', type: 'error' })
         saving = false
         return
       }
@@ -69,7 +69,7 @@
       const errorId = document.querySelector('.input-error')?.id
       const errorMessage = 'Invalid params'
       if (errorId && !imageBitmap) {
-        addNotification(errorMessage, 'error')
+        addNotification({ msg: errorMessage, type: 'error' })
         throw new Error(errorMessage)
       }
 
@@ -104,16 +104,16 @@
           (errorId && CROP_PARAMS.find(p => p.name === errorId)) ||
           invalidCropError
         ) {
-          addNotification(
-            `Crop x + width must be less than ${imageBitmap.width} and crop y + height must be less than ${imageBitmap.height}`,
-            'error',
-            7000
-          )
+          addNotification({
+            msg: `Crop x + width must be less than ${imageBitmap.width} and crop y + height must be less than ${imageBitmap.height}`,
+            type: 'error',
+            timeout: 7000
+          })
           throw new Error(errorMessage)
         }
 
         if (errorId) {
-          addNotification(errorMessage, 'error')
+          addNotification({ msg: errorMessage, type: 'error' })
           throw new Error(errorMessage)
         }
       }
@@ -169,7 +169,7 @@
 
       handleCloseBuilder()
 
-      addNotification('Workflow created', 'success')
+      addNotification({ msg: 'Workflow created', type: 'success' })
     } catch (error) {
       saving = false
     }

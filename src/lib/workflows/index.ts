@@ -323,7 +323,7 @@ export const handleMessage = async (message: Message): Promise<void> => {
     }
   } catch (error) {
     console.error(error)
-    addNotification('Run failed', 'error')
+    addNotification({ msg: 'Run failed', type: 'error' })
   }
 }
 
