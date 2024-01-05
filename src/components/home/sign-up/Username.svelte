@@ -14,7 +14,6 @@
   const handleSubmitUsername = async () => {
     loading = true
     try {
-      // await register(encodedUsername)
       dispatch('nextStep')
 
       // addNotification({ msg: 'Account created!', type: 'success' })
