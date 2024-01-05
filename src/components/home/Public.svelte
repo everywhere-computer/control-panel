@@ -27,14 +27,14 @@
     currentStep === 2 ||
     currentStep === 3 ||
     currentStep === 4
-  $: stepData = {}
+  $: authDetails = {}
 
   const onNextStep = (dispatchEvent: {
     detail: null | { email?: String; pin?: String; username?: String }
   }) => {
     if (dispatchEvent?.detail) {
-      stepData = {
-        ...stepData,
+      authDetails = {
+        ...authDetails,
         ...dispatchEvent.detail
       }
     }
@@ -84,6 +84,6 @@
   <svelte:component
     this={steps[currentStep]}
     on:nextStep={onNextStep}
-    {...stepData}
+    {...authDetails}
   />
 </div>
