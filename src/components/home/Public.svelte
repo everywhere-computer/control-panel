@@ -21,13 +21,24 @@
   }
 
   let currentStep = 1
+
   $: showGlobe =
     currentStep === 1 ||
     currentStep === 2 ||
     currentStep === 3 ||
     currentStep === 4
+  $: stepData = {}
 
-  const onNextStep = () => {
+  const onNextStep = (dispatchEvent: {
+    detail: null | { email?: String; pin?: String; username?: String }
+  }) => {
+    if (dispatchEvent?.detail) {
+      stepData = {
+        ...stepData,
+        ...dispatchEvent.detail
+      }
+    }
+
     if (currentStep < 8) {
       currentStep = currentStep + 1
     }
@@ -70,5 +81,9 @@
     </div>
   {/if}
 
-  <svelte:component this={steps[currentStep]} on:nextStep={onNextStep} />
+  <svelte:component
+    this={steps[currentStep]}
+    on:nextStep={onNextStep}
+    {...stepData}
+  />
 </div>

@@ -6,7 +6,6 @@
   import localforage from 'localforage'
   import { RsaKeypair } from '@ucans/default-plugins'
 
-
   import { addNotification } from '$lib/notifications'
   import Input from '$components/form/Input.svelte'
 
@@ -14,9 +13,12 @@
 
   let loading = false
 
+  export let email = null
+
   // Submit pin code to Fission server to register the account
   const handleSubmitPin = async (event: Event) => {
     loading = true
+
     try {
       const formEl = event.target as HTMLFormElement
       const data = new FormData(formEl)
@@ -30,7 +32,9 @@
 
       // TODO(matheus23): Replace this with a proper DoH DNS
       // lookup of _did.localhost once iso-web DoH stuff is exposed.
-      const serverDid = await (await fetch("http://localhost:3000/api/v0/server-did")).text()
+      const serverDid = await (
+        await fetch('http://localhost:3000/api/v0/server-did')
+      ).text()
 
       let keypair: CryptoKeyPair = await localforage.getItem(kiki)
 
@@ -40,22 +44,29 @@
             name: 'RSASSA-PKCS1-v1_5',
             modulusLength: 2048,
             publicExponent: new Uint8Array([1, 0, 1]),
-            hash: 'SHA-256',
+            hash: 'SHA-256'
           },
           false,
           ['sign', 'verify']
         )
 
-        console.log("generated keypair", keypair)
+        console.log('generated keypair', keypair)
 
         await localforage.setItem(kiki, keypair)
       }
 
-      const publicKey = await webcrypto.subtle.exportKey('spki', keypair.publicKey)
+      const publicKey = await webcrypto.subtle.exportKey(
+        'spki',
+        keypair.publicKey
+      )
 
       // We need to use ts-ucan for this, because iso-did doesn't expose utilities to
       // create a DID from a webcrypto keypair. It doesn't have the spki encoding -> RsaPublicKeyInfo encoding functions.
-      const rsaKeypair = new RsaKeypair(keypair, new Uint8Array(publicKey), false)
+      const rsaKeypair = new RsaKeypair(
+        keypair,
+        new Uint8Array(publicKey),
+        false
+      )
       const ourDid = rsaKeypair.did()
       const sign = rsaKeypair.sign.bind(rsaKeypair)
 
@@ -65,7 +76,7 @@
         ttl: 60, // A rough estimate that accounts for clock drift
         capabilities: {
           [ourDid]: { 'account/create': [{}] }
-        } as any, // Unfortunately, it both doesn't pick up ourDid as a valid key (fixable), but it also doesn't allow 'account/create', only '*' for some reason.
+        } as any // Unfortunately, it both doesn't pick up ourDid as a valid key (fixable), but it also doesn't allow 'account/create', only '*' for some reason.
       })
 
       console.log('Requesting with UCAN', ucan.toString())
@@ -75,24 +86,26 @@
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${ucan.toString()}`
+          Authorization: `Bearer ${ucan.toString()}`
         },
         body: JSON.stringify({
           code: Number.parseInt(pin.toString(), 10),
-          email: 'philipp@fission.codes', // This is the email I did my testing with.
-          username: 'control-panel1', // TODO this needs to somehow all happen at the next step, where the username will be entered.
+          email, // This is the email I did my testing with.
+          // email: 'philipp@fission.codes', // This is the email I did my testing with.
+          username: 'control-panel1' // TODO this needs to somehow all happen at the next step, where the username will be entered.
         })
       })
 
       console.log(await response.json())
 
-      dispatch('nextStep')
+      dispatch('nextStep', { pin })
 
       // addNotification({ msg: 'Account created!', type: 'success' })
     } catch (error) {
       console.error(error)
       addNotification({ msg: 'Failed to register account', type: 'error' })
     }
+
     loading = false
   }
 

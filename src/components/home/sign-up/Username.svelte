@@ -8,19 +8,27 @@
   const dispatch = createEventDispatcher()
 
   let loading = false
-  let username = null
+
+  export let email = null
+  export let pin = null
 
   // Submit username to Fission server to register the account
   const handleSubmitUsername = async () => {
     loading = true
+
     try {
-      dispatch('nextStep')
+      const formEl = event.target as HTMLFormElement
+      const data = new FormData(formEl)
+      const username = data.get('username')
+
+      dispatch('nextStep', { username })
 
       // addNotification({ msg: 'Account created!', type: 'success' })
     } catch (error) {
       console.error(error)
       addNotification({ msg: 'Failed to register account', type: 'error' })
     }
+
     loading = false
   }
 </script>

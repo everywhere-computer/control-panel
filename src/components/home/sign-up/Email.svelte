@@ -12,6 +12,7 @@
   // Submit email to Fission server to register the account
   const handleSubmitEmail = async (event: Event) => {
     loading = true
+
     try {
       const formEl = event.target as HTMLFormElement
       const data = new FormData(formEl)
@@ -19,24 +20,28 @@
 
       posthog.capture('Email validation sent')
 
-      const response = await fetch('http://localhost:3000/api/v0/auth/email/verify', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email: email.toString() })
-      })
+      const response = await fetch(
+        'http://localhost:3000/api/v0/auth/email/verify',
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: email.toString() })
+        }
+      )
 
-      console.log("Response", await response.text())
+      console.log('Response', await response.text())
 
-      dispatch('nextStep')
+      dispatch('nextStep', { email })
 
       // addNotification({ msg: 'Account created!', type: 'success'})
     } catch (error) {
       console.error(error)
       addNotification({ msg: 'Failed to register account', type: 'error' })
     }
+
     loading = false
   }
 </script>
