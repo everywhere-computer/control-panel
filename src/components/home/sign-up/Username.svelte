@@ -26,22 +26,21 @@
   }
 </script>
 
-<div
-  class="flex flex-row items-center justify-center gap-2 w-full max-w-[316px] m-auto p-4 box-content bg-base-200 text-center rounded-[88px]"
->
-  <StarSmall />
-  <StarSmall />
-  <p class="mx-6 text-input-sm text-primary">Fresh applicant detected</p>
-  <StarSmall />
-  <StarSmall />
-</div>
-
 <form
   on:submit|preventDefault={handleSubmitUsername}
-  class="flex flex-col items-center gap-4 w-full max-w-[450px] mt-auto py-10 px-8 bg-base-200"
+  class="relative flex flex-col items-center gap-4 w-full max-w-[450px] md:max-w-full mt-auto py-10 px-8 bg-base-200"
 >
+  <div
+    class="absolute bottom-[calc(100%+32px)] left-1/2 -translate-x-1/2 flex flex-row items-center justify-center gap-2 w-[311px] m-auto p-4 bg-base-200 text-center rounded-[88px]"
+  >
+    <StarSmall />
+    <StarSmall />
+    <p class="mx-6 text-input-sm text-primary">Fresh applicant detected</p>
+    <StarSmall />
+    <StarSmall />
+  </div>
+
   <Input
-    maxWidth="372px"
     name="username"
     label="Choose your username"
     textToAppend=".e9c7.name"
@@ -50,7 +49,7 @@
   />
 
   <button
-    class="btn btn-primary btn-odd-purple-500 w-full max-w-[400px] h-10 !text-label-l {loading
+    class="btn btn-primary btn-odd-purple-500 w-full max-w-[311px] h-10 !text-label-l {loading
       ? 'opacity-80'
       : ''} gap-2"
     disabled={loading}

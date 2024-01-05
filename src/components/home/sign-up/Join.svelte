@@ -11,7 +11,7 @@
   }
 </script>
 
-<div class="flex flex-col gap-6 mt-[125px] px-8 pb-10">
+<div class="flex flex-col gap-6 md:max-w-[624px] mt-[125px] mx-auto px-8 pb-10">
   <div class="flex flex-col gap-4">
     <h1 class="text-heading-2xl font-bold">
       Fission is building the Everywhere Computer

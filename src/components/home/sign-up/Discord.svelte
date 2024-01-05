@@ -27,7 +27,9 @@
     </div>
   </div>
 
-  <div class="flex flex-col gap-6 text-body-lg">
+  <div
+    class="flex flex-col gap-6 text-body-lg w-full md:max-w-[572px] md:mx-auto"
+  >
     <h1 class="font-bold text-heading-2xl">You’re in good company, here.</h1>
 
     <p>
@@ -43,7 +45,9 @@
   </div>
 </div>
 
-<div class="flex flex-col gap-6 w-full mt-auto mb-8 px-9">
+<div
+  class="flex flex-col gap-6 w-full md:max-w-[572px] mt-auto md:mt-8 md:mx-auto mb-8 px-9 md:px-0"
+>
   <div
     class="flex flex-row items-center justify-center font-mono !font-bold text-code-sm bg-odd-green-50 border border-odd-green-400 py-3 rounded-sm"
   >
@@ -51,17 +55,19 @@
     9 MEMBERS ONLINE
   </div>
 
-  <button
-    class="btn btn-primary btn-odd-purple-500 self-center w-full h-10 !text-label-l"
-    on:click={handleJoinDiscord}
-  >
-    Join the Discord
-  </button>
+  <div class="flex flex-col md:flex-row md:items-center gap-6">
+    <button
+      class="btn btn-primary btn-odd-purple-500 self-center w-full md:max-w-[311px] h-10 !text-label-l"
+      on:click={handleJoinDiscord}
+    >
+      Join the Discord
+    </button>
 
-  <button
-    class="btn btn-ghost self-center w-full !text-label-l -translate-y-4"
-    on:click={handleContinue}
-  >
-    Skip for now
-  </button>
+    <button
+      class="btn btn-ghost self-center w-full md:max-w-[230px] !text-label-l -translate-y-4 md:translate-y-0"
+      on:click={handleContinue}
+    >
+      Skip for now
+    </button>
+  </div>
 </div>

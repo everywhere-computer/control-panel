@@ -1,9 +1,9 @@
 <script lang="ts">
-  export let textToAppend: string = null
-  export let maxWidth: string = null
+  export let desktopMaxWidth: boolean = false
   export let name: string
   export let label: string = null
   export let required: boolean = false
+  export let textToAppend: string = null
   export let type: string = 'text'
   export let validationMessage: string = null
   export let value: string = null
@@ -11,7 +11,11 @@
   const valueProp = value ? { 'bind:value': value } : {}
 </script>
 
-<label class="form-control w-full {maxWidth ? `w-[${maxWidth}]` : ''}">
+<label
+  class="form-control w-full max-w-[311px] {desktopMaxWidth
+    ? 'max-w-[576px]'
+    : ''}"
+>
   {#if label}
     <div class="label">
       <span class="label-text text-label-l">{label}</span>

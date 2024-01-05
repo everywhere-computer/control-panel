@@ -32,18 +32,12 @@
 
 <form
   on:submit|preventDefault={handleSubmitEmail}
-  class="flex flex-col items-center gap-4 w-full max-w-[450px] mt-auto py-10 px-8 bg-base-200"
+  class="flex flex-col items-center gap-4 w-full max-w-[450px] md:max-w-full mt-auto py-10 px-8 bg-base-200"
 >
-  <Input
-    maxWidth="372px"
-    name="email"
-    label="Provide your email"
-    type="email"
-    required
-  />
+  <Input name="email" label="Provide your email" type="email" required />
 
   <button
-    class="btn btn-primary btn-odd-purple-500 w-full max-w-[400px] h-10 !text-label-l {loading
+    class="btn btn-primary btn-odd-purple-500 w-full max-w-[311px] h-10 !text-label-l {loading
       ? 'opacity-80'
       : ''} gap-2"
     disabled={loading}
