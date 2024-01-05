@@ -1,7 +1,7 @@
 module.exports = {
   mode: 'jit',
   content: ['./src/**/*.{html,js,svelte,ts}'],
-  safelist: ['alert-success', 'alert-error', 'alert-info', 'alert-warning', 'svelvet-anchor'],
+  safelist: ['alert-success', 'alert-error', 'alert-info', 'alert-warning', 'svelvet-anchor', 'max-w-[311px]', 'max-w-[576px]'],
   plugins: [require('daisyui')],
   darkMode: ['class', '[data-theme="dark"]'],
   daisyui: {

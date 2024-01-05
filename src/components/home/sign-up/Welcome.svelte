@@ -15,7 +15,7 @@
 </script>
 
 <div class="py-12 px-9">
-  <div class="flex flex-row items-center mb-8">
+  <div class="flex flex-row items-center md:mr-auto mb-8">
     <div
       class="flex flex-row items-center justify-center gap-1 py-3 px-4 rounded-[88px] bg-base-200"
     >
@@ -26,8 +26,8 @@
     </div>
   </div>
 
-  <div class="flex flex-col gap-6 text-body-lg">
-    <h1 class="font-bold text-heading-2xl">
+  <div class="flex flex-col gap-6 text-body-lg w-full max-w-[576px] m-auto">
+    <h1 class="font-bold text-heading-2xl mb-8">
       Welcome to the Everywhere Computer, <span
         class="whitespace-nowrap text-primary-focus"
       >
@@ -46,7 +46,7 @@
     </p>
     <p>
       To help us improve the product experience, we collect basic analytics
-      using a simple, privacy preserving, cookie-free tool called Plausible.
+      using a simple, privacy preserving, cookie-free tool called PostHog.
     </p>
     <p>
       It does <strong class="font-bold">not</strong>
@@ -72,7 +72,7 @@
     </div>
 
     <button
-      class="btn btn-primary btn-odd-purple-500 self-center w-full h-10 !text-label-l"
+      class="btn btn-primary btn-odd-purple-500 self-center w-full md:max-w-[311px] md:mr-auto h-10 !text-label-l"
       on:click={handleContinue}
       disabled={!analyticsPolicy}
     >

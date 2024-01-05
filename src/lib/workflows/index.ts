@@ -3,17 +3,13 @@ import type { MaybeResult } from '@fission-codes/homestar/codecs/types'
 import { workflow as workflowBuilder, type BlurInvocation, type CropInvocation, type GrayscaleInvocation, type Rotate90Invocation, type TemplateWorkflow } from '@fission-codes/homestar/workflow'
 import { base64 } from 'iso-base/rfc4648'
 import type { CID } from 'multiformats'
-import Plausible from 'plausible-tracker'
+import posthog from 'posthog-js'
 import { get as getStore } from 'svelte/store'
 
 import type { Receipt, FunctionOperation, Meta } from '$lib/functions'
 import { addNotification } from '$lib/notifications'
 import { getHomestarClient } from '$lib/rpc'
 import { workflowsStore } from '$lib/stores'
-
-const { trackEvent } = Plausible({
-  trackLocalhost: false
-})
 
 export type WorkflowsStore = {
   loading: boolean
@@ -205,12 +201,7 @@ export const runWorkflow = async (
       }
     )
 
-    trackEvent('Workflow run', {
-      // callback: () => console.log('done'),
-      props: {
-        email: '' // enter user account email
-      }
-    })
+    posthog.capture('Workflow run')
   } catch (error) {
     console.error(error)
     // Set workflow status to working
@@ -323,7 +314,7 @@ export const handleMessage = async (message: Message): Promise<void> => {
     }
   } catch (error) {
     console.error(error)
-    addNotification('Run failed', 'error')
+    addNotification({ msg: 'Run failed', type: 'error' })
   }
 }
 

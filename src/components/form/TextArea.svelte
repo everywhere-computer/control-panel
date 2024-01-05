@@ -1,12 +1,16 @@
 <script lang="ts">
-  export let maxWidth: string = null
+  export let desktopMaxWidth: boolean = false
+  export let label: string = null
   export let name: string
   export let note: string = null
-  export let label: string = null
   export let validationMessage: string = null
 </script>
 
-<label class="form-control {maxWidth ? `w-[${maxWidth}]` : ''}">
+<label
+  class="form-control w-full max-w-[311px] {desktopMaxWidth
+    ? 'max-w-[576px]'
+    : ''}"
+>
   {#if label}
     <div class="label">
       <span class="label-text text-label-sm">{label}</span>

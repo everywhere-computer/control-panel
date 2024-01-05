@@ -15,11 +15,17 @@ export const removeNotification: (id: string) => void = id => {
   )
 }
 
-export const addNotification: (
-  msg: string,
-  type?: NotificationType,
+export const addNotification = ({
+  msg,
+  permanent = false,
+  timeout = 5000,
+  type = 'info',
+}: {
+  msg: string
+  permanent?: boolean
   timeout?: number
-) => void = (msg, type = 'info', timeout = 5000) => {
+  type?: NotificationType
+}): string => {
   // uuid for each notification
   const id = crypto.randomUUID()
 
@@ -30,15 +36,17 @@ export const addNotification: (
       id,
       msg,
       type,
-      timeout,
+      timeout
     }
   ])
 
-  // removing the notification after a specified timeout
-  const timer = setTimeout(() => {
-    removeNotification(id)
-    clearTimeout(timer)
-  }, timeout)
+  if (!permanent) {
+    // removing the notification after a specified timeout
+    const timer = setTimeout(() => {
+      removeNotification(id)
+      clearTimeout(timer)
+    }, timeout)
+  }
 
   // return the id
   return id

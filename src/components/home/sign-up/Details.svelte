@@ -80,10 +80,10 @@
 
       dispatch('nextStep')
 
-      addNotification('Thanks for the info!', 'success')
+      addNotification({ msg: 'Thanks for the info!', type: 'success' })
     } catch (error) {
       console.error(error)
-      addNotification('Failed to register account', 'error')
+      addNotification({ msg: 'Failed to register account', type: 'error' })
     }
     loading = false
   }
@@ -103,7 +103,7 @@
 
   <form
     on:submit|preventDefault={handleSubmitDetails}
-    class="flex flex-col items-center gap-6"
+    class="flex flex-col items-center gap-8 max-w-[576px] mx-auto"
   >
     <h1 class="text-heading-2xl font-bold">
       What brings you to the Everywhere Computer?
@@ -114,27 +114,21 @@
       help us tailor the platform and documentation to our beta members.
     </p>
 
-    <Input
-      maxWidth="372px"
-      name="name"
-      label="Your name"
-      type="text"
-      required
-    />
+    <Input name="name" label="Your name" type="text" required desktopMaxWidth />
 
     <Input
-      maxWidth="372px"
       name="orgOrProject"
       label="Your organization / project"
       type="text"
       required
+      desktopMaxWidth
     />
 
     <TextArea
-      maxWidth="372px"
       name="doYouRunAnyNodes"
       label="Do you run nodes for other networks?"
       validationMessage="For example, an IPFS node, a Bittorrent server, or Ethereum node. If you've participated in beta networks like this before, let us know!"
+      desktopMaxWidth
     />
 
     <div class="form-control">
@@ -321,14 +315,14 @@
     </div>
 
     <TextArea
-      maxWidth="372px"
       name="whatProblemsAreYouTackling"
       label="What problem would you like to tackle with Everywhere Computer?"
       validationMessage="Feel free to add any other questions or comments for the Fission team. If you're interested in joining a W3C Community Group on these topics, please leave a note."
+      desktopMaxWidth
     />
 
     <button
-      class="btn btn-primary btn-odd-purple-500 w-full max-w-[400px] h-10 !text-label-l {loading
+      class="btn btn-primary btn-odd-purple-500 w-full max-w-[311px] h-10 md:mr-auto !text-label-l {loading
         ? 'opacity-80'
         : ''} gap-2"
       disabled={loading}

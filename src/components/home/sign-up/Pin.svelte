@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Plausible from 'plausible-tracker'
+  import posthog from 'posthog-js'
   import { createEventDispatcher } from 'svelte'
   import { UCAN } from '@fission-codes/ucan'
   import { webcrypto } from 'iso-web/crypto'
@@ -9,10 +9,6 @@
 
   import { addNotification } from '$lib/notifications'
   import Input from '$components/form/Input.svelte'
-
-  const { trackEvent } = Plausible({
-    trackLocalhost: false
-  })
 
   const dispatch = createEventDispatcher()
 
@@ -26,14 +22,7 @@
       const data = new FormData(formEl)
       const pin = data.get('pin')
 
-      // await register(encodedUsername)
-
-      trackEvent('Account created', {
-        // callback: () => console.log('done'),
-        props: {
-          email: '' // enter user account email
-        }
-      })
+      posthog.capture('Account created')
 
       // hehe. The keykey
       // TODO: This needs to be stored in a way that's structured better.
@@ -99,47 +88,41 @@
 
       dispatch('nextStep')
 
-      // addNotification('Account created!', 'success')
+      // addNotification({ msg: 'Account created!', type: 'success' })
     } catch (error) {
       console.error(error)
-      addNotification('Failed to register account', 'error')
+      addNotification({ msg: 'Failed to register account', type: 'error' })
     }
     loading = false
   }
 
   const handleResendEmail = async () => {
-    addNotification('Email sent!', 'success')
+    addNotification({ msg: 'Email sent!', type: 'success' })
   }
 </script>
 
-<div
-  class="flex flex-row w-full max-w-[316px] box-content m-auto p-4 bg-odd-green-200 rounded-sm text-body-lg text-center"
->
-  <p class="text-input-sm text-left">
-    We’ve sent a one-time access code to your email.
-  </p>
-  <button
-    class="w-[110px] text-input-sm text-primary-focus text-right jutify-self-end self-end"
-    on:click={handleResendEmail}
-  >
-    Resend it
-  </button>
-</div>
-
 <form
   on:submit|preventDefault={handleSubmitPin}
-  class="flex flex-col items-center gap-4 w-full max-w-[450px] mt-auto py-10 px-8 bg-base-200"
+  class="relative flex flex-col items-center gap-4 w-full max-w-[450px] md:max-w-full mt-auto py-10 px-8 bg-base-200"
 >
-  <Input
-    maxWidth="372px"
-    name="pin"
-    label="Enter the one-time code"
-    type="text"
-    required
-  />
+  <div
+    class="absolute bottom-[calc(100%+32px)] left-1/2 -translate-x-1/2 flex flex-row w-full w-[311px] m-auto p-4 bg-odd-green-200 rounded-sm text-body-lg text-center"
+  >
+    <p class="text-input-sm text-left">
+      We’ve sent a one-time access code to your email.
+    </p>
+    <button
+      class="w-[110px] text-input-sm text-primary-focus text-right jutify-self-end self-end"
+      on:click={handleResendEmail}
+    >
+      Resend it
+    </button>
+  </div>
+
+  <Input name="pin" label="Enter the one-time code" type="text" required />
 
   <button
-    class="btn btn-primary btn-odd-purple-500 w-full max-w-[400px] h-10 !text-label-l {loading
+    class="btn btn-primary btn-odd-purple-500 w-full max-w-[311px] h-10 !text-label-l {loading
       ? 'opacity-80'
       : ''} gap-2"
     disabled={loading}

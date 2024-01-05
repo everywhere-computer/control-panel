@@ -15,7 +15,7 @@
 
   const copyCode = async () => {
     await clipboardCopy(pin)
-    addNotification('Copied to clipboard', 'success')
+    addNotification({ msg: 'Copied to clipboard', type: 'success' })
   }
 </script>
 

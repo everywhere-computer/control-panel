@@ -26,7 +26,7 @@
     </div>
   </div>
 
-  <div class="flex flex-col gap-6 text-body-lg">
+  <div class="flex flex-col gap-6 md:max-w-[572px] mx-auto text-body-lg">
     <h1 class="font-bold text-heading-2xl">One last thing: Meet Nav</h1>
 
     <p>
@@ -47,7 +47,7 @@
   </div>
 </div>
 
-<div class="my-auto">
+<div class="my-auto md:my-0">
   <img
     src={`${window.location.href}/star-nav.png`}
     alt="nav star"
@@ -55,7 +55,9 @@
   />
 </div>
 
-<div class="flex flex-col gap-4 w-full mt-auto mb-8 px-9">
+<div
+  class="flex flex-col gap-4 w-full md:max-w-[572px] mt-auto md:mt-0 mb-8 px-9 md:px-0"
+>
   <button
     class="btn btn-primary btn-odd-purple-500 self-center w-full h-10 !text-label-l"
     on:click={handleJoinDiscord}
