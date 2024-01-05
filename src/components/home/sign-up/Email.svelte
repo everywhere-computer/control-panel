@@ -19,7 +19,7 @@
 
       posthog.capture('Email validation sent')
 
-      dispatch('nextStep')
+      dispatch('nextStep', { email })
 
       // addNotification({ msg: 'Account created!', type: 'success'})
     } catch (error) {

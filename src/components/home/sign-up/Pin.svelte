@@ -9,9 +9,12 @@
 
   let loading = false
 
+  export let email = null
+
   // Submit pin code to Fission server to register the account
   const handleSubmitPin = async (event: Event) => {
     loading = true
+
     try {
       const formEl = event.target as HTMLFormElement
       const data = new FormData(formEl)
@@ -19,13 +22,14 @@
 
       posthog.capture('Account created')
 
-      dispatch('nextStep')
+      dispatch('nextStep', { pin })
 
       // addNotification({ msg: 'Account created!', type: 'success' })
     } catch (error) {
       console.error(error)
       addNotification({ msg: 'Failed to register account', type: 'error' })
     }
+
     loading = false
   }
 
