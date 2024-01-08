@@ -23,6 +23,7 @@
       const formEntries: {
         name: string
         orgOrProject: string
+        discord: string | null
         doYouRunAnyNodes: string | null
         whatProblemsAreYouTackling: string | null
         whereWouldYouDeployIt: string
@@ -38,6 +39,7 @@
         'entry.1008061897': formEntries.name,
         'entry.797898644': 'andy@fission.codes',
         'entry.1857510537': formEntries.orgOrProject,
+        'entry.1080002444': formEntries.discord,
         'entry.1995046092': formEntries.doYouRunAnyNodes,
         'entry.357312378': formEntries.whatProblemsAreYouTackling,
         'entry.662111001': formEntries.whereWouldYouDeployIt
@@ -311,6 +313,14 @@
         {/if}
       </div>
     </div>
+
+    <Input
+      name="discord"
+      label="What is your Discord username?"
+      validationMessage="Not required, but if you fill this out, we'll add you to the invite-only beta forum"
+      type="text"
+      desktopMaxWidth
+    />
 
     <TextArea
       name="whatProblemsAreYouTackling"
