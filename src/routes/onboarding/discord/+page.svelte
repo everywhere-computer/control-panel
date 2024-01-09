@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { sessionStore } from '$lib/stores'
   import StarMedium from '$components/icons/StarMedium.svelte'
   import StarSmall from '$components/icons/StarSmall.svelte'
 </script>
 
 <div class="flex flex-col gap-4 md:gap-12 min-h-[calc(100vh-88px)]">
   <div class="">
-    <div class="flex flex-row items-center mb-8">
+    <div class="flex flex-row items-center justify-between mb-8">
       <div
         class="flex flex-row items-center justify-center gap-1 py-3 px-4 rounded-[88px] bg-base-200"
       >
@@ -14,6 +15,10 @@
         <StarMedium />
         <StarSmall colour="#CCCCE3" />
       </div>
+
+      <p class="w-[120px] font-mono text-code-m text-right uppercase">
+        Onboarding member #{$sessionStore.id}
+      </p>
     </div>
 
     <div

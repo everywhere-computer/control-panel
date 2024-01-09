@@ -9,6 +9,7 @@ type Username = {
 }
 
 export type Session = {
+  id: number
   username: Username
   session: odd.Session | null
   authStrategy: odd.AuthenticationStrategy | null
