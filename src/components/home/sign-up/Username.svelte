@@ -53,7 +53,7 @@
         } as unknown) as Capabilities
       })
 
-      console.log('Requesting with UCAN', ucan.toString())
+      // console.log('Requesting with UCAN', ucan.toString())
 
       const response = await fetch('http://localhost:3000/api/v0/account', {
         method: 'POST',
