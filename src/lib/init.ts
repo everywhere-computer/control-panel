@@ -10,7 +10,9 @@ import { sessionStore } from '$lib/stores'
 export const initialize = async (): Promise<void> => {
   try {
     const accountDid = await localforage.getItem(IDB_ACCOUNT_DID_LABEL)
-    const accountId = await localforage.getItem(IDB_ACCOUNT_ID_LABEL) as number
+    const accountId = (await localforage.getItem(
+      IDB_ACCOUNT_ID_LABEL
+    )) as number
     const ucan = await localforage.getItem(IDB_UCAN_LABEL)
 
     // If there is no save accountDid or ucan, there's no active session
@@ -44,6 +46,15 @@ export const initialize = async (): Promise<void> => {
     //   } as unknown) as Capabilities
     // })
 
+    // Attemped to use the capabilities endpoint first, but was only getting an empty array of UCANs back, so I'm using the account endpoint for now
+    // const ucan = await UCAN.create({
+    //   issuer: DIDKey.fromString(accountDid),
+    //   audience,
+    //   ttl: 60, // A rough estimate that accounts for clock drift
+    //   capabilities: ({
+    //     [accountDid]: { 'capability/fetch': [{}] }
+    //   } as unknown) as Capabilities
+    // })
     // const response = await fetch('http://localhost:3000/api/v0/capabilities', {
     //   method: 'GET',
     //   headers: {
@@ -51,15 +62,6 @@ export const initialize = async (): Promise<void> => {
     //     'Content-Type': 'application/json',
     //     Authorization: `Bearer ${ucan.toString()}`
     //   }
-    // })
-
-    // const ucan = await UCAN.create({
-    //   issuer: DIDKey.fromString(accountDid),
-    //   audience,
-    //   ttl: 60, // A rough estimate that accounts for clock drift
-    //   capabilities: ({
-    //     [accountDid]: { 'account/info': [{}] }
-    //   } as unknown) as Capabilities
     // })
 
     const response = await fetch(
@@ -79,7 +81,7 @@ export const initialize = async (): Promise<void> => {
     sessionStore.set({
       id: accountId,
       username,
-      loading: false,
+      loading: false
     })
   } catch (error) {
     sessionStore.set({
