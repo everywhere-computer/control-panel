@@ -14,7 +14,7 @@
   }
 </script>
 
-<div class="flex flex-row items-center justify-between mb-8">
+<div class="flex flex-row items-center justify-between mb-8 md:mb-[60px]">
   <div
     class="flex flex-row items-center justify-center gap-1 py-3 px-4 rounded-[88px] bg-base-200"
   >
