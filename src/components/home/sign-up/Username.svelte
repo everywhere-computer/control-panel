@@ -4,6 +4,7 @@
   import { RSASigner } from 'iso-signatures/signers/rsa'
   import { DIDKey } from 'iso-did/key'
   import localforage from 'localforage'
+  import { createEventDispatcher } from 'svelte'
 
   import { addNotification } from '$lib/notifications'
   import {
@@ -16,6 +17,8 @@
   import Input from '$components/form/Input.svelte'
   import StarSmall from '$components/icons/StarSmall.svelte'
   import { goto } from '$app/navigation'
+
+  const dispatch = createEventDispatcher()
 
   let loading = false
 
@@ -53,8 +56,6 @@
         } as unknown) as Capabilities
       })
 
-      // console.log('Requesting with UCAN', ucan.toString())
-
       const response = await fetch(
         `${import.meta.env.VITE_FISSION_SERVER_URI}/account`,
         {
@@ -88,12 +89,27 @@
       $sessionStore.id = account.id
 
       goto('/onboarding/welcome')
+
+      loading = false
     } catch (error) {
       console.error(error)
+      const errors = JSON.parse(error?.message).errors
+
+      loading = false
+      if (errors?.find(e => e?.detail.includes('unique_email'))) {
+        dispatch('nextStep', {
+          nextStep: 2,
+          error: `${email} is already registered. You can link this device from any device on which that account is currently connected. If you need help, please post in the Beta Forum.`
+        })
+        return
+      }
+      if (errors?.find(e => e?.detail.includes('unique_username'))) {
+        addNotification({ msg: 'Username must be unique', type: 'error' })
+        return
+      }
+
       addNotification({ msg: 'Failed to register account', type: 'error' })
     }
-
-    loading = false
   }
 </script>
 

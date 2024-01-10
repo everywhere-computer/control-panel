@@ -22,17 +22,21 @@
   $: authDetails = {}
 
   const onNextStep = (dispatchEvent: {
-    detail: null | { email?: String; pin?: String; username?: String }
+    detail: null | {
+      email?: String
+      error?: String
+      nextStep?: number
+      pin?: String
+      username?: String
+    }
   }) => {
     if (dispatchEvent?.detail) {
+      const { nextStep, ...details } = dispatchEvent.detail
       authDetails = {
-        ...authDetails,
-        ...dispatchEvent.detail
+        ...details
       }
-    }
 
-    if (currentStep < 4) {
-      currentStep = currentStep + 1
+      currentStep = nextStep
     }
   }
 </script>

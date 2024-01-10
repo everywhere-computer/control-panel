@@ -1,13 +1,17 @@
 <script lang="ts">
   import posthog from 'posthog-js'
-  import { createEventDispatcher } from 'svelte'
+  import { createEventDispatcher, onMount } from 'svelte'
 
-  import { addNotification } from '$lib/notifications'
+  import { addNotification, removeNotification } from '$lib/notifications'
   import Input from '$components/form/Input.svelte'
 
   const dispatch = createEventDispatcher()
 
+  export let error = null
+
   let loading = false
+
+  $: notificationId = null
 
   // Submit email to Fission server to register the account
   const handleSubmitEmail = async (event: Event) => {
@@ -32,18 +36,28 @@
         }
       )
 
-      console.log('Response', await response.text())
+      dispatch('nextStep', { email, nextStep: 3 })
 
-      dispatch('nextStep', { email })
-
-      // addNotification({ msg: 'Account created!', type: 'success'})
-    } catch (error) {
-      console.error(error)
+      if (notificationId) {
+        removeNotification(notificationId)
+      }
+    } catch (e) {
+      console.error(e)
       addNotification({ msg: 'Failed to register account', type: 'error' })
     }
 
     loading = false
   }
+
+  onMount(() => {
+    if (error) {
+      notificationId = addNotification({
+        msg: error,
+        type: 'error',
+        permanent: true
+      })
+    }
+  })
 </script>
 
 <form

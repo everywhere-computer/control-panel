@@ -23,7 +23,7 @@
       // TODO: Is this correct? Should we perhaps only emit this on the next step?
       posthog.capture('Account created')
 
-      dispatch('nextStep', { email, pin })
+      dispatch('nextStep', { email, pin, nextStep: 4 })
 
       // addNotification({ msg: 'Account created!', type: 'success' })
     } catch (error) {

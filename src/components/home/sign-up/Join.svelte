@@ -7,7 +7,7 @@
   const handleJoin = () => {
     posthog.capture('Click "beta intake" button')
 
-    dispatch('nextStep')
+    dispatch('nextStep', { nextStep: 2 })
   }
 </script>
 
