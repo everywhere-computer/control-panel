@@ -1,10 +1,15 @@
-// import { UCAN } from '@fission-codes/ucan'
-// import type { Capabilities } from '@fission-codes/ucan/dist/src/types'
-// import { RSASigner } from 'iso-signatures/signers/rsa'
-// import { DIDKey } from 'iso-did/key'
+import { UCAN } from '@fission-codes/ucan'
+import type { Capabilities } from '@fission-codes/ucan/dist/src/types'
+import { RSASigner } from 'iso-signatures/signers/rsa'
+import { DIDKey } from 'iso-did/key'
 import localforage from 'localforage'
 
-import { IDB_ACCOUNT_DID_LABEL, IDB_ACCOUNT_ID_LABEL, IDB_UCAN_LABEL } from '$lib/session'
+import {
+  IDB_ACCOUNT_DID_LABEL,
+  IDB_ACCOUNT_ID_LABEL,
+  IDB_PRIVATE_KEY_LABEL,
+  IDB_UCAN_LABEL
+} from '$lib/session'
 import { sessionStore } from '$lib/stores'
 
 export const initialize = async (): Promise<void> => {
@@ -25,44 +30,33 @@ export const initialize = async (): Promise<void> => {
       return
     }
 
-    // const serverDid = await(
-    //   await fetch('http://localhost:3000/api/v0/server-did')
-    // ).text()
-    // const audience = DIDKey.fromString(serverDid)
+    const serverDid = await(
+      await fetch('http://localhost:3000/api/v0/server-did')
+    ).text()
+    const audience = DIDKey.fromString(serverDid)
 
-    // const idbPrivateKeyLabel = 'control-panel/v1/agent/signing-keypair'
+    const principal = await RSASigner.import(
+      await localforage.getItem(IDB_PRIVATE_KEY_LABEL)
+    )
+    const pucan = await UCAN.create({
+      issuer: principal,
+      audience,
+      ttl: 60, // A rough estimate that accounts for clock drift
+      capabilities: ({
+        [principal.did.toString()]: { 'capability/fetch': [{}] }
+      } as unknown) as Capabilities
+    })
 
-    // // TODO: This is using an old version of iso-signatures, @fission-codes/stack needs to be updated
-    // const principal = await RSASigner.generate()
+    const res = await fetch('http://localhost:3000/api/v0/capabilities', {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${pucan.toString()}`
+      }
+    })
 
-    // const keyPair = await localforage.getItem(idbPrivateKeyLabel)
-
-    // const ucan = await UCAN.create({
-    //   issuer: principal,
-    //   audience,
-    //   ttl: 60, // A rough estimate that accounts for clock drift
-    //   capabilities: ({
-    //     [principal.did.toString()]: { 'capability/fetch': [{}] }
-    //   } as unknown) as Capabilities
-    // })
-
-    // Attemped to use the capabilities endpoint first, but was only getting an empty array of UCANs back, so I'm using the account endpoint for now
-    // const ucan = await UCAN.create({
-    //   issuer: DIDKey.fromString(accountDid),
-    //   audience,
-    //   ttl: 60, // A rough estimate that accounts for clock drift
-    //   capabilities: ({
-    //     [accountDid]: { 'capability/fetch': [{}] }
-    //   } as unknown) as Capabilities
-    // })
-    // const response = await fetch('http://localhost:3000/api/v0/capabilities', {
-    //   method: 'GET',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'application/json',
-    //     Authorization: `Bearer ${ucan.toString()}`
-    //   }
-    // })
+    console.log('capabilities res', (await res.json()))
 
     const response = await fetch(
       `http://localhost:3000/api/v0/account/${accountDid}`,
