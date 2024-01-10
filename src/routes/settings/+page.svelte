@@ -3,15 +3,12 @@
   import { fly } from 'svelte/transition'
 
   import { sessionStore } from '$lib/stores'
-  // import AvatarUpload from '$components/settings/AvatarUpload.svelte'
-  import ConnectedDevices from '$components/settings/ConnectedDevices.svelte'
   import NodeInfo from '$components/settings/NodeInfo.svelte'
-  // import RecoveryKit from '$components/settings/RecoveryKit.svelte'
   import ThemePreferences from '$components/settings/ThemePreferences.svelte'
   import Username from '$components/settings/Username.svelte'
 </script>
 
-{#if $sessionStore.session}
+{#if $sessionStore.username}
   <div
     in:fly={{
       y: 20,
@@ -21,17 +18,11 @@
     class="flex flex-col items-start max-w-[800px] m-auto gap-10 pb-28 text-sm"
   >
     <div class="flex flex-col items-start justify-center gap-6">
-      <!-- <AvatarUpload /> -->
-
       <NodeInfo />
 
       <Username />
 
       <ThemePreferences />
-
-      <ConnectedDevices />
-
-      <!-- <RecoveryKit /> -->
     </div>
   </div>
 {:else}

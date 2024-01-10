@@ -40,7 +40,7 @@
   const handleCloseBuilder = () => (showBuilder = false)
 
   // Save all workflows to the user's WNFS
-  const pushWorkflowsToWNFS = async () => {
+  const pushWorkflowsToIDB = async () => {
     const clonedWorkflows = JSON.parse(
       JSON.stringify($workflowsStore.workflows)
     )
@@ -163,7 +163,7 @@
         savedImage: $workflowsStore.builder.savedImage
       })
 
-      await pushWorkflowsToWNFS()
+      await pushWorkflowsToIDB()
 
       saving = false
 
@@ -205,7 +205,7 @@
   }
 
   // Handle keyboard shortcuts for workflow builder
-  const handleKeyUp = async (event: KeyboardEvent): void => {
+  const handleKeyUp = async (event: KeyboardEvent): Promise<void> => {
     const tagName = (event?.target as HTMLElement).tagName.toLowerCase()
     const key = event.key
 

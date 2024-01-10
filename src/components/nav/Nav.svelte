@@ -60,7 +60,7 @@
     ? 'h-auto md:h-10 mt-auto'
     : 'h-10 md:fixed md:top-0 md:right-0 md:left-0 z-30'}"
 >
-  {#if $sessionStore.session}
+  {#if $sessionStore.username}
     <a
       href="/"
       class="{inFooter ? 'hidden md:inline-block' : ''} {$page.url.pathname ===
@@ -74,7 +74,7 @@
     </a>
   {/if}
 
-  {#if $sessionStore.session}
+  {#if $sessionStore.username}
     {#if !inFooter && screenSize < 768}
       {@const activeNavItem = navItems.find(({ isActive }) => isActive)}
       {#if activeNavItem}

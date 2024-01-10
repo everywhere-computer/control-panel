@@ -13,7 +13,7 @@
 </script>
 
 <div class="">
-  <div class="flex flex-row items-center md:mr-auto mb-8">
+  <div class="flex flex-row items-center justify-between md:mr-auto mb-8">
     <div
       class="flex flex-row items-center justify-center gap-1 py-3 px-4 rounded-[88px] bg-base-200"
     >
@@ -22,6 +22,10 @@
       <StarSmall colour="#CCCCE3" />
       <StarSmall colour="#CCCCE3" />
     </div>
+
+    <p class="w-[120px] font-mono text-code-m text-right uppercase">
+      Onboarding member #{$sessionStore.id}
+    </p>
   </div>
 
   <div class="flex flex-col gap-6 text-body-lg w-full max-w-[576px] m-auto">
@@ -35,7 +39,9 @@
     </h1>
 
     <p>
-      You’re network <strong class="font-bold">member #89</strong>
+      You’re network <strong class="font-bold">
+        member #{$sessionStore.id}
+      </strong>
       .
     </p>
     <p>

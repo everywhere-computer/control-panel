@@ -1,9 +1,20 @@
 <script lang="ts">
+  import { UCAN } from '@fission-codes/ucan'
+  import type { Capabilities } from '@fission-codes/ucan/dist/src/types'
+  import { RSASigner } from 'iso-signatures/signers/rsa'
+  import { DIDKey } from 'iso-did/key'
+  import localforage from 'localforage'
+
   import { addNotification } from '$lib/notifications'
+  import {
+    IDB_ACCOUNT_DID_LABEL,
+    IDB_ACCOUNT_ID_LABEL,
+    IDB_UCAN_LABEL
+  } from '$lib/session'
+  import { sessionStore } from '$lib/stores'
   import Input from '$components/form/Input.svelte'
   import StarSmall from '$components/icons/StarSmall.svelte'
   import { goto } from '$app/navigation'
-  import { sessionStore } from '$lib/stores'
 
   let loading = false
 
@@ -19,8 +30,60 @@
       const data = new FormData(formEl)
       const username = data.get('username')
 
-      // @ts-ignore-next-line
-      $sessionStore.username = username
+      // TODO(matheus23): Replace this with a proper DoH DNS
+      // lookup of _did.localhost once iso-web DoH stuff is exposed.
+      const serverDid = await (
+        await fetch('http://localhost:3000/api/v0/server-did')
+      ).text()
+
+      const audience = DIDKey.fromString(serverDid)
+
+      const idbPrivateKeyLabel = 'control-panel/v1/agent/signing-keypair'
+      // TODO: This is using an old version of iso-signatures, @fission-codes/stack needs to be updated
+      const principal = await RSASigner.generate()
+      // Persist/overwrite private key in IndexedDB
+      await localforage.setItem(idbPrivateKeyLabel, principal.export())
+
+      const ucan = await UCAN.create({
+        issuer: principal,
+        audience,
+        ttl: 60, // A rough estimate that accounts for clock drift
+        capabilities: ({
+          [principal.did.toString()]: { 'account/create': [{}] }
+        } as unknown) as Capabilities
+      })
+
+      console.log('Requesting with UCAN', ucan.toString())
+
+      const response = await fetch('http://localhost:3000/api/v0/account', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${ucan.toString()}`
+        },
+        body: JSON.stringify({
+          code: pin,
+          email,
+          username
+        })
+      })
+
+      // HTTP status code 201 CREATED
+      if (response.status != 201) {
+        throw new Error(await response.text())
+      }
+
+      // Now we have some info on the account & UCANs
+      const { account, ucans } = await response.json()
+
+      await localforage.setItem(IDB_ACCOUNT_DID_LABEL, account.did)
+      await localforage.setItem(IDB_ACCOUNT_ID_LABEL, account.id)
+      await localforage.setItem(IDB_UCAN_LABEL, ucans[0])
+
+      $sessionStore.username = username.toString()
+      $sessionStore.id = account.id
+
       goto('/onboarding/welcome')
     } catch (error) {
       console.error(error)

@@ -10,10 +10,8 @@
     checkIPFSConnection
   } from '$lib/connections'
   import subscribNetworkEvents from '$lib/network'
-  import { addNotification } from '$lib/notifications'
   import { sessionStore, themeStore } from '$lib/stores'
   import { unsubscribeRPC } from '$lib/rpc'
-  import { errorToMessage } from '$lib/session'
   import { initialize } from '$lib/init'
   import DataWidget from '$components/common/DataWidget.svelte'
   import GlobalShortcutHandler from '$components/common/GlobalShortcutHandler.svelte'
@@ -30,20 +28,13 @@
   $: isActivity = $page.route.id === '/activity'
   let screenSize: number
 
-  const unsubscribeSessionStore = sessionStore.subscribe(session => {
-    if (session.error) {
-      const message = errorToMessage(session.error)
-      addNotification({ msg: message, type: 'error' })
-    }
-  })
-
   const init = async () => {
     await initialize()
 
     // Redirect to home if not logged in
     if (
-      window.location.href !== window.location.origin ||
-      (!window.location.href.includes('onboarding') && !$sessionStore.session)
+      window.location.href !== window.location.origin &&
+      !$sessionStore.username
     ) {
       goto('/')
     }
@@ -67,7 +58,6 @@
 
   onDestroy(() => {
     unsubscribeRPC()
-    unsubscribeSessionStore()
   })
 </script>
 
@@ -89,10 +79,12 @@
     <FullScreenLoadingSpinner />
   {:else}
     <div class="flex flex-col min-h-screen md:pt-10">
-      {#if isHome && screenSize >= 768}
-        <Nav {screenSize} />
-      {:else if !isHome}
-        <Nav {screenSize} />
+      {#if !$page.route.id.includes('onboarding')}
+        {#if isHome && screenSize >= 768}
+          <Nav {screenSize} />
+        {:else if !isHome}
+          <Nav {screenSize} />
+        {/if}
       {/if}
 
       <div
@@ -101,11 +93,11 @@
         <slot />
       </div>
 
-      {#if isHome && $sessionStore.session}
+      {#if isHome && $sessionStore.username}
         <Footer {screenSize} />
       {/if}
 
-      {#if $sessionStore.session}
+      {#if $sessionStore.username}
         <DataWidget />
         <GlobalShortcutHandler />
       {/if}

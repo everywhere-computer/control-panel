@@ -20,9 +20,10 @@
       const data = new FormData(formEl)
       const pin = data.get('pin')
 
+      // TODO: Is this correct? Should we perhaps only emit this on the next step?
       posthog.capture('Account created')
 
-      dispatch('nextStep', { pin })
+      dispatch('nextStep', { email, pin })
 
       // addNotification({ msg: 'Account created!', type: 'success' })
     } catch (error) {
@@ -34,7 +35,20 @@
   }
 
   const handleResendEmail = async () => {
-    addNotification({ msg: 'Email sent!', type: 'success' })
+    try {
+      await fetch('http://localhost:3000/api/v0/auth/email/verify', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: email.toString() })
+      })
+      addNotification({ msg: 'Email sent!', type: 'success' })
+    } catch (error) {
+      console.error('error')
+      addNotification({ msg: 'Failed to re-send email', type: 'error' })
+    }
   }
 </script>
 

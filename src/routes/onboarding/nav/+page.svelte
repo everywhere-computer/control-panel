@@ -14,7 +14,7 @@
   }
 </script>
 
-<div class="flex flex-row items-center mb-8">
+<div class="flex flex-row items-center justify-between mb-8">
   <div
     class="flex flex-row items-center justify-center gap-1 py-3 px-4 rounded-[88px] bg-base-200"
   >
@@ -23,6 +23,10 @@
     <StarSmall colour="#32334A" />
     <StarMedium />
   </div>
+
+  <p class="w-[120px] font-mono text-code-m text-right uppercase">
+    Onboarding member #{$sessionStore.id}
+  </p>
 </div>
 
 <div class="flex flex-col gap-24 md:gap-12">
