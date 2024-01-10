@@ -9,6 +9,7 @@
   import {
     IDB_ACCOUNT_DID_LABEL,
     IDB_ACCOUNT_ID_LABEL,
+    IDB_PRIVATE_KEY_LABEL,
     IDB_UCAN_LABEL
   } from '$lib/session'
   import { sessionStore } from '$lib/stores'
@@ -38,11 +39,10 @@
 
       const audience = DIDKey.fromString(serverDid)
 
-      const idbPrivateKeyLabel = 'control-panel/v1/agent/signing-keypair'
       // TODO: This is using an old version of iso-signatures, @fission-codes/stack needs to be updated
       const principal = await RSASigner.generate()
       // Persist/overwrite private key in IndexedDB
-      await localforage.setItem(idbPrivateKeyLabel, principal.export())
+      await localforage.setItem(IDB_PRIVATE_KEY_LABEL, principal.export())
 
       const ucan = await UCAN.create({
         issuer: principal,
@@ -53,7 +53,7 @@
         } as unknown) as Capabilities
       })
 
-      console.log('Requesting with UCAN', ucan.toString())
+      // console.log('Requesting with UCAN', ucan.toString())
 
       const response = await fetch('http://localhost:3000/api/v0/account', {
         method: 'POST',
