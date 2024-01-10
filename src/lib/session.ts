@@ -25,7 +25,7 @@ export const IDB_UCAN_LABEL = 'control-panel/v1/ucan'
 export const getCapabilities = async (): Promise<{ revoked: string[]; ucans: {[did: string]: string} }> => {
   try {
     const serverDid = await (
-      await fetch('http://localhost:3000/api/v0/server-did')
+      await fetch(`${import.meta.env.VITE_FISSION_SERVER_URI}/server-did`)
     ).text()
     const audience = DIDKey.fromString(serverDid)
 
@@ -41,14 +41,17 @@ export const getCapabilities = async (): Promise<{ revoked: string[]; ucans: {[d
       } as unknown) as Capabilities
     })
 
-    const res = await fetch('http://localhost:3000/api/v0/capabilities', {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${pucan.toString()}`
+    const res = await fetch(
+      `${import.meta.env.VITE_FISSION_SERVER_URI}/capabilities`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${pucan.toString()}`
+        }
       }
-    })
+    )
 
     const capabilitiesRes = await res.json()
 

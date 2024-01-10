@@ -34,7 +34,7 @@
       // TODO(matheus23): Replace this with a proper DoH DNS
       // lookup of _did.localhost once iso-web DoH stuff is exposed.
       const serverDid = await (
-        await fetch('http://localhost:3000/api/v0/server-did')
+        await fetch(`${import.meta.env.VITE_FISSION_SERVER_URI}/server-did`)
       ).text()
 
       const audience = DIDKey.fromString(serverDid)
@@ -55,19 +55,22 @@
 
       // console.log('Requesting with UCAN', ucan.toString())
 
-      const response = await fetch('http://localhost:3000/api/v0/account', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${ucan.toString()}`
-        },
-        body: JSON.stringify({
-          code: pin,
-          email,
-          username
-        })
-      })
+      const response = await fetch(
+        `${import.meta.env.VITE_FISSION_SERVER_URI}/account`,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${ucan.toString()}`
+          },
+          body: JSON.stringify({
+            code: pin,
+            email,
+            username
+          })
+        }
+      )
 
       // HTTP status code 201 CREATED
       if (response.status != 201) {

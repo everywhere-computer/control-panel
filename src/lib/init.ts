@@ -26,7 +26,7 @@ export const initialize = async (): Promise<void> => {
     }
 
     const response = await fetch(
-      `http://localhost:3000/api/v0/account/${accountDid}`,
+      `${import.meta.env.VITE_FISSION_SERVER_URI}/account/${accountDid}`,
       {
         method: 'GET',
         headers: {

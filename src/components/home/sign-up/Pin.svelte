@@ -36,14 +36,17 @@
 
   const handleResendEmail = async () => {
     try {
-      await fetch('http://localhost:3000/api/v0/auth/email/verify', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email: email.toString() })
-      })
+      await fetch(
+        `${import.meta.env.VITE_FISSION_SERVER_URI}/auth/email/verify`,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: email.toString() })
+        }
+      )
       addNotification({ msg: 'Email sent!', type: 'success' })
     } catch (error) {
       console.error('error')
