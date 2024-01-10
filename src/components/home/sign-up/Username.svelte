@@ -28,7 +28,7 @@
     try {
       const formEl = event.target as HTMLFormElement
       const data = new FormData(formEl)
-      const username = data.get('username') as string
+      const username = data.get('username')
 
       // TODO(matheus23): Replace this with a proper DoH DNS
       // lookup of _did.localhost once iso-web DoH stuff is exposed.
@@ -81,7 +81,7 @@
       await localforage.setItem(IDB_ACCOUNT_ID_LABEL, account.id)
       await localforage.setItem(IDB_UCAN_LABEL, ucans[0])
 
-      $sessionStore.username = username
+      $sessionStore.username = username.toString()
       $sessionStore.id = account.id
 
       goto('/onboarding/welcome')
