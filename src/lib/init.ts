@@ -1,82 +1,80 @@
-import * as odd from '@oddjs/odd'
-import { dev } from '$app/environment'
+// import { UCAN } from '@fission-codes/ucan'
+// import type { Capabilities } from '@fission-codes/ucan/dist/src/types'
+// import { RSASigner } from 'iso-signatures/signers/rsa'
+// import { DIDKey } from 'iso-did/key'
+import localforage from 'localforage'
 
-import { filesystemStore, sessionStore } from './stores'
-import { getBackupStatus, type BackupStatus } from '$lib/auth/backup'
-import { USERNAME_STORAGE_KEY, createDID } from '$lib/auth/account'
-import { oddNamespace } from '$lib/app-info'
+import { IDB_ACCOUNT_DID_LABEL, IDB_UCAN_LABEL } from '$lib/session'
+import { sessionStore } from '$lib/stores'
 
 export const initialize = async (): Promise<void> => {
   try {
-    let backupStatus: BackupStatus = null
+    const accountDid = await localforage.getItem(IDB_ACCOUNT_DID_LABEL)
+    const ucan = await localforage.getItem(IDB_UCAN_LABEL)
 
-    const program: odd.Program = await odd.program({
-      namespace: oddNamespace,
-      debug: dev
+    // const serverDid = await(
+    //   await fetch('http://localhost:3000/api/v0/server-did')
+    // ).text()
+    // const audience = DIDKey.fromString(serverDid)
+
+    // const idbPrivateKeyLabel = 'control-panel/v1/agent/signing-keypair'
+
+    // // TODO: This is using an old version of iso-signatures, @fission-codes/stack needs to be updated
+    // const principal = await RSASigner.generate()
+
+    // const keyPair = await localforage.getItem(idbPrivateKeyLabel)
+
+    // const ucan = await UCAN.create({
+    //   issuer: principal,
+    //   audience,
+    //   ttl: 60, // A rough estimate that accounts for clock drift
+    //   capabilities: ({
+    //     [principal.did.toString()]: { 'capability/fetch': [{}] }
+    //   } as unknown) as Capabilities
+    // })
+
+    // const response = await fetch('http://localhost:3000/api/v0/capabilities', {
+    //   method: 'GET',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'application/json',
+    //     Authorization: `Bearer ${ucan.toString()}`
+    //   }
+    // })
+
+    // const ucan = await UCAN.create({
+    //   issuer: DIDKey.fromString(accountDid),
+    //   audience,
+    //   ttl: 60, // A rough estimate that accounts for clock drift
+    //   capabilities: ({
+    //     [accountDid]: { 'account/info': [{}] }
+    //   } as unknown) as Capabilities
+    // })
+
+    const response = await fetch(
+      `http://localhost:3000/api/v0/account/${accountDid}`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${ucan.toString()}`
+        }
+      }
+    )
+
+    const { username } = await response.json()
+
+    sessionStore.set({
+      username,
+      loading: false,
+    })
+  } catch (error) {
+    sessionStore.set({
+      username: null,
+      loading: false,
     })
 
-    if (program.session) {
-      // Authed
-      backupStatus = await getBackupStatus(program.session.fs)
-
-      let fullUsername = await program.components.storage.getItem(USERNAME_STORAGE_KEY) as string
-
-      // If the user is migrating from a version odd-app-template before https://github.com/oddsdk/odd-app-template/pull/97/files#diff-a180510e798b8f833ebfdbe691c5ec4a1095076980d3e2388de29c849b2b8361R44,
-      // their username won't contain a did, so we will need to manually append a DID and add it storage here
-      if (!fullUsername) {
-        const did = await createDID(program.components.crypto)
-        fullUsername = `${program.session.username}#${did}`
-        await program.components.storage.setItem(USERNAME_STORAGE_KEY, fullUsername)
-        window.location.reload()
-      }
-
-      sessionStore.set({
-        username: {
-          full: fullUsername,
-          hashed: program.session.username,
-          trimmed: fullUsername.split('#')[0],
-        },
-        session: program.session,
-        authStrategy: program.auth,
-        program,
-        loading: false,
-        backupCreated: backupStatus.created
-      })
-
-      filesystemStore.set(program.session.fs)
-
-    } else {
-      // Not authed
-      sessionStore.set({
-        username: null,
-        session: null,
-        authStrategy: program.auth,
-        program,
-        loading: false,
-        backupCreated: null
-      })
-    }
-
-  } catch (error) {
     console.error(error)
-
-    switch (error) {
-      case odd.ProgramError.InsecureContext:
-        sessionStore.update(session => ({
-          ...session,
-          loading: false,
-          error: 'Insecure Context'
-        }))
-        break
-
-      case odd.ProgramError.UnsupportedBrowser:
-        sessionStore.update(session => ({
-          ...session,
-          loading: false,
-          error: 'Unsupported Browser'
-        }))
-        break
-    }
-
   }
 }

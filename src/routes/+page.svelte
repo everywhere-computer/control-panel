@@ -12,7 +12,7 @@
   })
 </script>
 
-{#if $sessionStore?.session}
+{#if $sessionStore?.username}
   <Authed />
 {:else}
   <Public />

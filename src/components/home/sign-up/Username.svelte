@@ -1,14 +1,16 @@
 <script lang="ts">
-  import { addNotification } from '$lib/notifications'
-  import Input from '$components/form/Input.svelte'
-  import StarSmall from '$components/icons/StarSmall.svelte'
-  import { goto } from '$app/navigation'
-  import { sessionStore } from '$lib/stores'
+  import { UCAN } from '@fission-codes/ucan'
+  import type { Capabilities } from '@fission-codes/ucan/dist/src/types'
   import { RSASigner } from 'iso-signatures/signers/rsa'
   import { DIDKey } from 'iso-did/key'
   import localforage from 'localforage'
-  import { UCAN } from '@fission-codes/ucan'
-  import type { Capabilities } from '@fission-codes/ucan/dist/src/types'
+
+  import { addNotification } from '$lib/notifications'
+  import { IDB_ACCOUNT_DID_LABEL, IDB_UCAN_LABEL } from '$lib/session'
+  import { sessionStore } from '$lib/stores'
+  import Input from '$components/form/Input.svelte'
+  import StarSmall from '$components/icons/StarSmall.svelte'
+  import { goto } from '$app/navigation'
 
   let loading = false
 
@@ -42,7 +44,9 @@
         issuer: principal,
         audience,
         ttl: 60, // A rough estimate that accounts for clock drift
-        capabilities: { [principal.did.toString()]: { 'account/create': [{}] } } as unknown as Capabilities
+        capabilities: ({
+          [principal.did.toString()]: { 'account/create': [{}] }
+        } as unknown) as Capabilities
       })
 
       console.log('Requesting with UCAN', ucan.toString())
@@ -50,9 +54,9 @@
       const response = await fetch('http://localhost:3000/api/v0/account', {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${ucan.toString()}`
+          Authorization: `Bearer ${ucan.toString()}`
         },
         body: JSON.stringify({
           code: pin,
@@ -69,8 +73,12 @@
       // Now we have some info on the account & UCANs
       const { account, ucans } = await response.json()
 
+      await localforage.setItem(IDB_ACCOUNT_DID_LABEL, account?.did)
+      await localforage.setItem(IDB_UCAN_LABEL, ucans[0])
+
       // @ts-ignore-next-line
       $sessionStore.username = username
+      $sessionStore.id = account.id
       goto('/onboarding/welcome')
     } catch (error) {
       console.error(error)
