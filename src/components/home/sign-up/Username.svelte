@@ -6,7 +6,11 @@
   import localforage from 'localforage'
 
   import { addNotification } from '$lib/notifications'
-  import { IDB_ACCOUNT_DID_LABEL, IDB_UCAN_LABEL } from '$lib/session'
+  import {
+    IDB_ACCOUNT_DID_LABEL,
+    IDB_ACCOUNT_ID_LABEL,
+    IDB_UCAN_LABEL
+  } from '$lib/session'
   import { sessionStore } from '$lib/stores'
   import Input from '$components/form/Input.svelte'
   import StarSmall from '$components/icons/StarSmall.svelte'
@@ -24,7 +28,7 @@
     try {
       const formEl = event.target as HTMLFormElement
       const data = new FormData(formEl)
-      const username = data.get('username')
+      const username = data.get('username') as string
 
       // TODO(matheus23): Replace this with a proper DoH DNS
       // lookup of _did.localhost once iso-web DoH stuff is exposed.
@@ -73,12 +77,13 @@
       // Now we have some info on the account & UCANs
       const { account, ucans } = await response.json()
 
-      await localforage.setItem(IDB_ACCOUNT_DID_LABEL, account?.did)
+      await localforage.setItem(IDB_ACCOUNT_DID_LABEL, account.did)
+      await localforage.setItem(IDB_ACCOUNT_ID_LABEL, account.id)
       await localforage.setItem(IDB_UCAN_LABEL, ucans[0])
 
-      // @ts-ignore-next-line
       $sessionStore.username = username
       $sessionStore.id = account.id
+
       goto('/onboarding/welcome')
     } catch (error) {
       console.error(error)

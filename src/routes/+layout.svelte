@@ -79,10 +79,12 @@
     <FullScreenLoadingSpinner />
   {:else}
     <div class="flex flex-col min-h-screen md:pt-10">
-      {#if isHome && screenSize >= 768}
-        <Nav {screenSize} />
-      {:else if !isHome}
-        <Nav {screenSize} />
+      {#if !$page.route.id.includes('onboarding')}
+        {#if isHome && screenSize >= 768}
+          <Nav {screenSize} />
+        {:else if !isHome}
+          <Nav {screenSize} />
+        {/if}
       {/if}
 
       <div
