@@ -1,5 +1,6 @@
 <script lang="ts">
   export let desktopMaxWidth: boolean = false
+  export let error: boolean = false
   export let name: string
   export let label: string = null
   export let required: boolean = false
@@ -24,7 +25,9 @@
 
   <div class="relative w-full">
     <input
-      class="input input-bordered relative z-0 w-full h-10 !border !border-odd-gray-400 !dark:border-neutral rounded-sm {textToAppend
+      class="input input-bordered {error
+        ? 'input-error'
+        : ''} relative z-0 w-full h-10 !border !border-odd-gray-400 !dark:border-neutral rounded-sm {textToAppend
         ? 'pr-24'
         : ''}"
       {name}
@@ -41,7 +44,7 @@
 
   {#if validationMessage}
     <div class="label">
-      <span class="label-text-alt !text-input-sm">
+      <span class="label-text-alt !text-input-sm {error ? 'text-error' : ''}">
         {@html validationMessage}
       </span>
     </div>

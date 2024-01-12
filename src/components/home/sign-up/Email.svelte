@@ -8,8 +8,10 @@
   const dispatch = createEventDispatcher()
 
   export let error = null
+  export let email = null
 
   let loading = false
+  let inputProps = {}
 
   $: notificationId = null
 
@@ -20,11 +22,11 @@
     try {
       const formEl = event.target as HTMLFormElement
       const data = new FormData(formEl)
-      const email = data.get('email')
+      const emailAddress = data.get('email')
 
       posthog.capture('Email validation sent')
 
-      const response = await fetch(
+      await fetch(
         `${import.meta.env.VITE_FISSION_SERVER_URI}/auth/email/verify`,
         {
           method: 'POST',
@@ -32,11 +34,11 @@
             Accept: 'application/json',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ email: email.toString() })
+          body: JSON.stringify({ email: emailAddress.toString() })
         }
       )
 
-      dispatch('nextStep', { email, nextStep: 3 })
+      dispatch('nextStep', { email: emailAddress, nextStep: 3 })
 
       if (notificationId) {
         removeNotification(notificationId)
@@ -49,22 +51,25 @@
     loading = false
   }
 
-  onMount(() => {
-    if (error) {
-      notificationId = addNotification({
-        msg: error,
-        type: 'error',
-        permanent: true
-      })
+  if (error) {
+    inputProps = {
+      error: true,
+      validationMessage: `${email} is already registered. You can link this device from any device on which that account is currently connected. If you need help, please post in the Beta Forum.`
     }
-  })
+  }
 </script>
 
 <form
   on:submit|preventDefault={handleSubmitEmail}
   class="flex flex-col items-center gap-4 w-full max-w-[450px] md:max-w-full mt-auto py-10 px-8 bg-base-200"
 >
-  <Input name="email" label="Provide your email" type="email" required />
+  <Input
+    name="email"
+    label="Provide your email"
+    type="email"
+    required
+    {...inputProps}
+  />
 
   <button
     class="btn btn-primary btn-odd-purple-500 w-full max-w-[311px] h-10 !text-label-l {loading

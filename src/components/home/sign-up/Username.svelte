@@ -99,7 +99,8 @@
       if (errors?.find(e => e?.detail.includes('unique_email'))) {
         dispatch('nextStep', {
           nextStep: 2,
-          error: `${email} is already registered. You can link this device from any device on which that account is currently connected. If you need help, please post in the Beta Forum.`
+          email,
+          error: true
         })
         return
       }
