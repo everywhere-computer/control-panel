@@ -20,10 +20,13 @@
 
   const dispatch = createEventDispatcher()
 
-  let loading = false
-
   export let email = null
   export let pin = null
+
+  let loading = false
+
+  $: error = false
+  $: validationMessage = null
 
   // Submit username to Fission server to register the account
   const handleSubmitUsername = async () => {
@@ -99,18 +102,25 @@
       if (errors?.find(e => e?.detail.includes('unique_email'))) {
         dispatch('nextStep', {
           nextStep: 2,
-          email,
+          savedEmail: email,
           error: true
         })
         return
       }
       if (errors?.find(e => e?.detail.includes('unique_username'))) {
-        addNotification({ msg: 'Username must be unique', type: 'error' })
+        error = true
+        validationMessage = 'Username must be unique'
         return
       }
 
       addNotification({ msg: 'Failed to register account', type: 'error' })
     }
+  }
+
+  // Remove error state onInput
+  const handleOnInput = () => {
+    error = false
+    validationMessage = null
   }
 </script>
 
@@ -133,7 +143,10 @@
     label="Choose your username"
     textToAppend=".e9c7.name"
     type="text"
+    onInput={handleOnInput}
     required
+    bind:error
+    bind:validationMessage
   />
 
   <button

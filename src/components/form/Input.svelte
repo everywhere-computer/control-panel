@@ -1,8 +1,9 @@
 <script lang="ts">
   export let desktopMaxWidth: boolean = false
   export let error: boolean = false
-  export let name: string
   export let label: string = null
+  export let name: string
+  export let onInput: () => void = () => {}
   export let required: boolean = false
   export let textToAppend: string = null
   export let type: string = 'text'
@@ -34,6 +35,7 @@
       {required}
       {type}
       {...valueProp}
+      on:input={onInput}
     />
     {#if textToAppend}
       <span class="absolute top-1/2 right-4 z-10 -translate-y-1/2">

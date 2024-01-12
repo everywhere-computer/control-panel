@@ -8,7 +8,7 @@
   const dispatch = createEventDispatcher()
 
   export let error = null
-  export let email = null
+  export let savedEmail = null
 
   let loading = false
   let inputProps = {}
@@ -22,7 +22,7 @@
     try {
       const formEl = event.target as HTMLFormElement
       const data = new FormData(formEl)
-      const emailAddress = data.get('email')
+      const email = data.get('email')
 
       posthog.capture('Email validation sent')
 
@@ -34,11 +34,11 @@
             Accept: 'application/json',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ email: emailAddress.toString() })
+          body: JSON.stringify({ email: email.toString() })
         }
       )
 
-      dispatch('nextStep', { email: emailAddress, nextStep: 3 })
+      dispatch('nextStep', { email: email, nextStep: 3 })
 
       if (notificationId) {
         removeNotification(notificationId)
@@ -51,10 +51,15 @@
     loading = false
   }
 
+  // Remove error state onInput
+  const handleOnInput = () => {
+    inputProps = {}
+  }
+
   if (error) {
     inputProps = {
       error: true,
-      validationMessage: `${email} is already registered. You can link this device from any device on which that account is currently connected. If you need help, please post in the Beta Forum.`
+      validationMessage: `${savedEmail} is already registered. You can link this device from any device on which that account is currently connected. If you need help, please post in the Beta Forum.`
     }
   }
 </script>
@@ -67,6 +72,7 @@
     name="email"
     label="Provide your email"
     type="email"
+    onInput={handleOnInput}
     required
     {...inputProps}
   />
