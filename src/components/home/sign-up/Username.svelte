@@ -97,9 +97,9 @@
       goto('/onboarding/welcome')
 
       loading = false
-    } catch (error) {
-      console.error(error)
-      const errors = JSON.parse(error?.message).errors
+    } catch (err) {
+      console.error(err)
+      const errors = JSON.parse(err?.message).errors
 
       loading = false
       if (errors?.find(e => e?.detail.includes('unique_email'))) {

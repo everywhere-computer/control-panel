@@ -22,8 +22,8 @@
       const pin = data.get('pin')
 
       dispatch('nextStep', { email, pin, nextStep: 4 })
-    } catch (error) {
-      console.error(error)
+    } catch (err) {
+      console.error(err)
       error = true
       validationMessage = 'Incorrect pin'
     }

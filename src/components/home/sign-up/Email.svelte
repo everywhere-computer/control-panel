@@ -11,7 +11,7 @@
   export let savedEmail = null
 
   let loading = false
-  let inputProps = {}
+  let validationMessage = null
 
   $: notificationId = null
 
@@ -43,9 +43,9 @@
       if (notificationId) {
         removeNotification(notificationId)
       }
-    } catch (e) {
-      console.error(e)
-      addNotification({ msg: 'Failed to register account', type: 'error' })
+    } catch (err) {
+      console.error(err)
+      addNotification({ msg: 'Failed to submit email', type: 'error' })
     }
 
     loading = false
@@ -53,14 +53,12 @@
 
   // Remove error state onInput
   const handleOnInput = () => {
-    inputProps = {}
+    error = false
+    validationMessage = null
   }
 
   if (error) {
-    inputProps = {
-      error: true,
-      validationMessage: `${savedEmail} is already registered. You can link this device from any device on which that account is currently connected. If you need help, please post in the Beta Forum.`
-    }
+    validationMessage = `${savedEmail} is already registered. You can link this device from any device on which that account is currently connected. If you need help, please post in the Beta Forum.`
   }
 </script>
 
@@ -73,8 +71,9 @@
     label="Provide your email"
     type="email"
     onInput={handleOnInput}
+    bind:error
+    bind:validationMessage
     required
-    {...inputProps}
   />
 
   <button
