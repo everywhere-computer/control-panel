@@ -4,6 +4,7 @@
   import { RSASigner } from 'iso-signatures/signers/rsa'
   import { DIDKey } from 'iso-did/key'
   import localforage from 'localforage'
+  import posthog from 'posthog-js'
   import { createEventDispatcher } from 'svelte'
 
   import { addNotification } from '$lib/notifications'
@@ -90,6 +91,8 @@
 
       $sessionStore.username = username.toString()
       $sessionStore.id = account.id
+
+      posthog.capture('Account created')
 
       goto('/onboarding/welcome')
 

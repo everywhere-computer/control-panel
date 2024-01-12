@@ -1,5 +1,4 @@
 <script lang="ts">
-  import posthog from 'posthog-js'
   import { createEventDispatcher } from 'svelte'
 
   import { addNotification } from '$lib/notifications'
@@ -8,6 +7,8 @@
   const dispatch = createEventDispatcher()
 
   let loading = false
+  let error = false
+  let validationMessage = null
 
   export let email = null
 
@@ -20,20 +21,17 @@
       const data = new FormData(formEl)
       const pin = data.get('pin')
 
-      // TODO: Is this correct? Should we perhaps only emit this on the next step?
-      posthog.capture('Account created')
-
       dispatch('nextStep', { email, pin, nextStep: 4 })
-
-      // addNotification({ msg: 'Account created!', type: 'success' })
     } catch (error) {
       console.error(error)
-      addNotification({ msg: 'Failed to register account', type: 'error' })
+      error = true
+      validationMessage = 'Incorrect pin'
     }
 
     loading = false
   }
 
+  // Request a new pin code
   const handleResendEmail = async () => {
     try {
       await fetch(
@@ -52,6 +50,12 @@
       console.error('error')
       addNotification({ msg: 'Failed to re-send email', type: 'error' })
     }
+  }
+
+  // Remove error state onInput
+  const handleOnInput = () => {
+    error = false
+    validationMessage = null
   }
 </script>
 
@@ -73,7 +77,15 @@
     </button>
   </div>
 
-  <Input name="pin" label="Enter the one-time code" type="text" required />
+  <Input
+    name="pin"
+    label="Enter the one-time code"
+    type="text"
+    bind:error
+    bind:validationMessage
+    onInput={handleOnInput}
+    required
+  />
 
   <button
     class="btn btn-primary btn-odd-purple-500 w-full max-w-[311px] h-10 !text-label-l {loading
