@@ -32,8 +32,7 @@ on:click_outside={handleClickOutside} -->
 >
   <img
     class="toggle-trigger w-full h-auto"
-    src={`${window.location.origin}/star@2x.png`}
-    srcset={`${window.location.origin}/star.png 1x, ${window.location.origin}/star@2x.png 2x`}
+    src={`${window.location.origin}/star-nav.png`}
     alt="data widget"
   />
 </button>
