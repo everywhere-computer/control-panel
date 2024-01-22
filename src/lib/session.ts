@@ -1,8 +1,6 @@
-import { UCAN } from '@fission-codes/ucan'
-import type { Capabilities } from '@fission-codes/ucan/dist/src/types'
-import { RSASigner } from 'iso-signatures/signers/rsa'
-import { DIDKey } from 'iso-did/key'
-import localforage from 'localforage'
+import * as Bearer from '@fission-codes/ucan/bearer'
+
+import { createUcanWithCaps } from '$lib/fission-server-utils'
 
 export type Session = {
   memberNumber?: number
@@ -23,22 +21,8 @@ export const IDB_PRIVATE_KEY_LABEL = 'control-panel/v1/agent/signing-keypair'
  */
 export const getCapabilities = async (): Promise<{ revoked: string[]; ucans: {[did: string]: string} }> => {
   try {
-    const serverDid = await (
-      await fetch(`${import.meta.env.VITE_FISSION_SERVER_API_URI}/server-did`)
-    ).text()
-    const audience = DIDKey.fromString(serverDid)
-
-    const principal = await RSASigner.import(
-      await localforage.getItem(IDB_PRIVATE_KEY_LABEL)
-    )
-    const pucan = await UCAN.create({
-      issuer: principal,
-      audience: audience.did,
-      ttl: 60, // A rough estimate that accounts for clock drift
-      capabilities: ({
-        [principal.did.toString()]: { 'capability/fetch': [{}] }
-      } as unknown) as Capabilities
-    })
+    const { store, ucan } = await createUcanWithCaps('capability/fetch')
+    const headers = Bearer.encode(ucan, store)
 
     const res = await fetch(
       `${import.meta.env.VITE_FISSION_SERVER_API_URI}/capabilities`,
@@ -47,7 +31,7 @@ export const getCapabilities = async (): Promise<{ revoked: string[]; ucans: {[d
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${pucan.toString()}`
+          ...headers
         }
       }
     )

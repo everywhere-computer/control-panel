@@ -2,12 +2,12 @@
   import { UCAN } from '@fission-codes/ucan'
   import type { Capabilities } from '@fission-codes/ucan/dist/src/types'
   import { RSASigner } from 'iso-signatures/signers/rsa'
-  import { DIDKey } from 'iso-did/key'
   import localforage from 'localforage'
   import posthog from 'posthog-js'
   import { createEventDispatcher } from 'svelte'
 
   import { addNotification } from '$lib/notifications'
+  import { getAudience } from '$lib/fission-server-utils'
   import {
     IDB_ACCOUNT_DID_LABEL,
     IDB_ACCOUNT_UCANS_LABEL,
@@ -29,39 +29,22 @@
   $: validationMessage = null
 
   // Submit username to Fission server to register the account
-  const handleSubmitUsername = async () => {
+  const handleSubmitUsername = async (event: Event) => {
     loading = true
 
     try {
       const formEl = event.target as HTMLFormElement
       const data = new FormData(formEl)
       const username = data.get('username')
-
-      const serverDid = await (
-        await (
-          await fetch(
-            `${
-              import.meta.env.VITE_FISSION_SERVER_HOST_ORIGIN
-            }/dns-query?name=_did.localhost&type=TXT`,
-            {
-              method: 'GET',
-              headers: {
-                Accept: 'application/dns-json'
-              }
-            }
-          )
-        ).json()
-      ).Answer[0].data
-
-      const audience = DIDKey.fromString(serverDid)
-
+      const audience = await getAudience()
       const principal = await RSASigner.generate()
+
       // Persist/overwrite private key in IndexedDB
       await localforage.setItem(IDB_PRIVATE_KEY_LABEL, principal.export())
 
       const ucan = await UCAN.create({
         issuer: principal,
-        audience: audience.did,
+        audience,
         ttl: 60, // A rough estimate that accounts for clock drift
         capabilities: ({
           [principal.did.toString()]: { 'account/create': [{}] }
