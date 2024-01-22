@@ -38,7 +38,7 @@
 
       const entriesToQuery = {
         'entry.1008061897': formEntries.name,
-        'entry.797898644': 'andy@fission.codes',
+        'entry.797898644': $sessionStore.email,
         'entry.1857510537': formEntries.orgOrProject,
         'entry.1080002444': formEntries.discord,
         'entry.1995046092': formEntries.doYouRunAnyNodes,

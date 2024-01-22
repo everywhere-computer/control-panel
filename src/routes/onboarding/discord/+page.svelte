@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { goto } from '$app/navigation'
   import { onDestroy, onMount } from 'svelte'
 
   import { sessionStore } from '$lib/stores'
@@ -8,6 +9,14 @@
   const INTERVAL = 7500
   let discordMemberPoll: NodeJS.Timer
   let discordMembersOnline: number
+
+  const handleJoinDiscord = () => {
+    window.open(
+      'https://discord.com/channels/478735028319158273/1182384404887244860',
+      '_blank'
+    )
+    goto('/onboarding/nav')
+  }
 
   // Start polling for online discord members
   onMount(async () => {
@@ -93,13 +102,12 @@
     </div>
 
     <div class="flex flex-col md:flex-row md:items-center gap-6">
-      <a
-        href="https://discord.com/channels/478735028319158273/1182384404887244860"
-        target="_blank"
+      <button
+        on:click={handleJoinDiscord}
         class="btn btn-primary btn-odd-purple-500 self-center w-full md:max-w-[311px] h-10 !text-label-l"
       >
         Join the Discord
-      </a>
+      </button>
 
       <a
         href="/onboarding/nav"

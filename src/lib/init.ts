@@ -16,7 +16,7 @@ export const initialize = async (): Promise<void> => {
     // If there is no save accountDid or ucan, there's no active session
     if (!accountDid || !accountUcans) {
       sessionStore.set({
-        memberNumber: null,
+        email: null,
         username: null,
         loading: false
       })
@@ -81,14 +81,16 @@ export const initialize = async (): Promise<void> => {
       }
     )
 
-    const { username } = await response.json()
+    const { email, username } = await response.json()
 
     sessionStore.set({
+      email,
       username: username.split('.')[0],
       loading: false
     })
   } catch (error) {
     sessionStore.set({
+      email: null,
       username: null,
       loading: false
     })

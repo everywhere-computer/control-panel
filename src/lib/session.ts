@@ -6,6 +6,7 @@ import localforage from 'localforage'
 
 export type Session = {
   memberNumber?: number
+  email: string
   username: string
   loading: boolean
 }
@@ -32,7 +33,7 @@ export const getCapabilities = async (): Promise<{ revoked: string[]; ucans: {[d
     )
     const pucan = await UCAN.create({
       issuer: principal,
-      audience,
+      audience: audience.did,
       ttl: 60, // A rough estimate that accounts for clock drift
       capabilities: ({
         [principal.did.toString()]: { 'capability/fetch': [{}] }

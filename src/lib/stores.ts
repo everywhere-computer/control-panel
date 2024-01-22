@@ -17,8 +17,9 @@ export const themeStore: Writable<Theme> = writable(loadTheme())
 
 export const sessionStore: Writable<Session> = writable({
   memberNumber: null,
+  email: null,
   username: null,
-  loading: true,
+  loading: true
 })
 
 export const notificationStore: Writable<Notification[]> = writable([])

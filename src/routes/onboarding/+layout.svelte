@@ -87,4 +87,6 @@
   })
 </script>
 
-<slot />
+{#if $sessionStore.memberNumber}
+  <slot />
+{/if}
