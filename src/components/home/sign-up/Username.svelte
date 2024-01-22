@@ -10,9 +10,8 @@
   import { addNotification } from '$lib/notifications'
   import {
     IDB_ACCOUNT_DID_LABEL,
-    IDB_ACCOUNT_ID_LABEL,
-    IDB_PRIVATE_KEY_LABEL,
-    IDB_UCAN_LABEL
+    IDB_ACCOUNT_UCANS_LABEL,
+    IDB_PRIVATE_KEY_LABEL
   } from '$lib/session'
   import { sessionStore } from '$lib/stores'
   import Input from '$components/form/Input.svelte'
@@ -38,22 +37,31 @@
       const data = new FormData(formEl)
       const username = data.get('username')
 
-      // TODO(matheus23): Replace this with a proper DoH DNS
-      // lookup of _did.localhost once iso-web DoH stuff is exposed.
       const serverDid = await (
-        await fetch(`${import.meta.env.VITE_FISSION_SERVER_URI}/server-did`)
-      ).text()
+        await (
+          await fetch(
+            `${
+              import.meta.env.VITE_FISSION_SERVER_HOST_ORIGIN
+            }/dns-query?name=_did.localhost&type=TXT`,
+            {
+              method: 'GET',
+              headers: {
+                Accept: 'application/dns-json'
+              }
+            }
+          )
+        ).json()
+      ).Answer[0].data
 
       const audience = DIDKey.fromString(serverDid)
 
-      // TODO: This is using an old version of iso-signatures, @fission-codes/stack needs to be updated
       const principal = await RSASigner.generate()
       // Persist/overwrite private key in IndexedDB
       await localforage.setItem(IDB_PRIVATE_KEY_LABEL, principal.export())
 
       const ucan = await UCAN.create({
         issuer: principal,
-        audience,
+        audience: audience.did,
         ttl: 60, // A rough estimate that accounts for clock drift
         capabilities: ({
           [principal.did.toString()]: { 'account/create': [{}] }
@@ -61,13 +69,13 @@
       })
 
       const response = await fetch(
-        `${import.meta.env.VITE_FISSION_SERVER_URI}/account`,
+        `${import.meta.env.VITE_FISSION_SERVER_API_URI}/account`,
         {
           method: 'POST',
           headers: {
             Accept: 'application/json',
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${ucan.toString()}`
+            Authorization: `Bearer ${ucan.toString()}`,
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             code: pin,
@@ -86,11 +94,9 @@
       const { account, ucans } = await response.json()
 
       await localforage.setItem(IDB_ACCOUNT_DID_LABEL, account.did)
-      await localforage.setItem(IDB_ACCOUNT_ID_LABEL, account.id)
-      await localforage.setItem(IDB_UCAN_LABEL, ucans[0])
+      await localforage.setItem(IDB_ACCOUNT_UCANS_LABEL, ucans)
 
       $sessionStore.username = username.toString()
-      $sessionStore.id = account.id
 
       posthog.capture('Account created')
 

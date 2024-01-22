@@ -55,7 +55,7 @@
       </div>
 
       <p class="w-[120px] font-mono text-code-m text-right uppercase">
-        Onboarding member #{$sessionStore.id}
+        Onboarding member #{$sessionStore.memberNumber}
       </p>
     </div>
 

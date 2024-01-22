@@ -5,18 +5,16 @@ import { DIDKey } from 'iso-did/key'
 import localforage from 'localforage'
 
 export type Session = {
-  id?: number
+  memberNumber?: number
   username: string
   loading: boolean
 }
 
 export const IDB_ACCOUNT_DID_LABEL = 'control-panel/v1/account/did'
 
-export const IDB_ACCOUNT_ID_LABEL = 'control-panel/v1/account/id'
+export const IDB_ACCOUNT_UCANS_LABEL = 'control-panel/v1/account/ucans'
 
 export const IDB_PRIVATE_KEY_LABEL = 'control-panel/v1/agent/signing-keypair'
-
-export const IDB_UCAN_LABEL = 'control-panel/v1/ucan'
 
 /**
  * Fetch capabilities from fission-server
@@ -25,7 +23,7 @@ export const IDB_UCAN_LABEL = 'control-panel/v1/ucan'
 export const getCapabilities = async (): Promise<{ revoked: string[]; ucans: {[did: string]: string} }> => {
   try {
     const serverDid = await (
-      await fetch(`${import.meta.env.VITE_FISSION_SERVER_URI}/server-did`)
+      await fetch(`${import.meta.env.VITE_FISSION_SERVER_API_URI}/server-did`)
     ).text()
     const audience = DIDKey.fromString(serverDid)
 
@@ -42,7 +40,7 @@ export const getCapabilities = async (): Promise<{ revoked: string[]; ucans: {[d
     })
 
     const res = await fetch(
-      `${import.meta.env.VITE_FISSION_SERVER_URI}/capabilities`,
+      `${import.meta.env.VITE_FISSION_SERVER_API_URI}/capabilities`,
       {
         method: 'GET',
         headers: {

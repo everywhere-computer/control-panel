@@ -27,7 +27,7 @@
       posthog.capture('Email validation sent')
 
       await fetch(
-        `${import.meta.env.VITE_FISSION_SERVER_URI}/auth/email/verify`,
+        `${import.meta.env.VITE_FISSION_SERVER_API_URI}/auth/email/verify`,
         {
           method: 'POST',
           headers: {

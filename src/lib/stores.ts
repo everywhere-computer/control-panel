@@ -16,7 +16,7 @@ import workflows from '$routes/workflows/lib/workflow-mocks'
 export const themeStore: Writable<Theme> = writable(loadTheme())
 
 export const sessionStore: Writable<Session> = writable({
-  id: null,
+  memberNumber: null,
   username: null,
   loading: true,
 })
