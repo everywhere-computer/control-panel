@@ -1,7 +1,8 @@
 <script lang="ts">
   import posthog from 'posthog-js'
-  import { createEventDispatcher, onMount } from 'svelte'
+  import { createEventDispatcher } from 'svelte'
 
+  import { isAccountLinking } from '$lib/fission-server-utils'
   import { addNotification, removeNotification } from '$lib/notifications'
   import Input from '$components/form/Input.svelte'
 
@@ -9,6 +10,7 @@
 
   export let error = null
   export let savedEmail = null
+  export let username = null
 
   let loading = false
   let validationMessage = null
@@ -19,13 +21,11 @@
   const handleSubmitEmail = async (event: Event) => {
     loading = true
 
+    const formEl = event.target as HTMLFormElement
+    const data = new FormData(formEl)
+    const email = data.get('email')
+
     try {
-      const formEl = event.target as HTMLFormElement
-      const data = new FormData(formEl)
-      const email = data.get('email')
-
-      posthog.capture('Email validation sent')
-
       await fetch(
         `${import.meta.env.VITE_FISSION_SERVER_API_URI}/auth/email/verify`,
         {
@@ -38,7 +38,13 @@
         }
       )
 
-      dispatch('nextStep', { email: email, nextStep: 3 })
+      posthog.capture('Email validation sent')
+
+      dispatch('nextStep', {
+        email,
+        username,
+        nextStep: isAccountLinking() ? 4 : 3
+      })
 
       if (notificationId) {
         removeNotification(notificationId)

@@ -1,18 +1,15 @@
 <script lang="ts">
-  import { UCAN } from '@fission-codes/ucan'
-  import type { Capabilities } from '@fission-codes/ucan/dist/src/types'
-  import { RSASigner } from 'iso-signatures/signers/rsa'
   import localforage from 'localforage'
   import posthog from 'posthog-js'
   import { createEventDispatcher } from 'svelte'
 
   import { addNotification } from '$lib/notifications'
-  import { getAudience } from '$lib/fission-server-utils'
   import {
-    IDB_ACCOUNT_DID_LABEL,
-    IDB_ACCOUNT_UCANS_LABEL,
-    IDB_PRIVATE_KEY_LABEL
-  } from '$lib/session'
+    createAccount,
+    getAccountDid,
+    isAccountLinking
+  } from '$lib/fission-server-utils'
+  import { IDB_ACCOUNT_DID_LABEL } from '$lib/session'
   import { sessionStore } from '$lib/stores'
   import Input from '$components/form/Input.svelte'
   import StarSmall from '$components/icons/StarSmall.svelte'
@@ -31,82 +28,59 @@
   // Submit username to Fission server to register the account
   const handleSubmitUsername = async (event: Event) => {
     loading = true
+    const formEl = event.target as HTMLFormElement
+    const data = new FormData(formEl)
+    const username = data.get('username')
 
-    try {
-      const formEl = event.target as HTMLFormElement
-      const data = new FormData(formEl)
-      const username = data.get('username')
-      const audience = await getAudience()
-      const principal = await RSASigner.generate()
+    // If the user is accessing an existing account, we can fetch the DID for their username first
+    if (isAccountLinking()) {
+      try {
+        const accountDid = await getAccountDid(username.toString())
 
-      // Persist/overwrite private key in IndexedDB
-      await localforage.setItem(IDB_PRIVATE_KEY_LABEL, principal.export())
+        await localforage.setItem(IDB_ACCOUNT_DID_LABEL, accountDid)
 
-      const ucan = await UCAN.create({
-        issuer: principal,
-        audience,
-        ttl: 60, // A rough estimate that accounts for clock drift
-        capabilities: ({
-          [principal.did.toString()]: { 'account/create': [{}] }
-        } as unknown) as Capabilities
-      })
-
-      const response = await fetch(
-        `${import.meta.env.VITE_FISSION_SERVER_API_URI}/account`,
-        {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${ucan.toString()}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            code: pin,
-            email,
-            username
-          })
-        }
-      )
-
-      // HTTP status code 201 CREATED
-      if (response.status != 201) {
-        throw new Error(await response.text())
-      }
-
-      // Now we have some info on the account & UCANs
-      const { account, ucans } = await response.json()
-
-      await localforage.setItem(IDB_ACCOUNT_DID_LABEL, account.did)
-      await localforage.setItem(IDB_ACCOUNT_UCANS_LABEL, ucans)
-
-      $sessionStore.username = username.toString()
-
-      posthog.capture('Account created')
-
-      goto('/onboarding/welcome')
-
-      loading = false
-    } catch (err) {
-      console.error(err)
-      const errors = JSON.parse(err?.message).errors
-
-      loading = false
-      if (errors?.find(e => e?.detail.includes('unique_email'))) {
         dispatch('nextStep', {
-          nextStep: 2,
-          savedEmail: email,
-          error: true
+          nextStep: 3,
+          username
         })
-        return
-      }
-      if (errors?.find(e => e?.detail.includes('unique_username'))) {
+      } catch (err) {
+        console.error(err)
         error = true
-        validationMessage = 'Username must be unique'
-        return
+        validationMessage = 'Cannot find account for username'
       }
+    } else {
+      try {
+        await createAccount({ email, pin, username: username.toString() })
 
-      addNotification({ msg: 'Failed to register account', type: 'error' })
+        $sessionStore.username = username.toString()
+
+        posthog.capture('Account created')
+
+        goto('/onboarding/welcome')
+      } catch (err) {
+        console.error(err)
+        const errors = JSON.parse(err?.message).errors
+
+        if (errors?.find(e => e?.detail.includes('unique_email'))) {
+          dispatch('nextStep', {
+            nextStep: 2,
+            savedEmail: email,
+            error: true
+          })
+          return
+        }
+        if (errors?.find(e => e?.detail.includes('unique_username'))) {
+          loading = false
+          error = true
+          validationMessage = 'Username must be unique'
+          return
+        }
+
+        addNotification({ msg: 'Failed to register account', type: 'error' })
+      }
     }
+
+    loading = false
   }
 
   // Remove error state onInput

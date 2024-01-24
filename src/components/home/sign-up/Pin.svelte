@@ -1,31 +1,57 @@
 <script lang="ts">
+  import { goto } from '$app/navigation'
+  import posthog from 'posthog-js'
   import { createEventDispatcher } from 'svelte'
 
+  import { isAccountLinking, linkAccount } from '$lib/fission-server-utils'
   import { addNotification } from '$lib/notifications'
+
+  import { sessionStore } from '$lib/stores'
   import Input from '$components/form/Input.svelte'
 
   const dispatch = createEventDispatcher()
+
+  export let email = null
+  export let username = null
 
   let loading = false
   let error = false
   let validationMessage = null
 
-  export let email = null
-
   // Submit pin code to Fission server to register the account
   const handleSubmitPin = async (event: Event) => {
     loading = true
 
-    try {
-      const formEl = event.target as HTMLFormElement
-      const data = new FormData(formEl)
-      const pin = data.get('pin')
+    const formEl = event.target as HTMLFormElement
+    const data = new FormData(formEl)
+    const pin = data.get('pin')
 
-      dispatch('nextStep', { email, pin, nextStep: 4 })
-    } catch (err) {
-      console.error(err)
-      error = true
-      validationMessage = 'Incorrect pin'
+    // Link an existing account
+    if (isAccountLinking()) {
+      try {
+        const ucans = await linkAccount(pin.toString())
+        if (!ucans) {
+          throw new Error('Incorrect credentials')
+        }
+
+        $sessionStore.username = username.toString()
+
+        posthog.capture('Account logged in')
+
+        goto('/')
+      } catch (err) {
+        console.error(err)
+        error = true
+        validationMessage = 'Incorrect pin'
+      }
+    } else {
+      try {
+        dispatch('nextStep', { email, pin, nextStep: 4 })
+      } catch (err) {
+        console.error(err)
+        error = true
+        validationMessage = 'Incorrect pin'
+      }
     }
 
     loading = false
