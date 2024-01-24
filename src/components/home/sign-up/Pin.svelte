@@ -3,7 +3,7 @@
   import posthog from 'posthog-js'
   import { createEventDispatcher } from 'svelte'
 
-  import { isAccountLinking, linkAccount } from '$lib/fission-server-utils'
+  import { isAccountLinkingFlow, linkAccount } from '$lib/fission-server-utils'
   import { addNotification } from '$lib/notifications'
 
   import { sessionStore } from '$lib/stores'
@@ -27,7 +27,7 @@
     const pin = data.get('pin')
 
     // Link an existing account
-    if (isAccountLinking()) {
+    if (isAccountLinkingFlow()) {
       try {
         const ucans = await linkAccount(pin.toString())
         if (!ucans) {

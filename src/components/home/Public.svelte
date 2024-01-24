@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { isAccountLinking } from '$lib/fission-server-utils'
+  import { isAccountLinkingFlow } from '$lib/fission-server-utils'
   import { themeStore } from '$lib/stores'
   import Email from '$components/home/sign-up/Email.svelte'
   import Join from '$components/home/sign-up/Join.svelte'
   import Pin from '$components/home/sign-up/Pin.svelte'
   import Username from '$components/home/sign-up/Username.svelte'
 
-  const steps = isAccountLinking()
+  const steps = isAccountLinkingFlow()
     ? {
         1: Join,
         2: Username,

@@ -2,7 +2,7 @@
   import posthog from 'posthog-js'
   import { createEventDispatcher } from 'svelte'
 
-  import { isAccountLinking } from '$lib/fission-server-utils'
+  import { isAccountLinkingFlow } from '$lib/fission-server-utils'
   import { addNotification, removeNotification } from '$lib/notifications'
   import Input from '$components/form/Input.svelte'
 
@@ -43,7 +43,7 @@
       dispatch('nextStep', {
         email,
         username,
-        nextStep: isAccountLinking() ? 4 : 3
+        nextStep: isAccountLinkingFlow() ? 4 : 3
       })
 
       if (notificationId) {

@@ -246,4 +246,4 @@ export const linkAccount = async (pin: string): Promise<string[]> => {
 /**
  * Check if we're using the account linking flow
  */
-export const isAccountLinking = (): boolean => import.meta.env.VITE_USERNAME_AUTH_FLOW === 'true'
+export const isAccountLinkingFlow = (): boolean => import.meta.env.VITE_ACCOUNT_LINKING_FLOW === 'true'

@@ -7,7 +7,7 @@
   import {
     createAccount,
     getAccountDid,
-    isAccountLinking
+    isAccountLinkingFlow
   } from '$lib/fission-server-utils'
   import { IDB_ACCOUNT_DID_LABEL } from '$lib/session'
   import { sessionStore } from '$lib/stores'
@@ -33,7 +33,7 @@
     const username = data.get('username')
 
     // If the user is accessing an existing account, we can fetch the DID for their username first
-    if (isAccountLinking()) {
+    if (isAccountLinkingFlow()) {
       try {
         const accountDid = await getAccountDid(username.toString())
 
