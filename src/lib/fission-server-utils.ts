@@ -110,7 +110,7 @@ export const getPrincipal = async (): Promise<RSASigner> => {
   if(keyPair) {
     principal = await RSASigner.import(keyPair)
   } else {
-    const principal = await RSASigner.generate()
+    principal = await RSASigner.generate()
 
     // Persist/overwrite private key in IndexedDB
     await localforage.setItem(IDB_PRIVATE_KEY_LABEL, principal.export())
