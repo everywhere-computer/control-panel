@@ -55,8 +55,8 @@
     // Check for a Homestar WebSocket connection
     checkHomestarConnection()
 
-    // Check if the IPFS daemon is running
-    await checkIPFSConnection()
+    // // Check if the IPFS daemon is running
+    // await checkIPFSConnection()
 
     // Subscribe to Homestar network events
     subscribNetworkEvents()
