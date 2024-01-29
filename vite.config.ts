@@ -6,6 +6,7 @@ const config = {
   build: {
     sourcemap: true
   },
+  envPrefix: ['VITE_'],
   plugins: [sveltekit()],
   resolve: {
     alias: {
