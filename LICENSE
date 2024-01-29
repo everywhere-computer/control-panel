@@ -1,6 +1,12 @@
+This is the control panel app for Fission's Everywhere Computer. All design, logos, images, and other brand elements for Fission and Everywhere Computer are Copyright 2023 Fission Internet Software, All Rights Reserved.
+
+Plain English: you're welcome to look at this app's code for inspiration as well as re-use as appropriate, but it's our branding, so don't just clone it.
+
+The code for this app, and all external contributions made to it, are to be covered under the MIT License as follows.
+
 MIT License
 
-Copyright (c) 2022 Fission
+Copyright (c) 2023 Fission
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

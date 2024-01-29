@@ -2,6 +2,7 @@
 // import { WebsocketTransport } from '@fission-codes/homestar/transports/ws.js'
 // import { WebSocket } from 'unws'
 
+import { addNotification } from '$lib/notifications'
 import { networkStore } from '$lib/stores'
 import { getHomestarClient } from '$lib/rpc'
 
@@ -36,104 +37,110 @@ const RECEIPT_SENT = 'network:publishedReceiptPubsub'
 export const subscribNetworkEvents = async (): Promise<void> => {
   const homestar = getHomestarClient()
 
-  await homestar.networkEvents(res => {
-    // console.log('node1 res', res)
-    if (res.error) {
-      console.error(res.error)
-    }
+  try {
+    await homestar.networkEvents(res => {
+      // console.log('node1 res', res)
 
-    switch (res?.result?.type) {
-      // Handle connection established
-      case CONN_ESTABLISHED:
-        networkStore.update(state => {
-          const eventAlreadyTracked = state.activeConnections.find(
-            con => con?.peerId === res?.result?.data?.peerId
-          )
-          const event = {
-            address: res?.result?.data?.address,
-            peerId: res?.result?.data?.peerId,
-            type: res?.result?.type,
-            timestamp: res?.result?.timestamp
-          }
+      if (res.error) {
+        throw new Error(res.error)
+      }
 
-          return {
-            ...state,
-            activeConnections: eventAlreadyTracked
-              ? state.activeConnections
-              : [
-                  event,
-                  ...state.activeConnections
-                ],
-            allEvents: [
-              event,
-              ...state.allEvents
-            ]
-          }
-        })
-        break
-
-      // Handle connection closed
-      case CONN_CLOSED:
-        networkStore.update(state => ({
-            ...state,
-            activeConnections: state.activeConnections.find(
+      switch (res?.result?.type) {
+        // Handle connection established
+        case CONN_ESTABLISHED:
+          networkStore.update(state => {
+            const eventAlreadyTracked = state.activeConnections.find(
               con => con?.peerId === res?.result?.data?.peerId
             )
-              ? state.activeConnections.filter(
-                  con => con?.peerId !== res?.result?.data?.peerId
-                )
-              : state.activeConnections,
+            const event = {
+              address: res?.result?.data?.address,
+              peerId: res?.result?.data?.peerId,
+              type: res?.result?.type,
+              timestamp: res?.result?.timestamp
+            }
+
+            return {
+              ...state,
+              activeConnections: eventAlreadyTracked
+                ? state.activeConnections
+                : [
+                    event,
+                    ...state.activeConnections
+                  ],
+              allEvents: [
+                event,
+                ...state.allEvents
+              ]
+            }
+          })
+          break
+
+        // Handle connection closed
+        case CONN_CLOSED:
+          networkStore.update(state => ({
+              ...state,
+              activeConnections: state.activeConnections.find(
+                con => con?.peerId === res?.result?.data?.peerId
+              )
+                ? state.activeConnections.filter(
+                    con => con?.peerId !== res?.result?.data?.peerId
+                  )
+                : state.activeConnections,
+              allEvents: [
+                {
+                  address: res?.result?.data?.address,
+                  peerId: res?.result?.data?.peerId,
+                  type: res?.result?.type,
+                  timestamp: res?.result?.timestamp
+                },
+                ...state.allEvents
+              ]
+          }))
+          break
+
+        // Handle receipt sent
+        case RECEIPT_SENT:
+          networkStore.update(state => ({
+            ...state,
+            receiptsSent: state.receiptsSent + 1,
             allEvents: [
               {
-                address: res?.result?.data?.address,
-                peerId: res?.result?.data?.peerId,
+                cid: res?.result?.data?.cid,
+                ran: res?.result?.data?.ran,
                 type: res?.result?.type,
                 timestamp: res?.result?.timestamp
               },
               ...state.allEvents
             ]
-        }))
-        break
+          }))
+          break
 
-      // Handle receipt sent
-      case RECEIPT_SENT:
-        networkStore.update(state => ({
-          ...state,
-          receiptsSent: state.receiptsSent + 1,
-          allEvents: [
-            {
-              cid: res?.result?.data?.cid,
-              ran: res?.result?.data?.ran,
-              type: res?.result?.type,
-              timestamp: res?.result?.timestamp
-            },
-            ...state.allEvents
-          ]
-        }))
-        break
+        // Handle receipt received
+        case RECEIPT_RECEIVED:
+          networkStore.update(state => ({
+            ...state,
+            receiptsReceived: state.receiptsReceived + 1,
+            allEvents: [
+              {
+                cid: res?.result?.data?.cid,
+                peerId: res?.result?.data?.peerId,
+                ran: res?.result?.data?.ran,
+                type: res?.result?.type,
+                timestamp: res?.result?.timestamp
+              },
+              ...state.allEvents
+            ]
+          }))
+          break
 
-      // Handle receipt received
-      case RECEIPT_RECEIVED:
-        networkStore.update(state => ({
-          ...state,
-          receiptsReceived: state.receiptsReceived + 1,
-          allEvents: [
-            {
-              cid: res?.result?.data?.cid,
-              peerId: res?.result?.data?.peerId,
-              ran: res?.result?.data?.ran,
-              type: res?.result?.type,
-              timestamp: res?.result?.timestamp
-            },
-            ...state.allEvents
-          ]
-        }))
-        break
-
-      default:
-        break
-    }
-  })
+        default:
+          break
+      }
+    })
+  } catch (error) {
+    console.error(error)
+    addNotification({ msg: 'Failed to subscribe to network events', type: 'error' })
+  }
 
   // await homestar2.networkEvents(result => {
   //   console.log('node2 result', result)

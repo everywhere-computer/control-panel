@@ -79,3 +79,12 @@
     stroke-dashoffset: 100;
   }
 }
+
+/* JSON View */
+.jsonview {
+  @apply font-mono;
+  --jsonBorderLeft: 1px solid #ddd;
+  --jsonValStringColor: #6649f8;
+  --jsonValNumberColor: #0f9162;
+  --jsonValColor: #a6163a;
+}

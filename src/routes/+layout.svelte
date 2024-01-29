@@ -4,6 +4,11 @@
   import { onDestroy, onMount } from 'svelte'
 
   import '../global.css'
+  import { instantiatePostHog } from '$lib/analytics'
+  import {
+    checkHomestarConnection,
+    checkIPFSConnection
+  } from '$lib/connections'
   import subscribNetworkEvents from '$lib/network'
   import { addNotification } from '$lib/notifications'
   import { sessionStore, themeStore } from '$lib/stores'
@@ -28,7 +33,7 @@
   const unsubscribeSessionStore = sessionStore.subscribe(session => {
     if (session.error) {
       const message = errorToMessage(session.error)
-      addNotification(message, 'error')
+      addNotification({ msg: message, type: 'error' })
     }
   })
 
@@ -46,8 +51,18 @@
 
   init()
 
-  onMount(() => {
+  onMount(async () => {
+    // Check for a Homestar WebSocket connection
+    checkHomestarConnection()
+
+    // // Check if the IPFS daemon is running
+    // await checkIPFSConnection()
+
+    // Subscribe to Homestar network events
     subscribNetworkEvents()
+
+    // Instantiate PostHog Analytics
+    instantiatePostHog()
   })
 
   onDestroy(() => {

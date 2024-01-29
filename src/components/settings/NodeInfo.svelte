@@ -13,7 +13,7 @@
 
   const handleCopyToClipboard = async (value: string): Promise<void> => {
     await clipboardCopy(value)
-    addNotification('Copied to clipboard', 'success')
+    addNotification({ msg: 'Copied to clipboard', type: 'success' })
   }
 
   onMount(async () => {

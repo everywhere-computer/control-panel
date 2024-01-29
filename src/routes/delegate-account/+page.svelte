@@ -86,13 +86,16 @@
         if (fs) {
           await setBackupStatus(fs, { created: true })
 
-          addNotification("You've connected a backup device!", 'success')
+          addNotification({
+            msg: "You've connected a backup device!",
+            type: 'success'
+          })
           goto('/')
         } else {
-          addNotification(
-            'Missing filesystem. Unable to create a backup device.',
-            'error'
-          )
+          addNotification({
+            msg: 'Missing filesystem. Unable to create a backup device.',
+            type: 'error'
+          })
         }
       }
     })
@@ -109,7 +112,10 @@
   const cancelConnection = () => {
     rejectPin()
 
-    addNotification('The connection attempt was cancelled', 'info')
+    addNotification({
+      msg: 'The connection attempt was cancelled',
+      type: 'info'
+    })
     goto('/')
   }
 
