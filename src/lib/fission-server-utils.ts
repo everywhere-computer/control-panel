@@ -1,7 +1,10 @@
 import { UCAN } from '@fission-codes/ucan'
 import type { Capabilities } from '@fission-codes/ucan/dist/src/types'
+import { base64url } from 'iso-base/rfc4648'
 import { DIDKey } from 'iso-did/key'
 import type { DID } from 'iso-did/types'
+import { credentialsCreate, credentialsGet, supports } from 'iso-passkeys'
+import type { AuthenticationExtensionsPRFInputs, RegistrationPublicKeyCredential } from 'iso-passkeys/types'
 import { RSASigner } from 'iso-signatures/signers/rsa'
 import localforage from 'localforage'
 
@@ -158,11 +161,81 @@ export const createUcanWithCaps = async (
 }
 
 /**
+ * Create a passkey to be associated with the user's Fission account
+ */
+const createCredential = async (username: string): Promise<RegistrationPublicKeyCredential> => {
+  const credential = await credentialsCreate({
+    publicKey: {
+      challenge: 'test',
+      rp: {
+        id: 'localhost',
+        name: 'EC1'
+      },
+      user: {
+        id: username,
+        name: username,
+        displayName: username
+      },
+      attestation: 'none',
+      authenticatorSelection: {
+        userVerification: 'required',
+        requireResidentKey: true,
+        residentKey: 'required'
+      }
+      // extensions: {
+      //   credProps: true,
+      //   largeBlob: {
+      //     support: 'preferred'
+      //   },
+      //   prf: {
+      //     eval: {
+      //       first: new Uint8Array(Array.from({ length: 32 }).fill(1)).buffer,
+      //       second: new Uint8Array(Array.from({ length: 32 }).fill(1)).buffer
+      //     }
+      //   }
+      // }
+    }
+  })
+
+  return credential
+}
+
+/** Get a passkey based on a challenge */
+const getCredential = async (
+  // challenge: string
+): Promise<RegistrationPublicKeyCredential> => {
+// ): Promise<AuthenticationExtensionsPRFInputs> => {
+  const assertion = await credentialsGet({
+    mediation: 'optional',
+    publicKey: {
+      challenge: 'test',
+      allowCredentials: [],
+      userVerification: 'required',
+      rpId: 'localhost'
+      // extensions: {
+      //   largeBlob: {
+      //     // read: true,
+      //     write: utf8.decode('hello world').buffer
+      //   },
+      //   prf: {
+      //     eval: {
+      //       first: utf8.decode('first-salt').buffer,
+      //       second: utf8.decode('second-salt').buffer
+      //     }
+      //   }
+      // }
+    }
+  })
+
+  return assertion
+}
+
+/**
  * Create a new account by posting the email, pin and username
  */
 export const createAccount = async ({ email, pin, username }: { email: string; pin: string; username: string }): Promise<void> => {
   const audience = await getAudience()
-  const principal = await RSASigner.generate()
+  const principal = await getPrincipal()
 
   // Persist/overwrite private key in IndexedDB
   await localforage.setItem(IDB_PRIVATE_KEY_LABEL, principal.export())
@@ -176,6 +249,10 @@ export const createAccount = async ({ email, pin, username }: { email: string; p
     } as unknown) as Capabilities
   })
 
+  const credential = await createCredential(username)
+
+  console.log('credential', credential)
+
   const response = await fetch(
     `${import.meta.env.VITE_FISSION_SERVER_API_URI}/account`,
     {
@@ -188,7 +265,8 @@ export const createAccount = async ({ email, pin, username }: { email: string; p
       body: JSON.stringify({
         code: pin,
         email,
-        username
+        username,
+        credentialId: credential.id
       })
     }
   )
@@ -214,6 +292,9 @@ export const linkAccount = async (pin: string): Promise<string[]> => {
   )
   const audience = await getAudience()
   const principal = await getPrincipal()
+  const credential = await getCredential()
+
+  console.log('credential', credential)
 
   const ucan = await UCAN.create({
     issuer: principal,
@@ -233,7 +314,7 @@ export const linkAccount = async (pin: string): Promise<string[]> => {
         Authorization: `Bearer ${ucan.toString()}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ code: pin.toString() })
+      body: JSON.stringify({ code: pin.toString(), credentialId: credential.id })
     }
   )
   const { ucans } = await response.json()

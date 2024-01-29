@@ -92,11 +92,11 @@
   <div
     class="absolute bottom-[calc(100%+32px)] left-1/2 -translate-x-1/2 flex flex-row w-full w-[311px] m-auto p-4 bg-odd-green-200 rounded-sm text-body-lg text-center"
   >
-    <p class="text-input-sm text-left">
+    <p class="text-input-sm text-left dark:text-odd-gray-600">
       We’ve sent a one-time access code to your email.
     </p>
     <button
-      class="w-[110px] text-input-sm text-primary-focus text-right jutify-self-end self-end"
+      class="w-[110px] text-input-sm text-primary-focus dark:text-odd-purple-500 text-right jutify-self-end self-end"
       on:click={handleResendEmail}
     >
       Resend it

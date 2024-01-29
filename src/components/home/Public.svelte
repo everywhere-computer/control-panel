@@ -1,14 +1,10 @@
 <script lang="ts">
-  import base64url from 'base64url'
-  import { credentialsCreate, credentialsGet, supports } from 'iso-passkeys'
-
   import { isAccountLinkingFlow } from '$lib/fission-server-utils'
   import { themeStore } from '$lib/stores'
   import Email from '$components/home/sign-up/Email.svelte'
   import Join from '$components/home/sign-up/Join.svelte'
   import Pin from '$components/home/sign-up/Pin.svelte'
   import Username from '$components/home/sign-up/Username.svelte'
-  import { onMount } from 'svelte'
 
   const steps = isAccountLinkingFlow()
     ? {
@@ -51,41 +47,6 @@
       currentStep = nextStep
     }
   }
-
-  onMount(async () => {
-    const credential = await credentialsCreate({
-      publicKey: {
-        challenge: base64url.encode(new Uint8Array([1, 2, 3, 4])),
-        rp: {
-          id: 'example.com',
-          name: 'Example'
-        },
-        user: {
-          id: '123',
-          name: 'hamdy',
-          displayName: 'Joe Doe'
-        },
-        attestation: 'none',
-        authenticatorSelection: {
-          userVerification: 'required',
-          requireResidentKey: true,
-          residentKey: 'required'
-        },
-        extensions: {
-          credProps: true,
-          largeBlob: {
-            support: 'preferred'
-          },
-          prf: {
-            eval: {
-              first: new Uint8Array(Array.from({ length: 32 }).fill(1)).buffer,
-              second: new Uint8Array(Array.from({ length: 32 }).fill(1)).buffer
-            }
-          }
-        }
-      }
-    })
-  })
 </script>
 
 <div
