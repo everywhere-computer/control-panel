@@ -124,7 +124,7 @@ export const getPrincipal = async (): Promise<RSASigner> => {
  * Create a UCAN with specific capabilities to make requests to the Fission server
  */
 export const createUcanWithCaps = async (
-  capabilities: 'account/info' | 'capability/fetch'
+  capabilities: 'account/info' | 'account/manage' | 'capability/fetch'
 ): Promise<{ store: Map<any, any>; ucan: UCAN }> => {
   if (!capabilities) {
     throw new Error('Must specify capabilities')

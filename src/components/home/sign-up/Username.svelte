@@ -107,7 +107,7 @@
   <Input
     name="username"
     label="Choose your username"
-    textToAppend=".e9c7.name"
+    textToAppend=".compute.name"
     type="text"
     onInput={handleOnInput}
     required
