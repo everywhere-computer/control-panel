@@ -32,12 +32,12 @@
     await initialize()
 
     // Redirect to home if not logged in
-    // if (
-    //   window.location.href !== window.location.origin &&
-    //   !$sessionStore.username
-    // ) {
-    //   goto('/')
-    // }
+    if (
+      window.location.href !== window.location.origin &&
+      !$sessionStore.username
+    ) {
+      goto('/')
+    }
   }
 
   init()
