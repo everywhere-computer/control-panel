@@ -4,7 +4,7 @@
   }
 
   const globalShortcutMap: ShortcupMap = {
-    shift: 'View keyboard shortcuts menu',
+    '/': 'View keyboard shortcuts menu',
     n: 'Show workflow builder',
     'esc (in workflow builder)': 'Hide workflow builder',
     'a (in workflow builder)': 'Add function to workflow',

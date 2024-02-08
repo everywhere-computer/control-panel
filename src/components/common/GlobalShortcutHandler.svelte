@@ -28,7 +28,7 @@
         $workflowsStore.showBuilder = true
       }
     },
-    Shift: () => (showShortcuts = true)
+    '/': () => (showShortcuts = true)
   }
 
   // Only register key strokes from the keyMap
@@ -71,7 +71,7 @@
       altKeyCurrentlyPressed = false
     }
 
-    if (!formElements.includes(tagName) && key === 'Shift') {
+    if (!formElements.includes(tagName) && key === '/') {
       showShortcuts = false
     }
   }

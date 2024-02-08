@@ -111,7 +111,7 @@
 
       {#if $sessionStore.session}
         <DataWidget />
-        <!-- <GlobalShortcutHandler /> -->
+        <GlobalShortcutHandler />
       {/if}
     </div>
   {/if}
