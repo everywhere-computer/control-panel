@@ -26,6 +26,7 @@
     $page.route.id === '/activity' ||
     $page.route.id === '/workflows/[id]' ||
     $page.route.id === '/workflows/build'
+  $: isFullHeight = $page.route.id === '/workflows'
   $: isHome = $page.route.id === '/'
   $: isActivity = $page.route.id === '/activity'
   let screenSize: number
@@ -49,9 +50,13 @@
     }
   }
 
-  init()
+  // init()
 
   onMount(async () => {
+    // Default to workflows route
+    goto('/workflows')
+    $sessionStore.loading = false
+
     // Check for a Homestar WebSocket connection
     checkHomestarConnection()
 
@@ -102,6 +107,8 @@
           ? 'pb-6'
           : isFullWidth
           ? 'pt-6'
+          : isFullHeight
+          ? 'p-0'
           : 'p-6'}
       >
         <slot />
@@ -109,10 +116,10 @@
 
       <Footer {screenSize} />
 
-      {#if $sessionStore.session}
-        <DataWidget />
-        <GlobalShortcutHandler />
-      {/if}
+      <!-- {#if $sessionStore.session} -->
+        <!-- <DataWidget /> -->
+        <!-- <GlobalShortcutHandler /> -->
+      <!-- {/if} -->
     </div>
   {/if}
 </div>

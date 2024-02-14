@@ -1,7 +1,8 @@
 <script lang="ts">
   import { themeStore, workflowsStore } from '$lib/stores'
-  import Search from '$components/common/Search.svelte'
-  import WorkflowCard from '$routes/workflows/components/WorkflowCard.svelte'
+  // import Search from '$components/common/Search.svelte'
+  // import WorkflowCard from '$routes/workflows/components/WorkflowCard.svelte'
+  import CustomFunction from '$routes/workflows/components/CustomFunction.svelte'
 
   let searchTerm = ''
   $: workflows = searchTerm
@@ -13,7 +14,9 @@
   const handleShowBuilder = () => ($workflowsStore.showBuilder = true)
 </script>
 
-<div class="w-full max-w-[800px] m-auto">
+<CustomFunction />
+
+<!-- <div class="w-full max-w-[800px] m-auto">
   <div
     class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4 w-full"
   >
@@ -37,10 +40,9 @@
     </div>
   </div>
 
-  <!-- Workflow list -->
   <div class="flex flex-col gap-4">
     {#each workflows as workflow, i}
       <WorkflowCard {workflow} index={i} />
     {/each}
   </div>
-</div>
+</div> -->

@@ -15,8 +15,8 @@
     <button
       on:click={() => handleTabClick(tab)}
       class="tab {activeTab === tab
-        ? 'tab-active top-[0px] bg-odd-gray-0 text-base-content !border-base-300 !border-t !border-t !border-r !border-l'
-        : 'bg-base-300 text-primary !border-base-300 border-b'} relative mr-1.5 capitalize text-label-sm rounded-t-sm transition-colors duration-200 ease-in-out"
+        ? 'tab-active top-[0px] bg-base-100 text-base-content !border-base-200 !border-t !border-r !border-l'
+        : 'bg-base-200 text-base-content opacity-80 !border-base-200 border-b'} relative mr-1.5 capitalize text-label-sm rounded-t-sm transition-colors duration-200 ease-in-out"
     >
       {tab}
       {#if activeTab !== tab}

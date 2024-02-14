@@ -163,3 +163,17 @@ h1, h2, h3, h4, h5, h6 {
 .ridge {
   border-style: ridge;
 }
+
+/* CodeJar */
+.codejar-wrap {
+  @apply h-full rounded-sm;
+}
+
+.codejar-wrap .codejar-linenumbers {
+  @apply !bg-base-300 !text-base-content !p-2.5 !rounded-sm;  
+  mix-blend-mode: normal !important; 
+}
+
+.codejar-wrap .language-javascript {
+  @apply min-h-full !pl-12 !pr-4 !py-2.5;
+}
