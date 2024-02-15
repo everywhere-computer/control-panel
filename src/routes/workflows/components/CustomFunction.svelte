@@ -9,9 +9,11 @@
   
   import { addNotification } from '$lib/notifications'
   import Tabs from '$components/common/Tabs.svelte'
-  import { functionsStore } from '$lib/stores'
+  import LoadingSpinner from '$components/common/LoadingSpinner.svelte'
+  // import { functionsStore } from '$lib/stores'
 
   const tabs = ['JSON', 'Params']
+  let loading = false
   let activeTab = tabs[0]
   let workflow = `{
   "name": "everyCliWorkflow_1",
@@ -31,16 +33,18 @@
           },
           "nnc": "",
           "op": "wasm/run",
-          "rsc": "ipfs://bafybeidd3awetrcbqkmqlqgk4sxhh2q3mkr7a7tbxqpaqpuy3assuaw3hi"
+          "rsc": "${import.meta.env.VITE_WORKFLOW_RESOURCE}"
         }
       }
     ]
   }
 }`
   $: functions = JSON.parse(workflow)?.workflow?.tasks
+  
 
   let output
   const handleSubmitWorkflow = async () => {
+    loading = true
     try {
       try {
         JSON.parse(workflow)
@@ -48,7 +52,7 @@
         throw new Error('Invalid JSON')
       }
 
-      const { receipt: { out: [, res] } } = await(await fetch('http://localhost:4337/start-workflow', {
+      const { receipt: { out: [, res] } } = await(await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/start-workflow`, {
         method: 'POST',
         // mode: 'no-cors',
         headers: {
@@ -63,6 +67,7 @@
       console.error(error)
       addNotification({ msg: error, type: 'error' })
     }
+    loading = false
   }
 
 
@@ -82,7 +87,7 @@
           </div>
 
           <div class="w-full h-full rounded-sm bg-base-200">
-            <CodeJar syntax="javascript" {highlight} value={workflow} withLineNumbers />
+            <CodeJar syntax="javascript" {highlight} bind:value={workflow} withLineNumbers />
           </div>
         </div>
       {/if}      
@@ -115,11 +120,17 @@
     <div class="h-full p-6 border-base-300 border-t sm:border-t-0 sm:border-l bg-base-100">    
       <h2 class="mb-4">Result</h2>
 
-      <div class="h-[calc(100%-32px)] min-h-40 py-2.5 px-4 font-mono bg-base-200 rounded-sm">
-        {#if output}
-          {output}
-        {/if}
-      </div>
+      {#if loading}
+        <div class="flex flex-col items-center justify-center h-[calc(100%-32px)] min-h-40 py-2.5 px-4 font-mono bg-base-200 rounded-sm">
+          <LoadingSpinner />
+        </div>
+      {:else}
+        <div class="h-[calc(100%-32px)] min-h-40 py-2.5 px-4 font-mono bg-base-200 rounded-sm">
+          {#if output}
+            {output}
+          {/if}
+        </div>
+      {/if}
     </div>
   </div>
 </div>
