@@ -58,9 +58,10 @@
   },
   "dependencies": {
     "@fission-codes/homestar": "^1.0.0",
+    "@jsfe/system": "^0.2.2",
     "@novacbn/svelte-codejar": "^0.1.2",
     "@oddjs/odd": "0.37.0",
-    "@zerodevx/svelte-json-view": "^1.0.7",
+    "ajv": "^8.12.0",
     "chart.js": "^4.4.0",
     "clipboard-copy": "^4.0.1",
     "iso-base": "^2.0.1",

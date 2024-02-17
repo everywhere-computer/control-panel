@@ -5,132 +5,169 @@
 </script>
 
 <script lang="ts">
-  import {CodeJar} from '@novacbn/svelte-codejar'
+  // import { CodeJar } from '@novacbn/svelte-codejar'
+  import '@jsfe/system'
+  import Ajv from 'ajv'
+  import { onMount } from 'svelte'
   
+  import { setFormStyles } from '$routes/workflows/components/custom-functions/styles'
   import { addNotification } from '$lib/notifications'
-  import Tabs from '$components/common/Tabs.svelte'
   import LoadingSpinner from '$components/common/LoadingSpinner.svelte'
-  // import { functionsStore } from '$lib/stores'
+  import Result from '$routes/workflows/components/custom-functions/Result.svelte'
+  import Tabs from '$components/common/Tabs.svelte'
+  import { themeStore } from '$lib/stores'
 
-  const tabs = ['JSON', 'Params']
+  const tabs = ['Result', 'Workflow JSON']
+  $: activeTab = tabs[0]
+
   let loading = false
-  let activeTab = tabs[0]
-  let workflow = `{
-  "name": "everyCliWorkflow_1",
-  "workflow": {
-    "tasks": [
-      {
-        "cause": null,
-        "meta": {
-          "memory": 4294967296,
-          "time": 100000
-         },
-       "prf": [],
-       "run": {
-         "input": {
-           "args": ["borld"],
-           "func": "hello"
-          },
-          "nnc": "",
-          "op": "wasm/run",
-          "rsc": "${import.meta.env.VITE_WORKFLOW_RESOURCE}"
-        }
-      }
-    ]
-  }
-}`
-  $: functions = JSON.parse(workflow)?.workflow?.tasks
-  
-
+  let functionName
+  let functionParams
+  let schema
   let output
-  const handleSubmitWorkflow = async () => {
+	let formData = {}
+  let workflow
+
+	const formBinding = async (form) => {
+		form.data = formData;
+		form.schema = /* Type-casted as JSONSchema7 */ schema;
+		form.uiSchema = {
+			/* Type-casted as UiSchema */
+			bar: {
+				'ui:widget': 'switch',
+			},
+		};
+    const isValid = (data): boolean => {
+      const ajv = new Ajv()
+      const validate = ajv.compile(schema)
+      return validate(data)      
+    }
+
+    // We need to wait a moment for the form to be rendered to the shadowRoot
+    const timeout = setTimeout(() => {
+      const submitButton = document.querySelector('jsf-system').shadowRoot.querySelector('.widget-submit button')
+      if (isValid(formData)) {
+        submitButton.removeAttribute('disabled')
+        console.error('Invalid function params')
+      } else {
+        submitButton.setAttribute('disabled', 'true')
+      } 
+      clearTimeout(timeout)   
+    }, 0)
+
+		form.dataChangeCallback = async (newData) => {
+			console.log({ 'Data from Svelte': newData });
+
+      const submitButton = document.querySelector('jsf-system').shadowRoot.querySelector('.widget-submit button')
+      if (isValid(newData)) {
+        submitButton.removeAttribute('disabled')
+      } else {
+        submitButton.setAttribute('disabled', 'true')
+        console.error('Invalid function params')
+      }
+      
+      // Live update workflow JSON
+      const defaultParams = Object.keys(functionParams).reduce((acc, v) => ({
+        ...acc,
+        [v]: newData[v] ?? ''
+      }), {})
+      const queryParams = new URLSearchParams(defaultParams).toString()
+      workflow = JSON.stringify(await(await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/${functionName}/workflow?${queryParams}`)).json(), null, 2)  
+		};
+		form.submitCallback = async (newData, valid) => {
+			console.log({ 'Submitted from Svelte!': newData, valid });
+      
+      loading = true
+      try {
+        const res = await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/${functionName}`, 
+          { 
+            method: 'POST', 
+            headers: { 
+              'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify(newData) 
+        })
+        output = await res.json()
+        console.log('output', output)
+      } catch (error) {
+        console.error(error)
+      }
+      loading = false
+		};
+	}
+
+  $: activeTab, setFormStyles()
+
+  onMount(async () => {
     loading = true
     try {
-      try {
-        JSON.parse(workflow)
-      } catch (error) {
-        throw new Error('Invalid JSON')
-      }
-
-      const { receipt: { out: [, res] } } = await(await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/start-workflow`, {
-        method: 'POST',
-        // mode: 'no-cors',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: workflow
-      })).json()
-      // console.log('res', res)
-      output = res
+      const res = await (await fetch(import.meta.env.VITE_GATEWAY_ENDPOINT)).json()
+      schema = res[0][1]
+      functionName = res[0][0]
+      functionParams = res[0][1].properties
+      setFormStyles()
+      
+      // Set default params to fetch workflow JSON
+      const defaultParams = Object.keys(functionParams).reduce((acc, v) => ({
+        ...acc,
+        [v]: ''
+      }), {})
+      const queryParams = new URLSearchParams(defaultParams).toString()
+      workflow = JSON.stringify(await(await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/${functionName}/workflow?${queryParams}`)).json(), null, 2)
     } catch (error) {
       console.error(error)
-      addNotification({ msg: error, type: 'error' })
     }
     loading = false
-  }
-
-
+  })
 </script>
 
+
 <div class="relative flex flex-col sm:flex-row w-full h-full sm:h-[calc(100vh-80px)] m-auto">
-  <div class="w-full h-full sm:w-1/2 pt-6">
-
-    <Tabs {tabs} bind:activeTab />
-
-    <div class="h-[calc(100%-32px)] bg-base-100 border-base-300 sm:border-t rounded-box p-6">
-      {#if activeTab === tabs[0]}
-        <div class="flex flex-col items-start justify-start gap-4 w-full h-full">
-          <div class="flex flex-row items-center justify-between w-full">
-            <h2>Paste workflow JSON below</h2>
-            <button class="btn btn-primary btn-odd-purple-500 min-w-[80px] max-h-8 ml-auto" on:click={handleSubmitWorkflow}>Run</button>
+  <div class="w-full h-full sm:w-1/2 border-base-300 border-b sm:border-b-0 sm:border-r">
+    {#if !schema}
+      <div class="flex flex-col items-center justify-center h-full bg-base-100 border-base-300 sm:border-t rounded-sm p-6 pt-7">
+        <LoadingSpinner />
+      </div>
+    {:else}    
+      <div class="h-full bg-base-100 rounded-sm p-6 pt-7">
+        <div class="relative flex flex-col items-start justify-start gap-4 w-full h-full">
+          <div class="flex flex-row items-center justify-between w-full min-h-8 pr-[86px]">
+            <h2>Add params below</h2>
+            <!-- <button class="btn btn-primary btn-odd-purple-500 min-w-[80px] max-h-8 ml-auto" on:click={handleSubmitWorkflow}>Run</button> -->
           </div>
 
-          <div class="w-full h-full rounded-sm bg-base-200">
-            <CodeJar syntax="javascript" {highlight} bind:value={workflow} withLineNumbers />
-          </div>
-        </div>
-      {/if}      
-        
-      {#if activeTab === tabs[1]}
-        <div class="flex flex-col items-start justify-start gap-4 w-full h-full">
-          <div class="flex flex-row items-center justify-between w-full">
-            <h2>Add function params below</h2>
-            <button class="btn btn-primary btn-odd-purple-500 min-w-[80px] max-h-8 ml-auto" on:click={handleSubmitWorkflow}>Run</button>
-          </div>
-
-          <div class="flex flex-col w-full">
-            {#if functions}
-              {#each functions as func}
-                <div class="w-full p-4 rounded-sm bg-base-200 text-base-content">
-                  <h3 class="mb-2">{func?.run?.input?.func} <span>(string)</span></h3>
-                  {#each func?.run?.input?.args as arg}
-                    <input class="input pl-3 py-0.5 h-8 border border-odd-gray-400 bg-transparent w-full text-input-m text-base-content placeholder:text-base-content rounded-sm transition duration-200 ease-in-out" type="text" bind:value={arg} />
-                  {/each}
-                </div>
-              {/each}
-            {/if}
-          </div>
+          {#if schema}
+            <div class="json-schema-form w-full h-full rounded-sm">
+              <div class="p-2 bg-base-100 rounded-sm border {$themeStore.selectedTheme === 'light' ? 'border-odd-gray-400' : 'border-odd-gray-500'}">
+                <h3 class="mb-4 pb-2 border-b border-odd-gray-400 text-label-m capitalize">{functionName}</h3>
+                <jsf-system use:formBinding submitButtonLabel="Run"></jsf-system>
+              </div>
+            </div>
+          {/if}
         </div>        
-      {/if}
-    </div>
+      </div>
+    {/if}
   </div>
 
-  <div class="w-full h-full sm:w-1/2">
-    <div class="h-full p-6 border-base-300 border-t sm:border-t-0 sm:border-l bg-base-100">    
-      <h2 class="mb-4">Result</h2>
-
-      {#if loading}
-        <div class="flex flex-col items-center justify-center h-[calc(100%-32px)] min-h-40 py-2.5 px-4 font-mono bg-base-200 rounded-sm">
-          <LoadingSpinner />
-        </div>
-      {:else}
-        <div class="h-[calc(100%-32px)] min-h-40 py-2.5 px-4 font-mono bg-base-200 rounded-sm">
-          {#if output}
-            {output}
-          {/if}
-        </div>
+  <div class="w-full h-full sm:w-1/2 pt-6">
+    <Tabs {tabs} bind:activeTab />
+    <div class="h-[calc(100%-32px)] p-6 border-base-300 sm:border-t bg-base-100 rounded-sm">
+      {#if activeTab === tabs[0]}      
+        <Result {loading} {output} />
       {/if}
+
+      {#if activeTab === tabs[1]}
+        <div class="flex flex-col items-start justify-start gap-4 w-full h-full">
+          <!-- <div class="flex flex-row items-center justify-between w-full min-h-8">
+            <h2>Paste workflow JSON below</h2>
+          </div> -->
+
+          <div class="w-full h-full p-4 overflow-auto rounded-sm bg-base-200">
+            <pre>{workflow}</pre>
+            <!-- <CodeJar syntax="javascript" {highlight} bind:value={workflow} withLineNumbers /> -->
+          </div>
+        </div>
+      {/if}                   
     </div>
   </div>
 </div>
