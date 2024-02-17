@@ -87,7 +87,8 @@
             },
             body: JSON.stringify(newData) 
         })
-        output = await res.json()
+        const text = await res.text()
+        output = text ?? await res.json()
         console.log('output', output)
       } catch (error) {
         console.error(error)
