@@ -21,11 +21,12 @@
   $: activeTab = tabs[0]
 
   let loading = false
+  let contentType
+	let formData = {}
   let functionName
   let functionParams
-  let schema
   let output
-	let formData = {}
+  let schema
   let workflow
 
 	const formBinding = async (form) => {
@@ -56,8 +57,6 @@
     }, 0)
 
 		form.dataChangeCallback = async (newData) => {
-			console.log({ 'Data from Svelte': newData });
-
       const submitButton = document.querySelector('jsf-system').shadowRoot.querySelector('.widget-submit button')
       if (isValid(newData)) {
         submitButton.removeAttribute('disabled')
@@ -75,8 +74,6 @@
       workflow = JSON.stringify(await(await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/${functionName}/workflow?${queryParams}`)).json(), null, 2)  
 		};
 		form.submitCallback = async (newData, valid) => {
-			console.log({ 'Submitted from Svelte!': newData, valid });
-      
       loading = true
       try {
         const res = await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/${functionName}`, 
@@ -89,7 +86,6 @@
         })
         const text = await res.text()
         output = text ?? await res.json()
-        console.log('output', output)
       } catch (error) {
         console.error(error)
       }
@@ -103,7 +99,9 @@
     loading = true
     try {
       const res = await (await fetch(import.meta.env.VITE_GATEWAY_ENDPOINT)).json()
+      ;({ properties: { 'content-type': contentType } } = res[0][1])
       schema = res[0][1]
+      delete schema.properties['content-type']
       functionName = res[0][0]
       functionParams = res[0][1].properties
       setFormStyles()
