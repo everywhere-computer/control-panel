@@ -62,7 +62,7 @@
         submitButton.removeAttribute('disabled')
       } else {
         submitButton.setAttribute('disabled', 'true')
-        console.error('Invalid function params')
+        // console.error('Invalid function params')
       }
       
       // Live update workflow JSON
