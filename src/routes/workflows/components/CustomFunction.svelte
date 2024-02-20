@@ -75,6 +75,8 @@
 		};
 		form.submitCallback = async (newData, valid) => {
       loading = true
+      activeTab = tabs[0]
+      
       try {
         const res = await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/${functionName}`, 
           { 
