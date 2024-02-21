@@ -8,6 +8,22 @@ export const hostStyles = `
     padding: 0;
   }
 
+  legend {
+    display: block;
+    width: 100%;
+    padding: 0;
+    text-transform: capitalize;
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: 550;
+    padding-bottom: 0.5rem;
+    --tw-border-opacity: 1;
+    border-color: rgb(137 137 176 / var(--tw-border-opacity));
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    margin-bottom: 1rem;    
+  }
+
   label {
     display: flex;    
     flex-direction: column;

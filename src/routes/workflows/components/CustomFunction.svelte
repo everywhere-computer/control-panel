@@ -27,6 +27,7 @@
   let functionParams
   let output
   let schema
+  let schemas
   let workflow
 
 	const formBinding = async (form) => {
@@ -66,17 +67,24 @@
       }
       
       // Live update workflow JSON
-      const defaultParams = Object.keys(functionParams).reduce((acc, v) => ({
+      const updatedParams = Object.keys(functionParams).reduce((acc, v) => ({
         ...acc,
         [v]: newData[v] ?? ''
       }), {})
-      const queryParams = new URLSearchParams(defaultParams).toString()
-      workflow = JSON.stringify(await(await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/${functionName}/workflow?${queryParams}`)).json(), null, 2)  
+      const queryParams = new URLSearchParams(updatedParams).toString()
+      // workflow = JSON.stringify(await(await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/${functionName}/workflow?${queryParams}`)).json(), null, 2)  
+      workflow = JSON.stringify(await(await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/${functionName}/workflow`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedParams)
+      })).json(), null, 2)  
 		};
 		form.submitCallback = async (newData, valid) => {
       loading = true
       activeTab = tabs[0]
-      
+
       try {
         const res = await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/${functionName}`, 
           { 
@@ -101,9 +109,23 @@
     loading = true
     try {
       const res = await (await fetch(import.meta.env.VITE_GATEWAY_ENDPOINT)).json()
+      // console.log('res[0]', res)
       ;({ properties: { 'content-type': contentType } } = res[0][1])
-      schema = res[0][1]
+      // schema = res[0][1]
+      schema = {
+        ...res[0][1],
+        title: res[0][0]
+      }
+      // schemas = res.map((s) => {
+      //   delete s[1].properties['content-type']
+      //   return {
+      //     ...s[1],
+      //     title: s[0]          
+      //   }
+      // })
       delete schema.properties['content-type']
+      // console.log('schema', schema)
+      // console.log('schemas', schemas)
       functionName = res[0][0]
       functionParams = res[0][1].properties
       setFormStyles()
@@ -113,8 +135,14 @@
         ...acc,
         [v]: ''
       }), {})
-      const queryParams = new URLSearchParams(defaultParams).toString()
-      workflow = JSON.stringify(await(await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/${functionName}/workflow?${queryParams}`)).json(), null, 2)
+      // const queryParams = new URLSearchParams(defaultParams).toString()
+      workflow = JSON.stringify(await(await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/${functionName}/workflow`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(defaultParams)
+      })).json(), null, 2)
     } catch (error) {
       console.error(error)
     }
@@ -132,7 +160,7 @@
     {:else}    
       <div class="h-full bg-base-100 rounded-sm p-6 pt-7">
         <div class="relative flex flex-col items-start justify-start gap-4 w-full h-full">
-          <div class="flex flex-row items-center justify-between w-full min-h-8 pr-[86px]">
+          <div class="flex flex-row items-center justify-between w-full min-h-8 mb-2 pr-[86px]">
             <h2>Add params below</h2>
             <!-- <button class="btn btn-primary btn-odd-purple-500 min-w-[80px] max-h-8 ml-auto" on:click={handleSubmitWorkflow}>Run</button> -->
           </div>
@@ -140,7 +168,6 @@
           {#if schema}
             <div class="json-schema-form w-full h-full rounded-sm">
               <div class="p-2 bg-base-100 rounded-sm border {$themeStore.selectedTheme === 'light' ? 'border-odd-gray-400' : 'border-odd-gray-500'}">
-                <h3 class="mb-4 pb-2 border-b border-odd-gray-400 text-label-m capitalize">{functionName}</h3>
                 <jsf-system use:formBinding submitButtonLabel="Run"></jsf-system>
               </div>
             </div>
