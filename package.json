@@ -58,7 +58,7 @@
   },
   "dependencies": {
     "@fission-codes/homestar": "^1.0.0",
-    "@jsfe/system": "^0.2.2",
+    "@jsfe/system": "0.2.3-next.3+7483287",
     "@novacbn/svelte-codejar": "^0.1.2",
     "@oddjs/odd": "0.37.0",
     "@zerodevx/svelte-json-view": "^1.0.7",

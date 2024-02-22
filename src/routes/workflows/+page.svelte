@@ -2,7 +2,7 @@
   import { themeStore, workflowsStore } from '$lib/stores'
   // import Search from '$components/common/Search.svelte'
   // import WorkflowCard from '$routes/workflows/components/WorkflowCard.svelte'
-  import CustomFunction from '$routes/workflows/components/CustomFunction.svelte'
+  import Playground from '$routes/workflows/components/Playground.svelte'
 
   let searchTerm = ''
   $: workflows = searchTerm
@@ -14,7 +14,7 @@
   const handleShowBuilder = () => ($workflowsStore.showBuilder = true)
 </script>
 
-<CustomFunction />
+<Playground />
 
 <!-- <div class="w-full max-w-[800px] m-auto">
   <div
