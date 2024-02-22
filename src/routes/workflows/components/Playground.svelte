@@ -93,7 +93,7 @@
             const formData = Object.fromEntries(new FormData(form))
             let data = Object.keys(formData).reduce((acc, key) => {
               const val =
-                schema.properties[key].type === 'number'
+                schema.properties[key].type === 'number' && formData[key]
                   ? Number(formData[key])
                   : formData[key]
               return {
@@ -129,7 +129,7 @@
             const updatedParams = Object.keys(schema.properties).reduce(
               (acc, v) => ({
                 ...acc,
-                [v]: data[v] ?? ''
+                [v]: data[v] ?? null
               }),
               {}
             )
