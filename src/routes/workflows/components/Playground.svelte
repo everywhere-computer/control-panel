@@ -66,9 +66,8 @@
         outputType = 'image'
         output = URL.createObjectURL(blob)
       } else {
-        const text = await res.text()
         outputType = 'text'
-        output = text ?? (await res.json())
+        output = (await res.text()) ?? (await res.json())
       }
     } catch (error) {
       console.error(error)
@@ -245,8 +244,6 @@
           id: `${schema[0]}_${i}`
         }
       })
-
-      console.log('schemas', schemas)
 
       // Map default task args to fetch workflow JSON
       tasks = schemas.map(schema => ({

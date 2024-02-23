@@ -59,35 +59,83 @@ export const hostStyles = `
 
   .checkbox-wrapper {
     margin-left: auto;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 4px;
   }
 
   .checkbox-wrapper span {
     text-transform: lowercase;
   }
 
-  // .checkbox {
-  //   flex-shrink: 0;
-  //   --chkbg: var(--fallback-bc, oklch(var(--bc)))/1));
-  //   --chkfg: var(--fallback-b1, oklch(var(--b1)))/1));
-  //   height: 1.5rem;
-  //   width: 1.5rem;
-  //   cursor: pointer;
-  //   -webkit-appearance: none;
-  //   -moz-appearance: none;
-  //   appearance: none;
-  //   border-radius: var(--rounded-btn, .5rem);
-  //   border-style: solid;
-  //   border-width: 1px;
-  //   border-color: var(--fallback-bc, oklch(var(--bc)))/var(--tw-border-opacity)));
-  //   --tw-border-opacity: .2;    
-  // }
+  .checkbox {    
+    --p: ${
+      getStore(themeStore).selectedTheme === 'light' ? '#6A50EB' : '#8D74F7'
+    };
+    --pc: #FBFAFF;
+    --bc: ${
+      getStore(themeStore).selectedTheme === 'light' ? '#32334A' : '#E1E1F2'
+    };
+    --b1: ${
+      getStore(themeStore).selectedTheme === 'light' ? '#F5F5FC' : '#232538'
+    };    
+    flex-shrink: 0;
+    --chkbg: var(--fallback-bc, oklch(var(--bc)))/1));
+    --chkfg: var(--fallback-b1, oklch(var(--b1)))/1));
+    height: 1.5rem;
+    width: 1.5rem;
+    cursor: pointer;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border-radius: var(--rounded-btn, 0.5rem);
+    border-width: 1px;
+    border-color: var(--fallback-bc, oklch(var(--bc)))/var(--tw-border-opacity)));
+    --tw-border-opacity: 0.2;
+    --chkbg: var(--fallback-p, oklch(var(--p)))/1));
+    --chkfg: var(--fallback-pc, oklch(var(--pc)))/1));
+    --tw-border-opacity: 1;
+    border-color: ${
+      getStore(themeStore).selectedTheme === 'light' ? '#6A50EB' : '#8D74F7'
+    };    
+    border-style: solid;
+  }
 
-  // .checkbox:checked {
-  //   background-repeat: no-repeat;
-  //   animation: checkmark var(--animation-input, .2s) ease-out;
-  //   background-color: var(--chkbg);
-  //   background-image: linear-gradient(-45deg,transparent 65%,var(--chkbg) 65.99%),linear-gradient(45deg,transparent 75%,var(--chkbg) 75.99%),linear-gradient(-45deg,var(--chkbg) 40%,transparent 40.99%),linear-gradient(45deg,var(--chkbg) 30%,var(--chkfg) 30.99%,var(--chkfg) 40%,transparent 40.99%),linear-gradient(-45deg,var(--chkfg) 50%,var(--chkbg) 50.99%);    
-  // }
+  .checkbox:checked {
+    --p: ${
+      getStore(themeStore).selectedTheme === 'light' ? '#6A50EB' : '#8D74F7'
+    };
+    --pc: #FBFAFF;
+    --bc: ${
+      getStore(themeStore).selectedTheme === 'light' ? '#32334A' : '#E1E1F2'
+    };
+    --b1: ${
+      getStore(themeStore).selectedTheme === 'light' ? '#F5F5FC' : '#232538'
+    };    
+    --chkbg: ${
+      getStore(themeStore).selectedTheme === 'light' ? '#6A50EB' : '#8D74F7'
+    };
+    --chkfg: var(--fallback-pc, oklch(var(--pc)))/1));            
+    --chkfg: #FBFAFF;            
+    background-repeat: no-repeat;
+    animation: checkmark var(--animation-input, 0.2s) ease-out;
+    background-color: var(--chkbg);
+    --tw-border-opacity: 1;
+    border-color: var(--fallback-p, oklch(var(--p)))/var(--tw-border-opacity)));
+    border-color: ${
+      getStore(themeStore).selectedTheme === 'light' ? '#6A50EB' : '#8D74F7'
+    };        
+    --tw-bg-opacity: 1;
+    background-color: var(--fallback-p, oklch(var(--p)))/var(--tw-bg-opacity)));
+    background-color: ${
+      getStore(themeStore).selectedTheme === 'light' ? '#6A50EB' : '#8D74F7'
+    };        
+    --tw-text-opacity: 1;
+    color: var(--fallback-pc, oklch(var(--pc)))/var(--tw-text-opacity)));    
+    color: #FBFAFF;    
+    background-image: linear-gradient(-45deg, transparent 65%, var(--chkbg) 65.99%), linear-gradient(45deg, transparent 75%, var(--chkbg) 75.99%), linear-gradient(-45deg, var(--chkbg) 40%, transparent 40.99%), linear-gradient( 45deg, var(--chkbg) 30%, var(--chkfg) 30.99%, var(--chkfg) 40%, transparent 40.99% ), linear-gradient(-45deg, var(--chkfg) 50%, var(--chkbg) 50.99%);    
+  }
 
   label > input {
     height: 2rem;
