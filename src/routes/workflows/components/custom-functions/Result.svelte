@@ -1,10 +1,9 @@
 <script lang="ts">
   import LoadingSpinner from '$components/common/LoadingSpinner.svelte'
-  // import { sampleImage } from '$routes/workflows/components/custom-functions/sampleData'
 
-  export let loading
+  export let loading: boolean
   export let output
-  export let outputType: 'image' | 'text' = 'text'
+  export let outputType = 'text'
 </script>
 
 {#if loading}
