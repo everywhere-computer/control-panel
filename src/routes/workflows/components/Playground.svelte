@@ -9,6 +9,7 @@
   import '@jsfe/system'
   import Ajv from 'ajv'
   import { onMount } from 'svelte'
+  import * as uint8arrays from 'uint8arrays'
 
   import { hostStyles } from '$routes/workflows/components/custom-functions/styles'
   // import { addNotification } from '$lib/notifications'
@@ -25,6 +26,7 @@
   let formValidStates = []
   let loading = false
   let output
+  let outputType = 'text'
   let schemas
   let tasks
   let workflow
@@ -39,10 +41,8 @@
 
   // JSF listener
   const formBinding = async form => {
-    form.data = {}
-
-    form.dataChangeCallback = async newData => {}
-
+    // form.data = {}
+    // form.dataChangeCallback = async newData => {}
     // form.submitCallback = async (newData, valid) => {}
   }
 
@@ -59,9 +59,17 @@
         },
         body: JSON.stringify({ tasks })
       })
-      const text = await res.text()
 
-      output = text ?? (await res.json())
+      const responseType = res.headers.get('Content-Type')
+      if (responseType.includes('image/')) {
+        const blob = await res.blob()
+        outputType = 'image'
+        output = URL.createObjectURL(blob)
+      } else {
+        const text = await res.text()
+        outputType = 'text'
+        output = text ?? (await res.json())
+      }
     } catch (error) {
       console.error(error)
     }
@@ -238,6 +246,8 @@
         }
       })
 
+      console.log('schemas', schemas)
+
       // Map default task args to fetch workflow JSON
       tasks = schemas.map(schema => ({
         run: {
@@ -333,7 +343,7 @@
       class="h-[calc(100%-32px)] p-6 border-base-300 sm:border-t bg-base-100 rounded-sm overflow-x-hidden"
     >
       {#if activeTab === tabs[0]}
-        <Result {loading} {output} />
+        <Result {loading} {output} {outputType} />
       {/if}
 
       {#if activeTab === tabs[1]}
