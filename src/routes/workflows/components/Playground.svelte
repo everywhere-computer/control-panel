@@ -12,7 +12,6 @@
   import * as uint8arrays from 'uint8arrays'
 
   import { hostStyles } from '$routes/workflows/components/custom-functions/styles'
-  // import { addNotification } from '$lib/notifications'
   import LoadingSpinner from '$components/common/LoadingSpinner.svelte'
   import Result from '$routes/workflows/components/custom-functions/Result.svelte'
   import Tabs from '$components/common/Tabs.svelte'
@@ -37,13 +36,6 @@
     const { id, ...schemaToValidate } = schema
     const validate = ajv.compile(schemaToValidate)
     return validate(data)
-  }
-
-  // JSF listener
-  const formBinding = async form => {
-    // form.data = {}
-    // form.dataChangeCallback = async newData => {}
-    // form.submitCallback = async (newData, valid) => {}
   }
 
   // Submit workflow to gateway
@@ -325,7 +317,7 @@
                   ? 'border-odd-gray-400'
                   : 'border-odd-gray-500'}"
               >
-                <jsf-system use:formBinding {schema} submitButtonLabel="Run" />
+                <jsf-system {schema} submitButtonLabel="Run" />
               </div>
             {/each}
           </div>
