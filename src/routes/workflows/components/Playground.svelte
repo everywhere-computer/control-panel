@@ -222,9 +222,9 @@
       const res = await (
         await fetch(import.meta.env.VITE_GATEWAY_ENDPOINT)
       ).json()
-      ;({
-        properties: { 'content-type': contentType }
-      } = res[0][1])
+      // ;({
+      //   properties: { 'content-type': contentType }
+      // } = res[0][1])
 
       // Map schema for each taks because we need to render each schema into its own JSF
       schemas = res.map((schema, i) => {
