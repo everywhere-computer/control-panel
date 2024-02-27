@@ -222,26 +222,23 @@
       const res = await (
         await fetch(import.meta.env.VITE_GATEWAY_ENDPOINT)
       ).json()
-      // ;({
-      //   properties: { 'content-type': contentType }
-      // } = res[0][1])
 
       // Map schema for each taks because we need to render each schema into its own JSF
-      schemas = res.map((schema, i) => {
-        // delete schema[1].properties['content-type']
-        return {
-          ...schema[1],
-          title: schema[0],
-          id: `${schema[0]}_${i}`
-        }
-      })
+      schemas = res.map((schema, i) => ({
+        properties: {},
+        ...schema[1],
+        title: schema[0],
+        id: `${schema[0]}_${i}`
+      }))
 
       // Map default task args to fetch workflow JSON
       tasks = schemas.map(schema => ({
         run: {
           name: schema.id,
           input: {
-            args: Object.keys(schema.properties).map(() => null),
+            args: schema.additionalProperties
+              ? Object.keys(schema?.properties).map(() => null)
+              : [],
             func: schema.title
           }
         }
@@ -249,7 +246,10 @@
 
       // Set form valid states to false
       formValidStates = schemas.reduce(
-        (acc, schema) => ({ ...acc, [schema.id]: false }),
+        (acc, schema) => ({
+          ...acc,
+          [schema.id]: schema?.additionalProperties ? false : true
+        }),
         {}
       )
 
