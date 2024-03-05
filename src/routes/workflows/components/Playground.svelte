@@ -7,9 +7,13 @@
 <script lang="ts">
   // import { CodeJar } from '@novacbn/svelte-codejar'
   import '@jsfe/system'
-  import Ajv from 'ajv'
   import { onMount } from 'svelte'
 
+  import {
+    isValid,
+    fetchWorkflow,
+    submitWorkflow
+  } from '$routes/workflows/lib/custom-functions'
   import { hostStyles } from '$routes/workflows/components/custom-functions/styles'
   import LoadingSpinner from '$components/common/LoadingSpinner.svelte'
   import Functions from '$routes/workflows/components/custom-functions/Functions.svelte'
@@ -29,14 +33,6 @@
   let tasks
   let workflow
 
-  // Validated form values against their associated JSON schema
-  const isValid = (data, schema): boolean => {
-    const ajv = new Ajv()
-    const { id, ...schemaToValidate } = schema
-    const validate = ajv.compile(schemaToValidate)
-    return validate(data)
-  }
-
   const onDrop = async dispatchEvent => {
     if (dispatchEvent?.detail) {
       reorderedSchemas = dispatchEvent.detail
@@ -54,19 +50,7 @@
 
       modifyShadowDomForm(true, reorderedSchemas)
 
-      workflow = JSON.stringify(
-        await (
-          await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/workflow`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ tasks })
-          })
-        ).json(),
-        null,
-        2
-      )
+      workflow = await fetchWorkflow(tasks)
     }
   }
 
@@ -76,23 +60,9 @@
     activeTab = tabs[0]
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/run`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ tasks })
-      })
-
-      const responseType = res.headers.get('Content-Type')
-      if (responseType.includes('image/')) {
-        const blob = await res.blob()
-        outputType = 'image'
-        output = URL.createObjectURL(blob)
-      } else {
-        outputType = 'text'
-        output = (await res.text()) ?? (await res.json())
-      }
+      const res = await submitWorkflow(tasks)
+      output = res.output
+      outputType = res.outputType
     } catch (error) {
       console.error(error)
     }
@@ -181,22 +151,7 @@
               return task
             })
 
-            workflow = JSON.stringify(
-              await (
-                await fetch(
-                  `${import.meta.env.VITE_GATEWAY_ENDPOINT}/workflow`,
-                  {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ tasks })
-                  }
-                )
-              ).json(),
-              null,
-              2
-            )
+            workflow = await fetchWorkflow(tasks)
           })
 
           functionParams.forEach(param => {
@@ -302,19 +257,7 @@
 
       modifyShadowDomForm(true, schemas)
 
-      workflow = JSON.stringify(
-        await (
-          await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/workflow`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ tasks })
-          })
-        ).json(),
-        null,
-        2
-      )
+      workflow = await fetchWorkflow(tasks)
     } catch (error) {
       console.error(error)
     }
