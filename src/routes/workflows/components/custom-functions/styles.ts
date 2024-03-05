@@ -83,8 +83,9 @@ export const hostStyles = `
     flex-shrink: 0;
     --chkbg: var(--fallback-bc, oklch(var(--bc)))/1));
     --chkfg: var(--fallback-b1, oklch(var(--b1)))/1));
-    height: 1.5rem;
-    width: 1.5rem;
+    height: 1rem;
+    width: 1rem;
+    margin-right: 0;
     cursor: pointer;
     -webkit-appearance: none;
     -moz-appearance: none;
