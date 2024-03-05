@@ -20,11 +20,11 @@
 
   $: activeTab = tabs[1]
 
-  let contentType
   let formValidStates = []
   let loading = false
   let output
   let outputType = 'text'
+  let reorderedSchemas
   let schemas
   let tasks
   let workflow
@@ -35,6 +35,39 @@
     const { id, ...schemaToValidate } = schema
     const validate = ajv.compile(schemaToValidate)
     return validate(data)
+  }
+
+  const onDrop = async dispatchEvent => {
+    if (dispatchEvent?.detail) {
+      reorderedSchemas = dispatchEvent.detail
+
+      tasks = reorderedSchemas.map(schema =>
+        tasks.find(task => task.run.name === schema.id)
+      )
+
+      // Remove {{needs.<prevFunc>.output}} string from first task if it was previously set
+      if (
+        tasks[0]?.run?.input?.args?.filter(arg => arg?.includes('{{needs.'))
+      ) {
+        tasks[0].run.input.args = tasks[0].run.input.args.map(() => null)
+      }
+
+      modifyShadowDomForm(true, reorderedSchemas)
+
+      workflow = JSON.stringify(
+        await (
+          await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/workflow`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ tasks })
+          })
+        ).json(),
+        null,
+        2
+      )
+    }
   }
 
   // Submit workflow to gateway
@@ -68,7 +101,7 @@
   }
 
   // Append stylesheet and add event listeners to JSF shadow DOM elements
-  const modifyShadowDomForm = (schemas = null) => {
+  const modifyShadowDomForm = (attachListeners = false, schemas) => {
     // Set styles for shadow elements in form(this is messy, but it's the only workaround for this library)
     const timeout = setTimeout(() => {
       const hosts = document.querySelectorAll('jsf-system')
@@ -80,7 +113,7 @@
         hostStylesheet.innerHTML = hostStyles
         host.shadowRoot.appendChild(hostStylesheet)
 
-        if (schemas) {
+        if (attachListeners) {
           const form = host.shadowRoot.querySelector('form')
           const functionParams = host.shadowRoot.querySelectorAll('label')
           let fieldsUsingPreviousOutput = {}
@@ -166,7 +199,7 @@
             )
           })
 
-          functionParams.forEach((param, i) => {
+          functionParams.forEach(param => {
             const fieldName = param.getAttribute('for')
             const paramHeading = param.querySelector('div')
             const input = param.querySelector('& > input')
@@ -174,8 +207,23 @@
             // Set input names because JSF doesn't...
             input.setAttribute('name', fieldName)
 
+            // Remove checkbox from first function
+            if (
+              index === 0 &&
+              paramHeading.querySelector('.checkbox-wrapper')
+            ) {
+              paramHeading.querySelector(
+                '.checkbox-wrapper .checkbox'
+              ).checked = false
+              input.removeAttribute('disabled')
+              // @ts-ignore-next-line
+              input.value = null
+              paramHeading.querySelector('.checkbox-wrapper')?.remove()
+            }
+
             // If we're not in the first function, add a checkbox to each field to allow it to accept the output of the previous function
             if (index > 0) {
+              paramHeading.querySelector('.checkbox-wrapper')?.remove()
               const wrapper = document.createElement('div')
               wrapper.classList.add('checkbox-wrapper')
               wrapper.innerHTML = `<span>use ${
@@ -189,7 +237,6 @@
                 .addEventListener('change', function () {
                   if (this.checked) {
                     // @ts-ignore-next-line
-                    // input.value = `{{needs.${schemas[index - 1].id}.output}}`
                     input.value = null
                     input.setAttribute('disabled', 'true')
                     fieldsUsingPreviousOutput = {
@@ -214,7 +261,7 @@
     }, 0)
   }
 
-  $: activeTab, modifyShadowDomForm()
+  $: activeTab, modifyShadowDomForm(false, reorderedSchemas)
 
   onMount(async () => {
     loading = true
@@ -253,7 +300,7 @@
         {}
       )
 
-      modifyShadowDomForm(schemas)
+      modifyShadowDomForm(true, schemas)
 
       workflow = JSON.stringify(
         await (
@@ -288,7 +335,12 @@
         <LoadingSpinner />
       </div>
     {:else}
-      <Functions {formValidStates} {handleSubmitWorkflow} {schemas} />
+      <Functions
+        {formValidStates}
+        {handleSubmitWorkflow}
+        {schemas}
+        on:drop={onDrop}
+      />
     {/if}
   </div>
 
