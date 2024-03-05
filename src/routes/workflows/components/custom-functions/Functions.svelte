@@ -67,9 +67,9 @@
     function dragStart(e: MouseEvent | TouchEvent) {
       draggableItem = null
 
-      if (e.target.classList.contains('drag-handle')) {
-        e.target.classList.add('!cursor-grabbing')
-        draggableItem = e.target.closest('.drag-item')
+      if ((e.target as HTMLElement).classList.contains('drag-handle')) {
+        ;(e.target as HTMLElement).classList.add('!cursor-grabbing')
+        draggableItem = (e.target as HTMLElement).closest('.drag-item')
       }
 
       if (!draggableItem) return
@@ -181,8 +181,8 @@
     function dragEnd(e: MouseEvent | TouchEvent) {
       if (!draggableItem) return
 
-      if (e.target.classList.contains('drag-handle')) {
-        e.target.classList.remove('!cursor-grabbing')
+      if ((e.target as HTMLElement).classList.contains('drag-handle')) {
+        ;(e.target as HTMLElement).classList.remove('!cursor-grabbing')
       }
 
       applyNewItemsOrder(e)
@@ -300,7 +300,7 @@
         >
           {#if schemas.length > 1}
             <DragHandle
-              classes="drag-handle absolute top-2 right-1.5 text-primary hover:text-base-content duration-200 ease-in-out cursor-grab"
+              classes="drag-handle absolute top-2 right-2.5 text-primary hover:text-base-content duration-200 ease-in-out cursor-grab"
             />
           {/if}
           <jsf-system {schema} submitButtonLabel="Run" />
