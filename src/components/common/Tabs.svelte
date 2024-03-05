@@ -9,7 +9,7 @@
 </script>
 
 <div
-  class="min-w-[0px] relative top-[1px] z-10 h-8 px-8 whitespace-nowrap overflow-x-hidden"
+  class="min-w-[0px] relative top-[1px] z-10 h-8 px-8 whitespace-nowrap overflow-hidden"
 >
   {#each tabs as tab}
     <button

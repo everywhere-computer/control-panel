@@ -272,11 +272,11 @@
   })
 </script>
 
-<div class="h-full bg-base-100 rounded-sm p-6 pt-7">
-  <div
-    class="relative flex flex-col items-start justify-start gap-4 w-full h-full"
-  >
-    <div class="flex flex-row items-center justify-between w-full min-h-8 mb-2">
+<div class="h-full bg-base-100 rounded-sm pb-6 pt-7">
+  <div class="relative flex flex-col items-start justify-start w-full h-full">
+    <div
+      class="flex flex-row items-center justify-between w-full min-h-8 px-6 mb-2"
+    >
       <h2>Add params below</h2>
       <button
         disabled={!Object.values(formValidStates).every(Boolean)}
@@ -288,7 +288,7 @@
     </div>
 
     <div
-      class="json-schema-form flex flex-col gap-6 w-full h-[calc(100%-56px)] overflow-auto rounded-sm"
+      class="json-schema-form flex flex-col gap-6 w-full h-[calc(100%-56px)] pt-4 px-6 overflow-auto rounded-sm"
     >
       {#each schemas as schema}
         <div
