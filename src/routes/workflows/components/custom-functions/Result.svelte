@@ -8,13 +8,13 @@
 
 {#if loading}
   <div
-    class="flex flex-col items-center justify-center h-[calc(100%-32px)] min-h-40 p-4 bg-base-200 rounded-sm"
+    class="flex flex-col items-center justify-center h-full min-h-40 p-4 bg-base-200 rounded-sm"
   >
     <LoadingSpinner />
   </div>
 {:else}
   <div
-    class="flex flex-row gap-4 items-start justify-start h-[calc(100%-32px)] min-h-40 p-4 font-mono bg-base-200 rounded-sm"
+    class="flex flex-row gap-4 items-start justify-start h-full min-h-40 p-4 font-mono bg-base-200 rounded-sm"
   >
     {#if output}
       {#if outputType === 'image'}

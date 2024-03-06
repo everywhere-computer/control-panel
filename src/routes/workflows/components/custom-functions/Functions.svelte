@@ -10,8 +10,9 @@
   const dispatch = createEventDispatcher()
 
   export let handleSubmitWorkflow = () => {}
-  export let schemas
   export let formValidStates
+  export let originalSchemas
+  export let schemas
 
   // Add a new function to the list
   const handleAddFunction = (functionName: string): void => {
@@ -21,20 +22,12 @@
       ;(elem as HTMLElement)?.blur()
     }
 
-    // schemas = [
-    //   ...schemas,
-    //   {
-    //     ...matchingSchema,
-    //     id: `${matchingSchema.id.split('_')[0]}_${schemas.length}`
-    //   }
-    // ]
     const matchingSchema = schemas.find(({ title }) => title === functionName)
 
     dispatch('addFunction', {
       ...matchingSchema,
       id: `${matchingSchema.id.split('_')[0]}_${schemas.length}`
     })
-    console.log('schemas', schemas)
   }
 
   onMount(() => {
@@ -308,6 +301,7 @@
         // @ts-ignore-next-line
         draggableItem.style = null
         draggableItem.classList.remove('is-draggable')
+        draggableItem = null
       }
     }
 
@@ -346,7 +340,7 @@
             tabindex="0"
             class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
           >
-            {#each schemas as schema}
+            {#each originalSchemas as schema}
               <li>
                 <button
                   on:click={() => handleAddFunction(schema.title)}
@@ -373,7 +367,7 @@
     <div
       class="json-schema-form flex flex-col gap-6 w-full h-[calc(100%-56px)] duration-[250] transition-all border border-base-100 overflow-auto rounded-sm -translate-y-[3px]"
     >
-      {#each schemas as schema}
+      {#each schemas as schema (schema.id)}
         <div
           data-schema={JSON.stringify(schema)}
           class="drag-item relative p-2 bg-base-100 rounded-sm transition-opacity border {$themeStore.selectedTheme ===

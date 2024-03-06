@@ -24,8 +24,9 @@
 
   $: activeTab = tabs[1]
 
-  let formValidStates = []
+  let formValidStates = {}
   let loading = false
+  let originalSchemas
   let output
   let outputType = 'text'
   let reorderedSchemas
@@ -33,24 +34,94 @@
   let tasks
   let workflow
 
+  const updateShadowDomAndWorkflows = async () => {
+    modifyShadowDomForm(true, reorderedSchemas)
+
+    workflow = await fetchWorkflow(tasks)
+  }
+
+  // When a drag and drop is complete, update the tasks, shadow DOM and workflow JSON
   const onDrop = async dispatchEvent => {
     if (dispatchEvent?.detail) {
       reorderedSchemas = dispatchEvent.detail
-
       tasks = reorderedSchemas.map(schema =>
         tasks.find(task => task.run.name === schema.id)
       )
 
       // Remove {{needs.<prevFunc>.output}} string from first task if it was previously set
-      if (
-        tasks[0]?.run?.input?.args?.filter(arg => arg?.includes('{{needs.'))
-      ) {
+      if (tasks[0]?.run?.input?.args?.find(arg => arg?.includes('{{needs.'))) {
         tasks[0].run.input.args = tasks[0].run.input.args.map(() => null)
+        formValidStates[tasks[0].run.name] = false
       }
 
-      modifyShadowDomForm(true, reorderedSchemas)
+      // Update {{needs.funcName.output}} to point to new previous function if order has changed
+      tasks = tasks.map((task, index) => {
+        if (task?.run?.input?.args?.filter(arg => arg?.includes('{{needs.'))) {
+          return {
+            ...task,
+            run: {
+              ...task.run,
+              input: {
+                ...task.run.input,
+                args: task.run.input.args.map(arg => {
+                  if (arg?.includes('{{needs.')) {
+                    return `{{needs.${tasks[index - 1].run.name}.output}}`
+                  }
+                  return arg
+                })
+              }
+            }
+          }
+        }
 
-      workflow = await fetchWorkflow(tasks)
+        return task
+      })
+
+      await updateShadowDomAndWorkflows()
+    }
+  }
+
+  // When a new function is added, update the tasks, shadow DOM and workflow JSON
+  const onAddFunction = async dispatchEvent => {
+    if (dispatchEvent?.detail) {
+      const newSchema = dispatchEvent.detail
+
+      // Map default args for new task
+      tasks = [
+        ...tasks,
+        {
+          run: {
+            name: newSchema.id,
+            input: {
+              args: newSchema.additionalProperties
+                ? Object.keys(newSchema?.properties).map(() => null)
+                : [],
+              func: newSchema.title
+            }
+          }
+        }
+      ]
+
+      // Add new schema to existing ones
+      schemas = [
+        ...reorderedSchemas,
+        {
+          ...newSchema
+        }
+      ]
+
+      reorderedSchemas = schemas
+
+      // Set valid state for new form schema
+      formValidStates = {
+        ...formValidStates,
+        [newSchema.id]:
+          newSchema.properties && Object.keys(newSchema.properties).length
+            ? false
+            : true
+      }
+
+      await updateShadowDomAndWorkflows()
     }
   }
 
@@ -167,23 +238,38 @@
               index === 0 &&
               paramHeading.querySelector('.checkbox-wrapper')
             ) {
-              paramHeading.querySelector(
-                '.checkbox-wrapper .checkbox'
-              ).checked = false
+              if (
+                (paramHeading.querySelector(
+                  '.checkbox-wrapper .checkbox'
+                ) as HTMLInputElement)?.checked
+              ) {
+                ;(input as HTMLInputElement).value = null
+                ;(paramHeading.querySelector(
+                  '.checkbox-wrapper .checkbox'
+                ) as HTMLInputElement).checked = false
+              }
               input.removeAttribute('disabled')
               // @ts-ignore-next-line
-              input.value = null
               paramHeading.querySelector('.checkbox-wrapper')?.remove()
             }
 
             // If we're not in the first function, add a checkbox to each field to allow it to accept the output of the previous function
             if (index > 0) {
-              paramHeading.querySelector('.checkbox-wrapper')?.remove()
+              const oldWrapper = paramHeading.querySelector('.checkbox-wrapper')
+              const oldCheckedValue = (oldWrapper?.querySelector(
+                '.checkbox'
+              ) as HTMLInputElement)?.checked
+              if (oldWrapper) {
+                oldWrapper?.remove()
+              }
+
               const wrapper = document.createElement('div')
               wrapper.classList.add('checkbox-wrapper')
               wrapper.innerHTML = `<span>use ${
                 schemas[index - 1].title
-              } output</span><input type="checkbox" class="checkbox checkbox-primary">`
+              } output</span><input type="checkbox" class="checkbox checkbox-primary" ${
+                oldCheckedValue ? 'checked' : ''
+              }>`
               paramHeading.appendChild(wrapper)
 
               // Use output of previous function when checkbox is clicked
@@ -191,8 +277,7 @@
                 .querySelector('.checkbox')
                 .addEventListener('change', function () {
                   if (this.checked) {
-                    // @ts-ignore-next-line
-                    input.value = null
+                    ;(input as HTMLInputElement).value = null
                     input.setAttribute('disabled', 'true')
                     fieldsUsingPreviousOutput = {
                       ...fieldsUsingPreviousOutput,
@@ -200,8 +285,7 @@
                     }
                     form.dispatchEvent(new Event('keyup'))
                   } else {
-                    // @ts-ignore-next-line
-                    input.value = null
+                    ;(input as HTMLInputElement).value = null
                     input.removeAttribute('disabled')
                     delete fieldsUsingPreviousOutput[fieldName]
                     form.dispatchEvent(new Event('keyup'))
@@ -232,6 +316,8 @@
         title: schema[0],
         id: `${schema[0]}_${i}`
       }))
+      reorderedSchemas = schemas
+      originalSchemas = schemas
 
       // Map default task args to fetch workflow JSON
       tasks = schemas.map(schema => ({
@@ -250,7 +336,10 @@
       formValidStates = schemas.reduce(
         (acc, schema) => ({
           ...acc,
-          [schema.id]: schema?.additionalProperties ? false : true
+          [schema.id]:
+            schema?.properties && Object.keys(schema.properties).length
+              ? false
+              : true
         }),
         {}
       )
@@ -281,7 +370,9 @@
       <Functions
         {formValidStates}
         {handleSubmitWorkflow}
+        {originalSchemas}
         {schemas}
+        on:addFunction={onAddFunction}
         on:drop={onDrop}
       />
     {/if}
