@@ -233,6 +233,10 @@
             // Set input names because JSF doesn't...
             input.setAttribute('name', fieldName)
 
+            // Prevent click events on input fields from triggering drag start
+            input.addEventListener('mousedown', e => e.stopPropagation())
+            input.addEventListener('touchstart', e => e.stopPropagation())
+
             // Remove checkbox from first function
             if (
               index === 0 &&
@@ -271,6 +275,11 @@
                 oldCheckedValue ? 'checked' : ''
               }>`
               paramHeading.appendChild(wrapper)
+
+              // Prevent click events on checkbox fields from triggering drag start
+              const checkbox = paramHeading.querySelector('.checkbox')
+              checkbox.addEventListener('mousedown', e => e.stopPropagation())
+              checkbox.addEventListener('touchstart', e => e.stopPropagation())
 
               // Use output of previous function when checkbox is clicked
               paramHeading

@@ -6,6 +6,7 @@
   import DragHandle from '$components/icons/DragHandle.svelte'
   import PlusBoxed from '$components/icons/PlusBoxed.svelte'
   import Run from '$components/icons/Run.svelte'
+  import Trash from '$components/icons/Trash.svelte'
 
   const dispatch = createEventDispatcher()
 
@@ -28,6 +29,10 @@
       ...matchingSchema,
       id: `${matchingSchema.id.split('_')[0]}_${schemas.length}`
     })
+  }
+
+  const handleDeleteFunction = (functionName: string): void => {
+    console.log('functionName', functionName)
   }
 
   onMount(() => {
@@ -86,8 +91,10 @@
     function dragStart(e: MouseEvent | TouchEvent) {
       draggableItem = null
 
-      if ((e.target as HTMLElement).classList.contains('drag-handle')) {
-        // ;(e.target as HTMLElement).classList.add('!cursor-grabbing')
+      if (
+        (e.target as HTMLElement).tagName === 'JSF-SYSTEM' ||
+        (e.target as HTMLElement).classList.contains('drag-item')
+      ) {
         draggableItem = (e.target as HTMLElement).closest('.drag-item')
         listContainer.classList.add(
           'py-8',
@@ -370,15 +377,21 @@
       {#each schemas as schema (schema.id)}
         <div
           data-schema={JSON.stringify(schema)}
-          class="drag-item relative p-2 bg-base-100 rounded-sm transition-opacity border {$themeStore.selectedTheme ===
+          class="drag-item relative p-2 bg-base-100 rounded-sm cursor-move transition-opacity border {$themeStore.selectedTheme ===
           'light'
             ? 'border-odd-gray-400'
             : 'border-odd-gray-500'}"
         >
           {#if schemas.length > 1}
-            <DragHandle
+            <button
+              on:click={() => handleDeleteFunction(schema.id)}
+              class="absolute top-2 right-2.5 text-primary hover:text-base-content duration-200 ease-in-out"
+            >
+              <Trash />
+            </button>
+            <!-- <DragHandle
               classes="drag-handle absolute top-2 right-2.5 text-primary hover:text-base-content duration-200 ease-in-out cursor-grab"
-            />
+            /> -->
           {/if}
           <jsf-system {schema} submitButtonLabel="Run" />
         </div>
