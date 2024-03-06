@@ -4,12 +4,38 @@
 
   import { themeStore } from '$lib/stores'
   import DragHandle from '$components/icons/DragHandle.svelte'
+  import PlusBoxed from '$components/icons/PlusBoxed.svelte'
+  import Run from '$components/icons/Run.svelte'
 
   const dispatch = createEventDispatcher()
 
   export let handleSubmitWorkflow = () => {}
   export let schemas
   export let formValidStates
+
+  // Add a new function to the list
+  const handleAddFunction = (functionName: string): void => {
+    // Close dropdown
+    const elem = document.activeElement
+    if (elem) {
+      ;(elem as HTMLElement)?.blur()
+    }
+
+    // schemas = [
+    //   ...schemas,
+    //   {
+    //     ...matchingSchema,
+    //     id: `${matchingSchema.id.split('_')[0]}_${schemas.length}`
+    //   }
+    // ]
+    const matchingSchema = schemas.find(({ title }) => title === functionName)
+
+    dispatch('addFunction', {
+      ...matchingSchema,
+      id: `${matchingSchema.id.split('_')[0]}_${schemas.length}`
+    })
+    console.log('schemas', schemas)
+  }
 
   onMount(() => {
     let listContainer: HTMLElement | null
@@ -68,14 +94,26 @@
       draggableItem = null
 
       if ((e.target as HTMLElement).classList.contains('drag-handle')) {
-        ;(e.target as HTMLElement).classList.add('!cursor-grabbing')
+        // ;(e.target as HTMLElement).classList.add('!cursor-grabbing')
         draggableItem = (e.target as HTMLElement).closest('.drag-item')
+        listContainer.classList.add(
+          'py-8',
+          'px-6',
+          'border-dashed',
+          'border-primary',
+          'bg-base-200'
+        )
+        draggableItem.classList.add('opacity-70')
       }
 
       if (!draggableItem) return
 
-      pointerStartX = e.clientX || (e.touches?.[0]?.clientX as number)
-      pointerStartY = e.clientY || (e.touches?.[0]?.clientY as number)
+      pointerStartX =
+        (e as MouseEvent).clientX ||
+        ((e as TouchEvent).touches?.[0]?.clientX as number)
+      pointerStartY =
+        (e as MouseEvent).clientY ||
+        ((e as TouchEvent).touches?.[0]?.clientY as number)
 
       setItemsGap()
       disablePageScroll()
@@ -110,7 +148,7 @@
     function initItemsState() {
       getIdleItems().forEach((item, i) => {
         if (getAllItems().indexOf(draggableItem) > i) {
-          item.dataset.isAbove = true
+          item.dataset.isAbove = 'true'
         }
       })
     }
@@ -127,8 +165,12 @@
 
       e.preventDefault()
 
-      const clientX = e.clientX || (e.touches![0].clientX as number)
-      const clientY = e.clientY || (e.touches![0].clientY as number)
+      const clientX =
+        (e as MouseEvent).clientX ||
+        ((e as TouchEvent).touches![0].clientX as number)
+      const clientY =
+        (e as MouseEvent).clientY ||
+        ((e as TouchEvent).touches![0].clientY as number)
 
       const pointerOffsetX = clientX - pointerStartX
       const pointerOffsetY = clientY - pointerStartY
@@ -149,13 +191,13 @@
         const itemY = itemRect.top + itemRect.height / 2
         if (isItemAbove(item)) {
           if (draggableItemY <= itemY) {
-            item.dataset.isToggled = true
+            item.dataset.isToggled = 'true'
           } else {
             delete item.dataset.isToggled
           }
         } else {
           if (draggableItemY >= itemY) {
-            item.dataset.isToggled = true
+            item.dataset.isToggled = 'true'
           } else {
             delete item.dataset.isToggled
           }
@@ -182,8 +224,17 @@
       if (!draggableItem) return
 
       if ((e.target as HTMLElement).classList.contains('drag-handle')) {
-        ;(e.target as HTMLElement).classList.remove('!cursor-grabbing')
+        // ;(e.target as HTMLElement).classList.remove('!cursor-grabbing')
       }
+
+      listContainer.classList.remove(
+        'py-8',
+        'px-6',
+        'border-dashed',
+        'border-primary',
+        'bg-base-200'
+      )
+      draggableItem.classList.remove('opacity-70')
 
       applyNewItemsOrder(e)
       cleanup()
@@ -225,9 +276,11 @@
         const rect = draggableItem.getBoundingClientRect()
         const yDiff = prevRect.y - rect.y
         const currentPositionX =
-          e.clientX || (e.changedTouches?.[0]?.clientX as number)
+          (e as MouseEvent).clientX ||
+          ((e as TouchEvent).changedTouches?.[0]?.clientX as number)
         const currentPositionY =
-          e.clientY || (e.changedTouches?.[0]?.clientY as number)
+          (e as MouseEvent).clientY ||
+          ((e as TouchEvent).changedTouches?.[0]?.clientY as number)
 
         const pointerOffsetX = currentPositionX - pointerStartX
         const pointerOffsetY = currentPositionY - pointerStartY
@@ -251,8 +304,11 @@
     }
 
     function unsetDraggableItem() {
-      draggableItem.style = null
-      draggableItem.classList.remove('is-draggable')
+      if (draggableItem) {
+        // @ts-ignore-next-line
+        draggableItem.style = null
+        draggableItem.classList.remove('is-draggable')
+      }
     }
 
     function unsetItemState() {
@@ -273,27 +329,54 @@
 </script>
 
 <div class="h-full bg-base-100 rounded-sm pb-6 pt-7">
-  <div class="relative flex flex-col items-start justify-start w-full h-full">
-    <div
-      class="flex flex-row items-center justify-between w-full min-h-8 px-6 mb-2"
-    >
-      <h2>Add params below</h2>
-      <button
-        disabled={!Object.values(formValidStates).every(Boolean)}
-        class="btn btn-primary btn-odd-purple-500 min-w-[80px] max-h-8 ml-auto"
-        on:click={handleSubmitWorkflow}
-      >
-        Run
-      </button>
+  <div
+    class="relative flex flex-col items-start justify-start gap-6 w-full h-full px-6"
+  >
+    <div class="flex flex-row items-center justify-between w-full min-h-8">
+      <h2>Add Params Below</h2>
+
+      <div class="flex items-center justify-center gap-2 ml-auto">
+        <div class="dropdown">
+          <div tabindex="0" role="button" class="btn btn-odd-gray-100 h-8 px-2">
+            <PlusBoxed />
+            <span class="hidden md:inline-block">Add function</span>
+          </div>
+          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+          <ul
+            tabindex="0"
+            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            {#each schemas as schema}
+              <li>
+                <button
+                  on:click={() => handleAddFunction(schema.title)}
+                  class="capitalize"
+                >
+                  {schema.title}
+                </button>
+              </li>
+            {/each}
+          </ul>
+        </div>
+
+        <button
+          disabled={!Object.values(formValidStates).every(Boolean)}
+          class="btn btn-primary btn-odd-purple-500 md:min-w-[80px] max-h-8 ml-auto"
+          on:click={handleSubmitWorkflow}
+        >
+          <Run />
+          <span class="hidden md:inline-block">Run</span>
+        </button>
+      </div>
     </div>
 
     <div
-      class="json-schema-form flex flex-col gap-6 w-full h-[calc(100%-56px)] pt-4 px-6 overflow-auto rounded-sm"
+      class="json-schema-form flex flex-col gap-6 w-full h-[calc(100%-56px)] duration-[250] transition-all border border-base-100 overflow-auto rounded-sm -translate-y-[3px]"
     >
       {#each schemas as schema}
         <div
           data-schema={JSON.stringify(schema)}
-          class="drag-item relative p-2 bg-base-100 rounded-sm border {$themeStore.selectedTheme ===
+          class="drag-item relative p-2 bg-base-100 rounded-sm transition-opacity border {$themeStore.selectedTheme ===
           'light'
             ? 'border-odd-gray-400'
             : 'border-odd-gray-500'}"
