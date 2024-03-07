@@ -12,6 +12,7 @@
   export let handleSubmitWorkflow = () => {}
   export let allTimeTasksLength
   export let formValidStates
+  export let loading
   export let originalSchemas
   export let schemas
 
@@ -364,7 +365,7 @@
         </div>
 
         <button
-          disabled={!Object.values(formValidStates).every(Boolean)}
+          disabled={!Object.values(formValidStates).every(Boolean) || loading}
           class="btn btn-primary btn-odd-purple-500 md:min-w-[80px] max-h-8 ml-auto"
           on:click={handleSubmitWorkflow}
         >

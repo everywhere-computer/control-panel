@@ -391,6 +391,7 @@
         {allTimeTasksLength}
         {formValidStates}
         {handleSubmitWorkflow}
+        {loading}
         {originalSchemas}
         {schemas}
         on:addFunction={onAddFunction}
