@@ -378,7 +378,7 @@
   class="relative flex flex-col sm:flex-row w-full h-full sm:h-[calc(100vh-80px)] m-auto"
 >
   <div
-    class="w-full h-full sm:w-1/2 border-base-300 border-b sm:border-b-0 sm:border-r"
+    class="w-full h-full sm:w-1/2 xl:w-1/3 border-base-300 border-b sm:border-b-0 sm:border-r"
   >
     {#if !schemas}
       <div
@@ -400,7 +400,7 @@
     {/if}
   </div>
 
-  <div class="w-full h-full sm:w-1/2 pt-6">
+  <div class="w-full h-full sm:w-1/2 xl:w-2/3 pt-6">
     <Tabs {tabs} bind:activeTab />
     <div
       class="h-[calc(100%-32px)] p-6 border-base-300 sm:border-t bg-base-100 rounded-sm overflow-x-hidden"
