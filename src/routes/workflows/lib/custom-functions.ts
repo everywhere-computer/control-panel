@@ -27,6 +27,7 @@ export const fetchWorkflow = async tasks => {
  * Submit a workflow to the gateway
  */
 export const submitWorkflow = async tasks => {
+  console.log('tasks to submit', tasks)
   const res = await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/run`, {
     method: 'POST',
     headers: {
@@ -59,3 +60,28 @@ export const isValid = (data, schema): boolean => {
   const validate = ajv.compile(schemaToValidate)
   return validate(data)
 }
+
+/**
+ * Remap the `{{needs.funcName.output}}` function arg after the task list is updated
+ */
+export const remapTaskNeeds = tasks =>
+  tasks.map((task, index) => {
+    if (task?.run?.input?.args?.find(arg => arg?.includes('{{needs.'))) {
+      return {
+        ...task,
+        run: {
+          ...task.run,
+          input: {
+            ...task.run.input,
+            args: task.run.input.args.map(arg =>
+              arg?.includes('{{needs.')
+                ? `{{needs.${tasks[index - 1].run.name}.output}}`
+                : arg
+            )
+          }
+        }
+      }
+    }
+
+    return task
+  })

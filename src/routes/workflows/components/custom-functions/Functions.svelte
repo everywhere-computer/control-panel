@@ -11,6 +11,7 @@
   const dispatch = createEventDispatcher()
 
   export let handleSubmitWorkflow = () => {}
+  export let allTimeTasksLength
   export let formValidStates
   export let originalSchemas
   export let schemas
@@ -23,16 +24,21 @@
       ;(elem as HTMLElement)?.blur()
     }
 
-    const matchingSchema = schemas.find(({ title }) => title === functionName)
+    const matchingSchema = originalSchemas.find(
+      ({ title }) => title === functionName
+    )
 
     dispatch('addFunction', {
       ...matchingSchema,
-      id: `${matchingSchema.id.split('_')[0]}_${schemas.length}`
+      id: `${matchingSchema.id.split('_')[0]}_${allTimeTasksLength + 1}`
     })
   }
 
+  // Delete a function from the list
   const handleDeleteFunction = (functionName: string): void => {
-    console.log('functionName', functionName)
+    const matchingSchema = schemas.find(({ id }) => id === functionName)
+
+    dispatch('deleteFunction', matchingSchema)
   }
 
   onMount(() => {
@@ -223,10 +229,6 @@
     function dragEnd(e: MouseEvent | TouchEvent) {
       if (!draggableItem) return
 
-      if ((e.target as HTMLElement).classList.contains('drag-handle')) {
-        // ;(e.target as HTMLElement).classList.remove('!cursor-grabbing')
-      }
-
       listContainer.classList.remove(
         'py-8',
         'px-6',
@@ -374,7 +376,7 @@
     <div
       class="json-schema-form flex flex-col gap-6 w-full h-[calc(100%-56px)] duration-[250] transition-all border border-base-100 overflow-auto rounded-sm -translate-y-[3px]"
     >
-      {#each schemas as schema (schema.id)}
+      {#each schemas as schema, index (schema.id)}
         <div
           data-schema={JSON.stringify(schema)}
           class="drag-item relative p-2 bg-base-100 rounded-sm cursor-move transition-opacity border {$themeStore.selectedTheme ===
@@ -382,17 +384,16 @@
             ? 'border-odd-gray-400'
             : 'border-odd-gray-500'}"
         >
-          {#if schemas.length > 1}
-            <button
-              on:click={() => handleDeleteFunction(schema.id)}
-              class="absolute top-2 right-2.5 text-primary hover:text-base-content duration-200 ease-in-out"
-            >
-              <Trash />
-            </button>
-            <!-- <DragHandle
-              classes="drag-handle absolute top-2 right-2.5 text-primary hover:text-base-content duration-200 ease-in-out cursor-grab"
-            /> -->
-          {/if}
+          {#key schemas}
+            {#if index > 0}
+              <button
+                on:click={() => handleDeleteFunction(schema.id)}
+                class="absolute top-0 right-0.5 p-2 text-primary hover:text-base-content duration-200 ease-in-out"
+              >
+                <Trash />
+              </button>
+            {/if}
+          {/key}
           <jsf-system {schema} submitButtonLabel="Run" />
         </div>
       {/each}

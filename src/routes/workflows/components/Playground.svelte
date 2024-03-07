@@ -11,6 +11,7 @@
 
   import {
     isValid,
+    remapTaskNeeds,
     fetchWorkflow,
     submitWorkflow
   } from '$routes/workflows/lib/custom-functions'
@@ -32,6 +33,7 @@
   let reorderedSchemas
   let schemas
   let tasks
+  let allTimeTasksLength = 0
   let workflow
 
   const updateShadowDomAndWorkflows = async () => {
@@ -55,27 +57,9 @@
       }
 
       // Update {{needs.funcName.output}} to point to new previous function if order has changed
-      tasks = tasks.map((task, index) => {
-        if (task?.run?.input?.args?.filter(arg => arg?.includes('{{needs.'))) {
-          return {
-            ...task,
-            run: {
-              ...task.run,
-              input: {
-                ...task.run.input,
-                args: task.run.input.args.map(arg => {
-                  if (arg?.includes('{{needs.')) {
-                    return `{{needs.${tasks[index - 1].run.name}.output}}`
-                  }
-                  return arg
-                })
-              }
-            }
-          }
-        }
+      tasks = remapTaskNeeds(tasks)
 
-        return task
-      })
+      schemas = reorderedSchemas
 
       await updateShadowDomAndWorkflows()
     }
@@ -85,6 +69,7 @@
   const onAddFunction = async dispatchEvent => {
     if (dispatchEvent?.detail) {
       const newSchema = dispatchEvent.detail
+      allTimeTasksLength = allTimeTasksLength + 1
 
       // Map default args for new task
       tasks = [
@@ -120,6 +105,28 @@
             ? false
             : true
       }
+
+      await updateShadowDomAndWorkflows()
+    }
+  }
+
+  // When a function is deleted, update the tasks, shadow DOM and workflow JSON
+  const onDeleteFunction = async dispatchEvent => {
+    if (dispatchEvent?.detail) {
+      const schemaToDelete = dispatchEvent.detail
+
+      // Remove task from tasks array
+      tasks = remapTaskNeeds(
+        tasks.filter(task => task.run.name !== schemaToDelete.id)
+      )
+
+      // Remove schema to schemas array
+      schemas = schemas.filter(schema => schema.id !== schemaToDelete.id)
+
+      reorderedSchemas = schemas
+
+      // Remove valid state for schema
+      delete formValidStates[schemaToDelete.id]
 
       await updateShadowDomAndWorkflows()
     }
@@ -276,10 +283,13 @@
               }>`
               paramHeading.appendChild(wrapper)
 
-              // Prevent click events on checkbox fields from triggering drag start
-              const checkbox = paramHeading.querySelector('.checkbox')
-              checkbox.addEventListener('mousedown', e => e.stopPropagation())
-              checkbox.addEventListener('touchstart', e => e.stopPropagation())
+              // Prevent click events on param fields and child elements from triggering drag start
+              paramHeading.addEventListener('mousedown', e =>
+                e.stopPropagation()
+              )
+              paramHeading.addEventListener('touchstart', e =>
+                e.stopPropagation()
+              )
 
               // Use output of previous function when checkbox is clicked
               paramHeading
@@ -327,6 +337,7 @@
       }))
       reorderedSchemas = schemas
       originalSchemas = schemas
+      allTimeTasksLength = schemas.length
 
       // Map default task args to fetch workflow JSON
       tasks = schemas.map(schema => ({
@@ -377,11 +388,13 @@
       </div>
     {:else}
       <Functions
+        {allTimeTasksLength}
         {formValidStates}
         {handleSubmitWorkflow}
         {originalSchemas}
         {schemas}
         on:addFunction={onAddFunction}
+        on:deleteFunction={onDeleteFunction}
         on:drop={onDrop}
       />
     {/if}
