@@ -3,7 +3,6 @@
   import { createEventDispatcher, onMount } from 'svelte'
 
   import { themeStore } from '$lib/stores'
-  import DragHandle from '$components/icons/DragHandle.svelte'
   import PlusBoxed from '$components/icons/PlusBoxed.svelte'
   import Run from '$components/icons/Run.svelte'
   import Trash from '$components/icons/Trash.svelte'
@@ -107,7 +106,8 @@
           'px-6',
           'border-dashed',
           'border-primary',
-          'bg-base-200'
+          'bg-base-200',
+          'cursor-move'
         )
         draggableItem.classList.add('opacity-70')
       }
@@ -234,7 +234,8 @@
         'px-6',
         'border-dashed',
         'border-primary',
-        'bg-base-200'
+        'bg-base-200',
+        'cursor-move'
       )
       draggableItem.classList.remove('opacity-70')
 
