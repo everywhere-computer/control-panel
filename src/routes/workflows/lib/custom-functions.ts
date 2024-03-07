@@ -27,7 +27,6 @@ export const fetchWorkflow = async tasks => {
  * Submit a workflow to the gateway
  */
 export const submitWorkflow = async tasks => {
-  console.log('tasks to submit', tasks)
   const res = await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/run`, {
     method: 'POST',
     headers: {
