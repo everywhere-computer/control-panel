@@ -120,7 +120,7 @@
         tasks.filter(task => task.run.name !== schemaToDelete.id)
       )
 
-      // Remove schema to schemas array
+      // Remove schema from schemas array
       schemas = schemas.filter(schema => schema.id !== schemaToDelete.id)
 
       reorderedSchemas = schemas
