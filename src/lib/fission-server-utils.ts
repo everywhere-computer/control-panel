@@ -267,7 +267,7 @@ const supportsRequestStreams = (() => {
 })();
 
 export async function volumePut(cid: CID, store: BlockStore) {
-  const url = new URL(`${import.meta.env.VITE_FISSION_SERVER_API_URI}/volume/cid/${cid.toString()}`);
+  const url = new URL(`${import.meta.env.VITE_FISSION_SERVER_API_URI}/volume/push/${cid.toString()}`);
   const isHTTPS = url.protocol.toLowerCase() === "https";
   const useStreaming = supportsRequestStreams && isHTTPS;
 
