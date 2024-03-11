@@ -1,9 +1,13 @@
 import { UCAN } from '@fission-codes/ucan'
+import * as Bearer from '@fission-codes/ucan/bearer'
 import type { Capabilities } from '@fission-codes/ucan/dist/src/types'
 import { DIDKey } from 'iso-did/key'
 import type { DID } from 'iso-did/types'
 import { RSASigner } from 'iso-signatures/signers/rsa'
 import localforage from 'localforage'
+import { CID } from 'multiformats'
+import type { BlockStore } from 'car-mirror'
+import { PushResponse, push_request, push_request_streaming } from 'car-mirror'
 
 import {
   IDB_ACCOUNT_DID_LABEL,
@@ -19,8 +23,7 @@ export const getServerDid = async (): Promise<string> => {
   const serverDid = await (
     await (
       await fetch(
-        `${
-          import.meta.env.VITE_FISSION_SERVER_HOST_ORIGIN
+        `${import.meta.env.VITE_FISSION_SERVER_HOST_ORIGIN
         }/dns-query?name=_did.localhost&type=TXT`,
         {
           method: 'GET',
@@ -43,8 +46,7 @@ export const getAccountDid = async (username: string): Promise<string> => {
   const accountDid = await (
     await (
       await fetch(
-        `${
-          import.meta.env.VITE_FISSION_SERVER_HOST_ORIGIN
+        `${import.meta.env.VITE_FISSION_SERVER_HOST_ORIGIN
         }/dns-query?name=_did.${username}.localhost&type=TXT`,
         {
           method: 'GET',
@@ -107,7 +109,7 @@ export const getPrincipal = async (): Promise<RSASigner> => {
     IDB_PRIVATE_KEY_LABEL
   )
 
-  if(keyPair) {
+  if (keyPair) {
     principal = await RSASigner.import(keyPair)
   } else {
     principal = await RSASigner.generate()
@@ -247,3 +249,85 @@ export const linkAccount = async (pin: string): Promise<string[]> => {
  * Check if we're using the account linking flow
  */
 export const isAccountLinkingFlow = (): boolean => import.meta.env.VITE_ACCOUNT_LINKING_FLOW === 'true'
+
+const supportsRequestStreams = (() => {
+  let duplexAccessed = false;
+
+  const hasContentType = new Request('', {
+    body: new ReadableStream(),
+    method: 'POST',
+    // @ts-ignore
+    get duplex() {
+      duplexAccessed = true;
+      return 'half';
+    },
+  }).headers.has('Content-Type');
+
+  return duplexAccessed && !hasContentType;
+})();
+
+export async function volumePut(cid: CID, store: BlockStore) {
+  const url = new URL(`${import.meta.env.VITE_FISSION_SERVER_API_URI}/volume/cid/${cid.toString()}`);
+  const isHTTPS = url.protocol.toLowerCase() === "https";
+  const useStreaming = supportsRequestStreams && isHTTPS;
+
+  let lastResponse = null;
+  while (!lastResponse?.indicatesFinished()) {
+    console.debug(`Creating push request body (supports streams? ${supportsRequestStreams} isHTTPS? ${isHTTPS})`)
+    /** @type {ReadableStream<Uint8Array> | Uint8Array} */
+    const body = useStreaming
+      ? await push_request_streaming(cid.bytes, lastResponse == null ? undefined : lastResponse, store)
+      : await push_request(cid.bytes, lastResponse == null ? undefined : lastResponse, store);
+
+    const auth = await createUcanWithCaps('account/manage')
+    const authHeaders = Bearer.encode(auth.ucan, auth.store)
+
+    const request = new Request(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/vnd.ipld.car",
+        "Accept": "application/vnd.ipld.dag-cbor",
+        ...authHeaders,
+      },
+      // @ts-ignore new, chromium-only API
+      duplex: useStreaming ? "half" : undefined,
+      body,
+    });
+
+    console.debug("Initiating request", request.url, body.length ?? "(can't print length of stream)");
+    const response = await fetch(request);
+
+    if (!(200 <= response.status && response.status < 300)) {
+      throw new Error(`Unexpected status code in car-mirror push response: ${response.status}, body: ${await response.text()}`);
+    }
+
+    const responseBytes = new Uint8Array(await response.arrayBuffer());
+
+    lastResponse = PushResponse.decode(responseBytes);
+    console.debug(`Got response (status ${response.status}):`, JSON.stringify(lastResponse.toJSON()));
+  }
+  console.debug("Finished pushing", cid.toString());
+}
+
+export class MemoryBlockStore {
+  private store: Map<String, Uint8Array>;
+
+  constructor() {
+    this.store = new Map();
+  }
+
+  async getBlock(cid: Uint8Array): Promise<Uint8Array | undefined> {
+    const decodedCid = CID.decode(cid);
+    return this.store.get(decodedCid.toString());
+  }
+
+  async putBlockKeyed(cid: Uint8Array, bytes: Uint8Array): Promise<void> {
+    const decodedCid = CID.decode(cid);
+    this.store.set(decodedCid.toString(), bytes);
+  }
+
+  async hasBlock(cid: Uint8Array): Promise<boolean> {
+    const decodedCid = CID.decode(cid);
+    return this.store.has(decodedCid.toString());
+  }
+}

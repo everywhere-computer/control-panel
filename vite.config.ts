@@ -1,12 +1,18 @@
 import { sveltekit } from '@sveltejs/kit/vite'
 import { resolve } from 'path'
+import wasm from "vite-plugin-wasm";
+import topLevelAwait from "vite-plugin-top-level-await";
 
 /** @type {import('vite').UserConfig} */
 const config = {
   build: {
     sourcemap: true
   },
-  plugins: [sveltekit()],
+  plugins: [
+    sveltekit(),
+    wasm(),
+    topLevelAwait(),
+  ],
   resolve: {
     alias: {
       $components: resolve('./src/components'),
