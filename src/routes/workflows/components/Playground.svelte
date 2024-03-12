@@ -18,7 +18,7 @@
   import { hostStyles } from '$routes/workflows/components/custom-functions/styles'
   import LoadingSpinner from '$components/common/LoadingSpinner.svelte'
   import Functions from '$routes/workflows/components/custom-functions/Functions.svelte'
-  import Result from '$routes/workflows/components/custom-functions/Result.svelte'
+  import Results from '$routes/workflows/components/custom-functions/Results.svelte'
   import Tabs from '$components/common/Tabs.svelte'
 
   const tabs = ['Result', 'Workflow JSON']
@@ -28,8 +28,7 @@
   let formValidStates = {}
   let loading = false
   let originalSchemas
-  let output
-  let outputType = 'text'
+  let results
   let reorderedSchemas
   let schemas
   let tasks
@@ -138,9 +137,11 @@
     activeTab = tabs[0]
 
     try {
-      const res = await submitWorkflow(tasks)
-      output = res.output
-      outputType = res.outputType
+      results = (await submitWorkflow(tasks)).map((result, index) => ({
+        ...result,
+        title: tasks[index].run.input.func,
+        key: tasks[index].run.name
+      }))
     } catch (error) {
       console.error(error)
     }
@@ -407,7 +408,7 @@
       class="h-[calc(100%-32px)] p-6 border-base-300 sm:border-t bg-base-100 rounded-sm overflow-x-hidden"
     >
       {#if activeTab === tabs[0]}
-        <Result {loading} {output} {outputType} />
+        <Results {loading} {results} />
       {/if}
 
       {#if activeTab === tabs[1]}

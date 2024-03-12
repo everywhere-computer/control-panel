@@ -27,27 +27,20 @@ export const fetchWorkflow = async tasks => {
  * Submit a workflow to the gateway
  */
 export const submitWorkflow = async tasks => {
-  const res = await fetch(`${import.meta.env.VITE_GATEWAY_ENDPOINT}/run`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ tasks })
-  })
+  const res = await (
+    await fetch(
+      `${import.meta.env.VITE_GATEWAY_ENDPOINT}/run?allResults=true`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ tasks })
+      }
+    )
+  ).json()
 
-  const responseType = res.headers.get('Content-Type')
-  if (responseType.includes('image/')) {
-    const blob = await res.blob()
-
-    return {
-      outputType: 'image',
-      output: URL.createObjectURL(blob)
-    }
-  }
-  return {
-    outputType: 'text',
-    output: (await res.text()) ?? (await res.json())
-  }
+  return res
 }
 
 /**

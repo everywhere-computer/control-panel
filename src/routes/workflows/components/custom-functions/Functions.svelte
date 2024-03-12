@@ -376,7 +376,7 @@
     </div>
 
     <div
-      class="json-schema-form flex flex-col gap-6 w-full h-[calc(100%-56px)] duration-[250] transition-all border border-base-100 overflow-auto rounded-sm -translate-y-[3px]"
+      class="json-schema-form relative flex flex-col gap-6 w-full h-[calc(100%-56px)] duration-[250] transition-all border border-base-100 overflow-auto rounded-sm -translate-y-[3px]"
     >
       {#each schemas as schema, index (schema.id)}
         <div
@@ -384,7 +384,7 @@
           class="drag-item relative p-2 bg-base-100 rounded-sm cursor-move transition-opacity border {$themeStore.selectedTheme ===
           'light'
             ? 'border-odd-gray-400'
-            : 'border-odd-gray-500'}"
+            : 'border-odd-gray-500'} shadow-sm"
         >
           {#key schemas}
             {#if index > 0}
