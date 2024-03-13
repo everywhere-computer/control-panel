@@ -31,7 +31,7 @@
     : 'border-odd-gray-500'} shadow-sm transition hover:shadow-md hover:!border-primary"
 >
   <p
-    class="absolute bottom-[calc(100%+1px)] right-1  px-1 {STATUS_COLOURS[
+    class="absolute bottom-[calc(100%+1px)] right-2  px-1 {STATUS_COLOURS[
       replayed ? 'from cache' : 'success'
     ]} text-code-sm font-mono border rounded-t-sm capitalize"
   >
