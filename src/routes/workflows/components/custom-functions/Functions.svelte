@@ -381,7 +381,7 @@
       {#each schemas as schema, index (schema.id)}
         <div
           data-schema={JSON.stringify(schema)}
-          class="drag-item relative p-2 bg-base-100 rounded-sm cursor-move transition-opacity transition-shadow border {$themeStore.selectedTheme ===
+          class="drag-item relative p-2 bg-base-100 rounded-sm cursor-move transition-colourOpacityShadow border {$themeStore.selectedTheme ===
           'light'
             ? 'border-odd-gray-400'
             : 'border-odd-gray-500'} shadow-sm {$workflowsStore.highlightedFunction ===
