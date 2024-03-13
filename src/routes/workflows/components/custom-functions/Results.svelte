@@ -27,7 +27,7 @@
     class="flex flex-col gap-7 items-start justify-start w-full h-full min-h-40 p-4 pt-8 font-mono bg-base-200 rounded-sm overflow-auto"
   >
     {#if Array.isArray(results)}
-      {#each results as result}
+      {#each results as result, index}
         {#if result.headers['Content-Type'].includes('image/')}
           {@const src = URL.createObjectURL(
             new Blob([new Uint8Array(Object.values(result.out))], {
@@ -38,6 +38,7 @@
             key={result.key}
             title={result.title}
             replayed={result.replayed}
+            final={index === results.length - 1}
           >
             <img
               class="block w-full h-full object-cover border {$themeStore.selectedTheme ===
@@ -55,6 +56,7 @@
             key={result.key}
             title={result.title}
             replayed={result.replayed}
+            final={index === results.length - 1}
           >
             <div
               class="p-2 bg-base-200 border {$themeStore.selectedTheme ===
