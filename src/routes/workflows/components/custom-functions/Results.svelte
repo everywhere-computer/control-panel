@@ -72,7 +72,7 @@
     {:else if results?.error}
       {results.error}
     {:else}
-      No results yet
+      <div class="-translate-y-4">No results yet</div>
     {/if}
   </div>
 {/if}

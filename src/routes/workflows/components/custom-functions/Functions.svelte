@@ -335,35 +335,12 @@
 
 <div class="h-full bg-base-100 rounded-sm pb-6 pt-7">
   <div
-    class="relative flex flex-col items-start justify-start gap-6 w-full h-full px-6"
+    class="relative flex flex-col items-start justify-start gap-6 w-full h-full px-6 pb-12"
   >
     <div class="flex flex-row items-center justify-between w-full min-h-8">
       <h2>Add Params Below</h2>
 
       <div class="flex items-center justify-center gap-2 ml-auto">
-        <div class="dropdown">
-          <div tabindex="0" role="button" class="btn btn-odd-gray-100 h-8 px-2">
-            <PlusBoxed />
-            <span class="hidden md:inline-block">Add function</span>
-          </div>
-          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-          <ul
-            tabindex="0"
-            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
-          >
-            {#each originalSchemas as schema}
-              <li>
-                <button
-                  on:click={() => handleAddFunction(schema.title)}
-                  class="capitalize"
-                >
-                  {schema.title}
-                </button>
-              </li>
-            {/each}
-          </ul>
-        </div>
-
         <button
           disabled={!Object.values(formValidStates).every(Boolean) || loading}
           class="btn btn-primary btn-odd-purple-500 md:min-w-[80px] max-h-8 ml-auto"
@@ -402,6 +379,31 @@
           <jsf-system {schema} submitButtonLabel="Run" />
         </div>
       {/each}
+    </div>
+
+    <div class="absolute bottom-0 left-1/2 -translate-x-1/2">
+      <div class="dropdown dropdown-top">
+        <div tabindex="0" role="button" class="btn btn-odd-gray-100 h-8 px-2">
+          <PlusBoxed />
+          <span class="hidden md:inline-block">Add a function</span>
+        </div>
+        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+        <ul
+          tabindex="0"
+          class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+        >
+          {#each originalSchemas as schema}
+            <li>
+              <button
+                on:click={() => handleAddFunction(schema.title)}
+                class="capitalize"
+              >
+                {schema.title}
+              </button>
+            </li>
+          {/each}
+        </ul>
+      </div>
     </div>
   </div>
 </div>
