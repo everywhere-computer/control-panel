@@ -2,7 +2,7 @@
   import '@jsfe/system'
   import { createEventDispatcher, onMount } from 'svelte'
 
-  import { themeStore } from '$lib/stores'
+  import { themeStore, workflowsStore } from '$lib/stores'
   import PlusBoxed from '$components/icons/PlusBoxed.svelte'
   import Run from '$components/icons/Run.svelte'
   import Trash from '$components/icons/Trash.svelte'
@@ -381,10 +381,13 @@
       {#each schemas as schema, index (schema.id)}
         <div
           data-schema={JSON.stringify(schema)}
-          class="drag-item relative p-2 bg-base-100 rounded-sm cursor-move transition-opacity border {$themeStore.selectedTheme ===
+          class="drag-item relative p-2 bg-base-100 rounded-sm cursor-move transition-opacity transition-shadow border {$themeStore.selectedTheme ===
           'light'
             ? 'border-odd-gray-400'
-            : 'border-odd-gray-500'} shadow-sm"
+            : 'border-odd-gray-500'} shadow-sm {$workflowsStore.highlightedFunction ===
+          schema.id
+            ? 'shadow-md !border-primary'
+            : ''}"
         >
           {#key schemas}
             {#if index > 0}

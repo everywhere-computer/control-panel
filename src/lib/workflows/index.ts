@@ -13,6 +13,7 @@ import { workflowsStore } from '$lib/stores'
 export type WorkflowsStore = {
   loading: boolean
   builder: Builder
+  highlightedFunction: string
   showBuilder: boolean
   workflows: Workflow[]
 }

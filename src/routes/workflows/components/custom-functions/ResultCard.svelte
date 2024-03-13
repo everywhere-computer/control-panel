@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte'
 
-  import { themeStore } from '$lib/stores'
+  import { themeStore, workflowsStore } from '$lib/stores'
   import { STATUS_COLOURS } from '$routes/workflows/lib/graph'
 
   const dispatch = createEventDispatcher()
@@ -10,17 +10,22 @@
   export let replayed: boolean
   export let title: string
 
+  // Toggle the highlighted state of the function associated with this result
   const handleMouseEnter = (): void => {
-    dispatch('mouseEnterResult', key)
+    $workflowsStore.highlightedFunction = key
+  }
+  const handleMouseLeave = (): void => {
+    $workflowsStore.highlightedFunction = null
   }
 </script>
 
 <div
   on:mouseenter={handleMouseEnter}
+  on:mouseleave={handleMouseLeave}
   class="relative rounded-sm max-w-full min-w-48 h-auto px-2 pb-2 bg-base-100 border {$themeStore.selectedTheme ===
   'light'
     ? 'border-odd-gray-400'
-    : 'border-odd-gray-500'} shadow-sm"
+    : 'border-odd-gray-500'} shadow-sm transition hover:shadow-md hover:!border-primary"
 >
   <p
     class="absolute bottom-[calc(100%+1px)] right-1  px-1 {STATUS_COLOURS[
