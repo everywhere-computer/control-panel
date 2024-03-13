@@ -62,7 +62,7 @@
               class="p-2 bg-base-200 border {$themeStore.selectedTheme ===
               'light'
                 ? 'border-odd-gray-400'
-                : 'border-odd-gray-500'} rounded-sm"
+                : 'border-odd-gray-500'} rounded-sm break-words"
             >
               {result.out}
             </div>

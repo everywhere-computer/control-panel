@@ -25,7 +25,7 @@
   on:mouseleave={handleMouseLeave}
   class="{final
     ? 'sticky'
-    : 'relative'} rounded-sm max-w-full min-w-48 h-auto px-2 pb-2 bg-base-100 border {$themeStore.selectedTheme ===
+    : 'relative'} rounded-sm max-w-full min-w-60 h-auto px-2 pb-2 bg-base-100 border {$themeStore.selectedTheme ===
   'light'
     ? 'border-odd-gray-400'
     : 'border-odd-gray-500'} shadow-sm transition hover:shadow-md hover:!border-primary"
