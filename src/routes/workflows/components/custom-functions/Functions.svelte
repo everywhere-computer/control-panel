@@ -3,6 +3,8 @@
   import { createEventDispatcher, onMount } from 'svelte'
 
   import { themeStore, workflowsStore } from '$lib/stores'
+  import ImageUpload from '$routes/workflows/components/custom-functions/ImageUpload.svelte'
+  import Close from '$components/icons/Close.svelte'
   import PlusBoxed from '$components/icons/PlusBoxed.svelte'
   import Run from '$components/icons/Run.svelte'
   import Trash from '$components/icons/Trash.svelte'
@@ -15,6 +17,8 @@
   export let loading
   export let originalSchemas
   export let schemas
+
+  let showImageUpload = false
 
   // Add a new function to the list
   const handleAddFunction = (functionName: string): void => {
@@ -40,6 +44,10 @@
 
     dispatch('deleteFunction', matchingSchema)
   }
+
+  // Toggle visibility for the ImageUpload component
+  const handleToggleImageUpload = (): boolean =>
+    (showImageUpload = !showImageUpload)
 
   onMount(() => {
     let listContainer: HTMLElement | null
@@ -341,6 +349,33 @@
       <h2>Add Params Below</h2>
 
       <div class="flex items-center justify-center gap-2 ml-auto">
+        <div class="dropdown dropdown-end">
+          <div
+            tabindex="0"
+            role="button"
+            class="btn btn-odd-gray-100 gap-1 h-8 px-2"
+          >
+            <span class="w-1 h-1 bg-base-content rounded-full" />
+            <span class="w-1 h-1 bg-base-content rounded-full" />
+            <span class="w-1 h-1 bg-base-content rounded-full" />
+          </div>
+          <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+          <ul
+            tabindex="0"
+            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-60"
+          >
+            <li>
+              <button
+                on:click={handleToggleImageUpload}
+                disabled
+                class="w-full"
+              >
+                Upload image (coming soon)
+              </button>
+            </li>
+          </ul>
+        </div>
+
         <button
           disabled={!Object.values(formValidStates).every(Boolean) || loading}
           class="btn btn-primary btn-odd-purple-500 md:min-w-[80px] max-h-8 ml-auto"
@@ -407,3 +442,26 @@
     </div>
   </div>
 </div>
+
+<input
+  type="checkbox"
+  id="image-upload-modal"
+  checked={showImageUpload}
+  class="modal-toggle"
+/>
+
+{#if showImageUpload}
+  <div class="modal !z-max">
+    <div
+      class="relative flex flex-col items-center justify-center gap-4 w-48 pt-16 px-4 pb-4 bg-base-200/80 rounded-sm"
+    >
+      <button
+        on:click={() => (showImageUpload = false)}
+        class="absolute top-4 right-4 btn btn-odd-gray-900 flex items-center justify-center gap-1 px-0 w-8 h-8 bg-odd-gray-700 text-odd-gray-100 text-body-sm"
+      >
+        <Close />
+      </button>
+      <ImageUpload />
+    </div>
+  </div>
+{/if}
