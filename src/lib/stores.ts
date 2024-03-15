@@ -42,6 +42,7 @@ export const functionsStore: Writable<FunctionsStore> = writable({
 
 export const workflowsStore: Writable<WorkflowsStore> = writable({
   loading: false,
+  activeWorkflow: { tasks: [] },
   builder: generateBuilderTemplate(),
   highlightedFunction: null,
   showBuilder: false,

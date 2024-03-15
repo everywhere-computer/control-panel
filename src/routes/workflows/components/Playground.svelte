@@ -9,6 +9,7 @@
   import '@jsfe/system'
   import { onMount } from 'svelte'
 
+  import { workflowsStore } from '$lib/stores'
   import {
     isValid,
     remapTaskNeeds,
@@ -321,6 +322,8 @@
   }
 
   $: activeTab, modifyShadowDomForm(false, reorderedSchemas)
+
+  $: schemas, ($workflowsStore.activeWorkflow.tasks = schemas)
 
   onMount(async () => {
     loading = true

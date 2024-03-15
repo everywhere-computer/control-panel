@@ -12,6 +12,7 @@ import { workflowsStore } from '$lib/stores'
 
 export type WorkflowsStore = {
   loading: boolean
+  activeWorkflow: { tasks: [] }
   builder: Builder
   highlightedFunction: string
   showBuilder: boolean
