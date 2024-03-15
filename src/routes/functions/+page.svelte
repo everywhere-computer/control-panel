@@ -5,14 +5,19 @@
   import Search from '$components/common/Search.svelte'
   import FunctionCard from '$routes/functions/components/FunctionCard.svelte'
 
-  let schemas = ''
+  let uploadSchemas = []
   let searchTerm = ''
 
-  $: functions = searchTerm
-    ? $functionsStore?.functions?.filter(func =>
-        func?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+  // $: functions = searchTerm
+  //   ? $functionsStore?.functions?.filter(func =>
+  //       func?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
+  //     )
+  //   : $functionsStore?.functions
+  $: schemas = searchTerm
+    ? uploadSchemas.filter(schema =>
+        schema?.name?.toLowerCase()?.includes(searchTerm?.toLowerCase())
       )
-    : $functionsStore?.functions
+    : uploadSchemas
 
   onMount(async () => {
     try {
@@ -21,7 +26,7 @@
       ).json()
 
       // Map schema for each task
-      schemas = res.map((schema, i) => ({
+      uploadSchemas = res.map((schema, i) => ({
         properties: {},
         ...schema[1],
         id: `${schema[0]}_${i}`,
@@ -44,7 +49,7 @@
           ? 'text-odd-gray-700'
           : 'text-odd-gray-300'} w-auto"
       >
-        {functions?.length} Function{functions?.length === 1 ? '' : 's'}
+        {schemas?.length} Function{schemas?.length === 1 ? '' : 's'}
       </p>
 
       <Search bind:searchTerm placeholder="Find a function..." />
