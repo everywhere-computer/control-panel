@@ -365,12 +365,8 @@
             class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-60"
           >
             <li>
-              <button
-                on:click={handleToggleImageUpload}
-                disabled
-                class="w-full"
-              >
-                Upload image (coming soon)
+              <button on:click={handleToggleImageUpload} class="w-full">
+                Convert image to base64
               </button>
             </li>
           </ul>
@@ -451,9 +447,9 @@
 />
 
 {#if showImageUpload}
-  <div class="modal !z-max">
+  <div class="modal">
     <div
-      class="relative flex flex-col items-center justify-center gap-4 w-48 pt-16 px-4 pb-4 bg-base-200/80 rounded-sm"
+      class="relative flex flex-col items-center justify-center gap-4 pt-16 px-4 pb-4 bg-base-200/80 rounded-sm"
     >
       <button
         on:click={() => (showImageUpload = false)}
@@ -461,7 +457,7 @@
       >
         <Close />
       </button>
-      <ImageUpload />
+      <ImageUpload imageModalOpen={showImageUpload} />
     </div>
   </div>
 {/if}

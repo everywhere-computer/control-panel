@@ -21,7 +21,7 @@
   import Results from '$routes/workflows/components/custom-functions/Results.svelte'
   import Tabs from '$components/common/Tabs.svelte'
 
-  const tabs = ['Result', 'Workflow JSON']
+  const tabs = ['Results', 'Workflow JSON']
 
   $: activeTab = tabs[1]
 

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import clipboardCopy from 'clipboard-copy'
+
   import { addNotification } from '$lib/notifications'
   import ClipboardIcon from '$components/icons/ClipboardIcon.svelte'
   import UploadIcon from '$components/icons/Upload.svelte'
@@ -26,6 +28,16 @@
     fr.readAsDataURL(files[0])
   }
 
+  const handleCopyBase64 = async () => {
+    try {
+      await clipboardCopy(uploadedImage)
+      addNotification({ msg: 'Copied to clipboard!', type: 'success' })
+    } catch (error) {
+      console.error(error)
+      addNotification({ msg: 'Failed to copy to clipboard', type: 'error' })
+    }
+  }
+
   // Handle files uploaded directly through the file input
   let files: FileList
   $: if (files) {
@@ -42,7 +54,7 @@
       ? 'border-base-200'
       : 'border-odd-gray-500'}"
   >
-    <h4 class="text-label-sm">Image</h4>
+    <h4 class="text-label-sm">Upload image</h4>
   </div>
   <div class="flex items-center gap-4">
     <div
@@ -79,10 +91,12 @@
         />
       {/if}
     </div>
-    {#if uploadedImage}
-      <button class="btn btn-odd-gray-100 h-8 px-2">
-        <ClipboardIcon />Copy base64 image
-      </button>
-    {/if}
+    <button
+      class="btn btn-odd-gray-100 h-8 px-2"
+      disabled={!uploadedImage}
+      on:click={handleCopyBase64}
+    >
+      <ClipboardIcon />Copy base64 image
+    </button>
   </div>
 </div>

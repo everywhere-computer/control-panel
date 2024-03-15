@@ -38,7 +38,7 @@
 
       <div class="flex flex-col gap-4">
         <button
-          on:click={handleShowBuilder}
+          disabled
           class="btn btn-primary btn-odd-purple-500 btn-sm min-w-[150px]"
         >
           Add to workflow
