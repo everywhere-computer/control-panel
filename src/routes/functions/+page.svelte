@@ -20,12 +20,12 @@
         await fetch(import.meta.env.VITE_GATEWAY_ENDPOINT)
       ).json()
 
-      // Map schema for each taks because we need to render each schema into its own JSF
+      // Map schema for each task
       schemas = res.map((schema, i) => ({
         properties: {},
         ...schema[1],
-        name: schema[0],
         id: `${schema[0]}_${i}`,
+        name: schema[0],
         version: '0.0.1'
       }))
     } catch (error) {
