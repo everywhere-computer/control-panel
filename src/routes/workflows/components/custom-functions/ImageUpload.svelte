@@ -3,15 +3,13 @@
 
   import { addNotification } from '$lib/notifications'
   import ClipboardIcon from '$components/icons/ClipboardIcon.svelte'
+  import CloseIcon from '$components/icons/Close.svelte'
   import UploadIcon from '$components/icons/Upload.svelte'
   import { themeStore } from '$lib/stores'
 
   export let imageBitmap = null
   export let imageModalOpen = false
   export let uploadedImage = null
-
-  // Toggle the image modal state
-  const handleToggleModal = () => (imageModalOpen = !imageModalOpen)
 
   // Handle uploads made by interacting with the file input directly
   const handleFileInput: (files: FileList) => Promise<void> = async files => {
@@ -38,6 +36,11 @@
     }
   }
 
+  const handleDeleteImage = () => {
+    uploadedImage = null
+    imageBitmap = null
+  }
+
   // Handle files uploaded directly through the file input
   let files: FileList
   $: if (files) {
@@ -58,7 +61,7 @@
   </div>
   <div class="flex items-center gap-4">
     <div
-      class="flex items-center justify-center w-24 h-24 mt-2 {uploadedImage
+      class="relative group flex items-center justify-center w-24 h-24 mt-2 {uploadedImage
         ? ''
         : $themeStore.selectedTheme === 'light'
         ? 'bg-odd-gray-50'
@@ -67,14 +70,18 @@
       {#if uploadedImage}
         <img
           src={uploadedImage}
-          class="block w-full h-full object-cover border {$themeStore.selectedTheme ===
+          class="relative z-10 block w-full h-full object-cover border {$themeStore.selectedTheme ===
           'light'
             ? 'border-base-200'
-            : 'border-odd-gray-500'} rounded-sm transition-opacity duration-200 ease-in-out hover:opacity-90 cursor-pointer"
+            : 'border-odd-gray-500'} rounded-sm cursor-pointer"
           alt="uploaded workflow asset"
-          on:click={handleToggleModal}
-          on:keyup={handleToggleModal}
         />
+        <button
+          class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 z-20 p-2 rounded-full bg-primary opacity-0 group-hover:opacity-100 !transition-opacity"
+          on:click={handleDeleteImage}
+        >
+          <CloseIcon />
+        </button>
       {:else}
         <label
           for="upload-file"
