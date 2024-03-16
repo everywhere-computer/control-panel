@@ -77,7 +77,7 @@
           alt="uploaded workflow asset"
         />
         <button
-          class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 z-20 p-2 rounded-full bg-primary opacity-0 group-hover:opacity-100 !transition-opacity"
+          class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 z-20 p-2 rounded-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity"
           on:click={handleDeleteImage}
         >
           <CloseIcon />
