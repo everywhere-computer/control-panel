@@ -85,9 +85,9 @@
       {:else}
         <label
           for="upload-file"
-          class="btn btn-primary btn-odd-purple-500 inline-flex flex-row items-center justify-center gap-1 w-[82px] h-[30px] !px-0 bg-odd-purple-500 text-odd-purple-100 text-label-sm font-medium cursor-pointer"
+          class="btn btn-primary btn-odd-purple-500 inline-flex flex-row items-center justify-center gap-1 w-10 h-[30px] !px-0 bg-odd-purple-500 text-odd-purple-100 text-label-sm font-medium cursor-pointer"
         >
-          <UploadIcon /> Upload
+          <UploadIcon />
         </label>
         <input
           bind:files
