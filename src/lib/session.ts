@@ -1,31 +1,45 @@
-import type * as odd from '@oddjs/odd'
+import * as Bearer from '@fission-codes/ucan/bearer'
 
-import { appName } from '$lib/app-info'
-
-type Username = {
-  full: string
-  hashed: string
-  trimmed: string
-}
+import { createUcanWithCaps } from '$lib/fission-server-utils'
 
 export type Session = {
-  username: Username
-  session: odd.Session | null
-  authStrategy: odd.AuthenticationStrategy | null
-  program: odd.Program
+  memberNumber?: number
+  email: string
+  username: string
   loading: boolean
-  backupCreated: boolean
-  error?: SessionError
 }
 
-type SessionError = 'Insecure Context' | 'Unsupported Browser'
+export const IDB_ACCOUNT_DID_LABEL = 'control-panel/v1/account/did'
 
-export const errorToMessage = (error: SessionError): string => {
-  switch (error) {
-    case 'Insecure Context':
-      return `${appName} requires a secure context (HTTPS)`
+export const IDB_ACCOUNT_UCANS_LABEL = 'control-panel/v1/account/ucans'
 
-    case 'Unsupported Browser':
-      return `Your browser does not support ${appName}`
+export const IDB_PRIVATE_KEY_LABEL = 'control-panel/v1/agent/signing-keypair'
+
+/**
+ * Fetch capabilities from fission-server
+ * Note: this will be used once we have passkey auth enabled
+ */
+export const getCapabilities = async (): Promise<{ revoked: string[]; ucans: {[did: string]: string} }> => {
+  try {
+    const { store, ucan } = await createUcanWithCaps('capability/fetch')
+    const headers = Bearer.encode(ucan, store)
+
+    const res = await fetch(
+      `${import.meta.env.VITE_FISSION_SERVER_API_URI}/capabilities`,
+      {
+        method: 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          ...headers
+        }
+      }
+    )
+
+    const capabilitiesRes = await res.json()
+
+    return capabilitiesRes
+  } catch (error) {
+    console.error(error)
   }
 }

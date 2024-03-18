@@ -1,6 +1,7 @@
 <script lang="ts">
   import { functionsStore, themeStore } from '$lib/stores'
   import Search from '$components/common/Search.svelte'
+  import ModuleUpload from '$components/common/ModuleUpload.svelte'
   import FunctionCard from '$routes/functions/components/FunctionCard.svelte'
 
   let searchTerm = ''
@@ -31,4 +32,6 @@
       <FunctionCard {func} index={i} />
     {/each}
   </div>
+
+  <ModuleUpload />
 </div>

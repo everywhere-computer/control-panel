@@ -1,8 +1,8 @@
-import * as odd from '@oddjs/odd'
 import type { MaybeResult } from '@fission-codes/homestar/codecs/types'
 import { workflow as workflowBuilder, type BlurInvocation, type CropInvocation, type GrayscaleInvocation, type Rotate90Invocation, type TemplateWorkflow } from '@fission-codes/homestar/workflow'
 import { base64 } from 'iso-base/rfc4648'
 import type { CID } from 'multiformats'
+import posthog from 'posthog-js'
 import { get as getStore } from 'svelte/store'
 
 import type { Receipt, FunctionOperation, Meta } from '$lib/functions'
@@ -95,8 +95,6 @@ export type Builder = {
   nodes: Node[]
   savedImage: string
 }
-
-export const WORKFLOWS_DIR = odd.path.directory('private', 'workflows')
 
 export const prepareWorkflow = async (payload: TemplateWorkflow, dataUrl: string) => {
   payload.workflow.tasks[0].run.input.args[0] = dataUrl
@@ -199,6 +197,8 @@ export const runWorkflow = async (
         await handleMessage(data.result as Message)
       }
     )
+
+    posthog.capture('Workflow run')
   } catch (error) {
     console.error(error)
     // Set workflow status to working
