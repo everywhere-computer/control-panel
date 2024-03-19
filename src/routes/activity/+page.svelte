@@ -101,7 +101,7 @@
         <p class="text-input-sm">{$networkStore.receiptsSent}</p>
       </div>
 
-      <NodeInfo compressedView />
+      <!-- <NodeInfo compressedView /> -->
     </div>
 
     <!-- <div class="flex flex-col md:flex-row items-center gap-4"> -->
@@ -130,7 +130,7 @@
         used={metrics?.find(
           m => m?.metric_name === 'homestar_system_load_average_percentage'
         )?.data[0]?.value}
-        total={7.0}
+        total={10.0}
       />
     </div>
     <!-- <div
@@ -213,7 +213,7 @@
       </div>
     </div>
 
-    <!-- <div
+    <div
       in:fly={{
         y: 20,
         duration: 200,
@@ -253,7 +253,7 @@
       {:else}
         <p class="text-code-m font-mono">No runs yet</p>
       {/if}
-    </div> -->
+    </div>
   </div>
 {:else}
   <div class="flex items-center justify-center">

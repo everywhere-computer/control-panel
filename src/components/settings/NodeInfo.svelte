@@ -19,6 +19,7 @@
   onMount(async () => {
     const homestar = getHomestarClient()
     health = (await homestar.health()).result
+    console.log('homestar', await homestar.node())
 
     // Poll until listener addresses are returned
     if (!health?.nodeInfo?.dynamic?.listeners?.length) {
@@ -34,6 +35,8 @@
   onDestroy(() => {
     clearInterval(interval)
   })
+
+  $: console.log('health', health)
 </script>
 
 {#if health}
