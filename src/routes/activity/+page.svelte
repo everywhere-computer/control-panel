@@ -101,7 +101,7 @@
         <p class="text-input-sm">{$networkStore.receiptsSent}</p>
       </div>
 
-      <!-- <NodeInfo compressedView /> -->
+      <NodeInfo compressedView />
     </div>
 
     <!-- <div class="flex flex-col md:flex-row items-center gap-4"> -->
