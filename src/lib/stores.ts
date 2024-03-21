@@ -32,7 +32,7 @@ export const notificationStore: Writable<Notification[]> = writable([])
 
 export const accountSettingsStore: Writable<AccountSettings> = writable({
   avatar: null,
-  loading: true,
+  loading: true
 })
 
 export const functionsStore: Writable<FunctionsStore> = writable({
@@ -42,7 +42,9 @@ export const functionsStore: Writable<FunctionsStore> = writable({
 
 export const workflowsStore: Writable<WorkflowsStore> = writable({
   loading: false,
+  activeWorkflow: { tasks: [] },
   builder: generateBuilderTemplate(),
+  highlightedFunction: null,
   showBuilder: false,
   workflows
 })
@@ -52,7 +54,9 @@ export const networkStore: Writable<NetworkStore> = writable({
   allEvents: [],
   activeConnections: [],
   receiptsSent: 0,
-  receiptsReceived: 0,
+  receiptsReceived: 0
 })
 
-export const unsavedRunStore: Writable<Maybe<Run | Record<string, unknown>>> = writable({})
+export const unsavedRunStore: Writable<
+  Maybe<Run | Record<string, unknown>>
+> = writable({})

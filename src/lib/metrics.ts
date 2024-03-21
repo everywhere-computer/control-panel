@@ -19,6 +19,7 @@ export const requestMetrics = async (): Promise<Metric> => {
   try {
     const homestar = getHomestarClient()
     const { error, result } = await homestar.metrics()
+
     if (error) {
       throw new Error(error)
     }

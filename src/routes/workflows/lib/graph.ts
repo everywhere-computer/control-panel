@@ -5,19 +5,23 @@ export const BORDER_COLOURS = {
   completed: 'border-success',
   failed: 'border-error',
   'from cache': 'border-info',
-  ready: getStore(themeStore)?.selectedTheme === 'light' ? 'border-odd-gray-400' : 'border-odd-gray-500',
+  ready:
+    getStore(themeStore)?.selectedTheme === 'light'
+      ? 'border-odd-gray-400'
+      : 'border-odd-gray-500',
   running: 'border-secondary',
-  success: 'border-success',
+  success: 'border-success'
 }
 
 export const STATUS_COLOURS = {
   completed: 'bg-odd-green-100 border-transparent text-odd-green-600',
   editing: 'bg-odd-teal-300 border-transparent text-odd-gray-900',
   failed: 'bg-error border-transparent text-error-content',
+  final: 'bg-odd-purple-100 border-transparent text-odd-purple-600',
   'from cache': 'bg-odd-blue-100 border-transparent text-odd-blue-600',
   ready: 'bg-base-100 border-odd-gray-400 text-base-content',
   running: 'bg-secondary border-transparent text-secondary-content',
-  success: 'bg-odd-green-100 border-transparent text-odd-green-600',
+  success: 'bg-odd-green-100 border-transparent text-odd-green-600'
 }
 
 export const BLUR_PARAMS = [
@@ -45,5 +49,5 @@ export const FUNCTION_NODE_SIZES = {
   blur: { width: 311, height: 147 },
   crop: { width: 311, height: 331 },
   grayscale: { width: 311, height: 147 },
-  rotate90: { width: 311, height: 147 },
+  rotate90: { width: 311, height: 147 }
 }

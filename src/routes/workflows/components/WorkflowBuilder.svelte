@@ -1,16 +1,14 @@
 <script lang="ts">
-  import * as odd from '@oddjs/odd'
+  import localforage from 'localforage'
   import { onDestroy, onMount } from 'svelte'
   import { expoInOut } from 'svelte/easing'
   import { fly } from 'svelte/transition'
   import { Svelvet } from 'svelvet'
 
   import '$routes/workflows/components/graph/graph.css'
-  import { oddNamespace } from '$lib/app-info'
   import { addNotification } from '$lib/notifications'
-  import { filesystemStore, themeStore, workflowsStore } from '$lib/stores'
+  import { themeStore, workflowsStore } from '$lib/stores'
   import { camelCase } from '$lib/utils'
-  import { WORKFLOWS_DIR } from '$lib/workflows'
   import generateBuilderTemplate from '$lib/workflows/builder/builder-template'
   import generateFunction, {
     DEFAULT_PARAMS
@@ -42,17 +40,12 @@
   const handleCloseBuilder = () => (showBuilder = false)
 
   // Save all workflows to the user's WNFS
-  const pushWorkflowsToWNFS = async () => {
+  const pushWorkflowsToIDB = async () => {
     const clonedWorkflows = JSON.parse(
       JSON.stringify($workflowsStore.workflows)
     )
 
-    await $filesystemStore.write(
-      odd.path.combine(WORKFLOWS_DIR, odd.path.file('workflows.json')),
-      new TextEncoder().encode(JSON.stringify(clonedWorkflows.splice(3)))
-    )
-
-    await $filesystemStore.publish()
+    await localforage.setItem('workflows', clonedWorkflows.splice(3))
   }
 
   // Add a workflow to the workflowsStore
@@ -170,7 +163,7 @@
         savedImage: $workflowsStore.builder.savedImage
       })
 
-      await pushWorkflowsToWNFS()
+      await pushWorkflowsToIDB()
 
       saving = false
 
@@ -212,7 +205,7 @@
   }
 
   // Handle keyboard shortcuts for workflow builder
-  const handleKeyUp = async (event: KeyboardEvent): void => {
+  const handleKeyUp = async (event: KeyboardEvent): Promise<void> => {
     const tagName = (event?.target as HTMLElement).tagName.toLowerCase()
     const key = event.key
 

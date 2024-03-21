@@ -8,7 +8,7 @@
 
   export let compressedView = false
 
-  let health = null
+  let nodeInfo = null
   let interval
 
   const handleCopyToClipboard = async (value: string): Promise<void> => {
@@ -18,13 +18,14 @@
 
   onMount(async () => {
     const homestar = getHomestarClient()
-    health = (await homestar.health()).result
+
+    nodeInfo = (await homestar.node()).result
 
     // Poll until listener addresses are returned
-    if (!health?.nodeInfo?.dynamic?.listeners?.length) {
+    if (!nodeInfo?.dynamic?.listeners?.length) {
       interval = setInterval(async () => {
-        health = (await homestar.health()).result
-        if (health?.nodeInfo?.dynamic?.listeners?.length) {
+        nodeInfo = (await homestar.node()).result
+        if (nodeInfo?.dynamic?.listeners?.length) {
           clearInterval(interval)
         }
       }, 200)
@@ -36,22 +37,22 @@
   })
 </script>
 
-{#if health}
+{#if nodeInfo}
   {#if compressedView}
     <div class="flex flex-row items-center justify-between gap-10 w-full">
       <p class="text-label-sm whitespace-nowrap">Peer ID</p>
       <button
         class="text-input-sm truncate transition-opacity duration-200 ease-in-out hover:opacity-80"
-        on:click={() => handleCopyToClipboard(health.nodeInfo.static.peer_id)}
+        on:click={() => handleCopyToClipboard(nodeInfo.static.peer_id)}
       >
-        {health?.nodeInfo?.static?.peer_id}
+        {nodeInfo?.static?.peer_id}
       </button>
     </div>
 
     <div class="flex flex-row items-start justify-between gap-4 w-full">
       <p class="text-label-sm">Listener Addresses</p>
       <div class="flex flex-col items-end">
-        {#each health?.nodeInfo?.dynamic?.listeners as listener}
+        {#each nodeInfo?.dynamic?.listeners as listener}
           <button
             class="text-input-sm transition-opacity duration-200 ease-in-out hover:opacity-80"
             on:click={() => handleCopyToClipboard(listener)}
@@ -66,11 +67,11 @@
       <h3 class="text-heading-lg mb-4">Peer ID</h3>
       <div class="flex items-center">
         <p>
-          {health?.nodeInfo?.static?.peer_id}
+          {nodeInfo?.static?.peer_id}
         </p>
         <button
           class="pl-2 hover:text-neutral-500 transition-colors"
-          on:click={() => handleCopyToClipboard(health.nodeInfo.static.peer_id)}
+          on:click={() => handleCopyToClipboard(nodeInfo.static.peer_id)}
         >
           <ClipboardIcon />
         </button>
@@ -80,7 +81,7 @@
     <div>
       <h3 class="text-heading-lg mb-4">Listener Addresses</h3>
 
-      {#each health?.nodeInfo?.dynamic?.listeners as listener}
+      {#each nodeInfo?.dynamic?.listeners as listener}
         <div class="flex items-center">
           <p>
             {listener}

@@ -1,7 +1,13 @@
 module.exports = {
   mode: 'jit',
   content: ['./src/**/*.{html,js,svelte,ts}'],
-  safelist: ['alert-success', 'alert-error', 'alert-info', 'alert-warning', 'svelvet-anchor'],
+  safelist: [
+    'alert-success',
+    'alert-error',
+    'alert-info',
+    'alert-warning',
+    'svelvet-anchor'
+  ],
   plugins: [require('daisyui')],
   darkMode: ['class', '[data-theme="dark"]'],
   daisyui: {
@@ -268,6 +274,10 @@ module.exports = {
           '0%': { transform: 'translateX(102%)' },
           '100%': { transform: 'translateX(-100vw)' }
         }
+      },
+      transitionProperty: {
+        colourOpacityShadow:
+          'color, background-color, border-color, box-shadow, opacity'
       },
       width: {
         narrowModal: '327px',

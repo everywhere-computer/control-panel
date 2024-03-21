@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { goto } from '$app/navigation'
+  // import { goto } from '$app/navigation'
   import { fly } from 'svelte/transition'
 
-  import { sessionStore } from '$lib/stores'
+  // import { sessionStore } from '$lib/stores'
   // import AvatarUpload from '$components/settings/AvatarUpload.svelte'
   import ConnectedDevices from '$components/settings/ConnectedDevices.svelte'
   import NodeInfo from '$components/settings/NodeInfo.svelte'
   // import RecoveryKit from '$components/settings/RecoveryKit.svelte'
   import ThemePreferences from '$components/settings/ThemePreferences.svelte'
-  import Username from '$components/settings/Username.svelte'
+  // import Username from '$components/settings/Username.svelte'
 </script>
 
-{#if $sessionStore.session}
+<!-- {#if $sessionStore.session} -->
   <div
     in:fly={{
       y: 20,
@@ -25,7 +25,7 @@
 
       <NodeInfo />
 
-      <Username />
+      <!-- <Username /> -->
 
       <ThemePreferences />
 
@@ -34,6 +34,6 @@
       <!-- <RecoveryKit /> -->
     </div>
   </div>
-{:else}
+<!-- {:else}
   {goto('/')}
-{/if}
+{/if} -->

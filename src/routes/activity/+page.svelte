@@ -15,7 +15,7 @@
   // Poll for metrics
   const interval = setInterval(async () => {
     const updatedMetrics = await requestMetrics()
-    metrics = updatedMetrics
+    metrics = updatedMetrics?.metrics
   }, 5000)
 
   const workflowRuns = $workflowsStore.workflows
@@ -35,7 +35,7 @@
     )
 
   onMount(async () => {
-    metrics = await requestMetrics()
+    metrics = (await requestMetrics())?.metrics
   })
 
   onDestroy(() => {
@@ -51,13 +51,14 @@
         : 'text-base-content'}"
     >
       System up <span class={lightTheme ? 'text-black' : 'text-odd-gray-300'}>
-        {metrics.find(m => m?.metric_name === 'homestar_system_uptime_seconds')
+        {metrics?.find(m => m?.metric_name === 'homestar_system_uptime_seconds')
           ?.data[0]?.value}s
       </span>
       Process up
       <span class={lightTheme ? 'text-black' : 'text-odd-gray-300'}>
-        {metrics.find(m => m?.metric_name === 'homestar_process_uptime_seconds')
-          ?.data[0]?.value}s
+        {metrics?.find(
+          m => m?.metric_name === 'homestar_process_uptime_seconds'
+        )?.data[0]?.value}s
       </span>
     </p>
   </div>
@@ -126,10 +127,10 @@
 
       <ProgressBar
         label="Total System Load"
-        used={metrics.find(
+        used={metrics?.find(
           m => m?.metric_name === 'homestar_system_load_average_percentage'
         )?.data[0]?.value}
-        total={7.0}
+        total={10.0}
       />
     </div>
     <!-- <div
@@ -174,7 +175,7 @@
         <div class="flex flex-row items-center justify-between w-full mb-4">
           <p class="text-label-sm">Total read</p>
           <p class="text-input-sm">
-            {metrics.find(
+            {metrics?.find(
               m => m?.metric_name === 'homestar_process_disk_total_read_bytes'
             )?.data[0]?.value || 0} bytes
           </p>
@@ -182,7 +183,7 @@
         <div class="flex flex-row items-center justify-between w-full">
           <p class="text-label-sm">Total written</p>
           <p class="text-input-sm">
-            {metrics.find(
+            {metrics?.find(
               m =>
                 m?.metric_name === 'homestar_process_disk_total_written_bytes'
             )?.data[0]?.value || 0} bytes
@@ -204,7 +205,7 @@
         <div class="flex flex-row items-center justify-between w-full">
           <p class="text-label-sm">Current size</p>
           <p class="text-input-sm">
-            {metrics.find(
+            {metrics?.find(
               m => m?.metric_name === 'homestar_database_size_bytes'
             )?.data[0]?.value || 0} bytes
           </p>
